@@ -1,0 +1,6 @@
+@media (min-width: 1360px) {
+    .owl-carousel.baner .owl-item img {
+        width: 100%;
+        height: auto;
+    }
+}
