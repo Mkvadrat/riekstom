@@ -782,10 +782,121 @@ aside.right-side-links a {
     margin: 0 0 40px;
     border-bottom: 1px solid #fff;
 }
+.paggination {
+    margin: 40px 0;
+}
 .paggination * {
     font-size: 24px;
     text-decoration: underline;
+    color: #060e77;
+    margin-right: 10px;
+    line-height: 30px;
 }
-.paggination .active-paggination {}
-.paggination {}
-.paggination {}
+.paggination .active-paggination {
+    margin: 0 20px 0 10px;
+    font-size: 30px;
+    font-weight: bold;
+}
+form {
+    background: #f0f0f0;
+    padding: 60px;
+    border-radius: 15px;
+    margin-bottom: 40px;
+    display: inline-block;
+    width: 100%;
+}
+form .text-inputs {
+    float: left;
+    width: 30%;
+    padding-right: 20px;
+}
+form label {
+    display: block;
+    font-size: 18px;
+}
+form input,
+form textarea {
+    width: 100%;
+    font-size: 24px;
+    color: #767676;
+    border-radius: 40px;
+    border: none;
+    padding: 15px 30px;
+    margin-bottom: 20px;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+}
+form input:focus,
+form textarea:focus {
+    border: none;
+    outline: none;
+}
+form .text-field {
+    float: right;
+    width: 70%;
+    padding-left: 20px;
+}
+form .text-field textarea {
+    resize: none;
+    height: 282px;
+}
+form .accept {
+    display: inline-block;
+    width: 100%;
+    margin-top: 35px;
+}
+form .accept input[type="checkbox"] {
+    display: none;
+}
+form .accept label {
+    position: relative;
+    color: #767676;
+    font-size: 15px;
+    line-height: 16px;
+    float: left;
+    width: 78%;
+    cursor: pointer;
+    padding-left: 20px;
+}
+form .accept label::before {
+    content: " ";
+    background: #fff;
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+form .accept label .check-arrow {
+    display: none;
+}
+form .accept label .check-arrow::before {
+    content: " ";
+    display: block;
+    width: 4px;
+    border: 1px solid #000;
+    position: absolute;
+    left: 3px;
+    top: 7px;
+    transform: rotate(45deg);
+}
+form .accept label .check-arrow::after {
+    content: " ";
+    display: block;
+    width: 7px;
+    border: 1px solid #000;
+    position: absolute;
+    left: 5px;
+    top: 6px;
+    transform: rotate(-45deg);
+}
+form .accept button {
+    display: inline-block;
+    padding: 15px 40px;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    float: right;
+    transform: translateY(-15px);
+}

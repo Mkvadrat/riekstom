@@ -27,4 +27,6 @@ $(document).ready(function(){
             $("header").removeClass("sticky");
         }
     }
+    
+    $(".phone").mask("+7(999) 999-9999");
 });

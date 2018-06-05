@@ -164,8 +164,8 @@ get_header();
                             <?php } ?>
                         </div>
                         <div class="review-me">
-                            <a href="#" class="greenbutton samebutton"><?php echo get_post_meta( get_the_ID(), 'all_text_reviews_block_main_page', $single = true ); ?></a>
-                            <a href="#" class="greenbutton samebutton"><?php echo get_post_meta( get_the_ID(), 'write_text_reviews_block_main_page', $single = true ); ?></a>
+                            <a href="<?php echo get_permalink( 69 ); ?>" class="greenbutton samebutton"><?php echo get_post_meta( get_the_ID(), 'all_text_reviews_block_main_page', $single = true ); ?></a>
+                            <a href="<?php echo get_permalink( 69 ); ?>#reviews-form" class="greenbutton samebutton"><?php echo get_post_meta( get_the_ID(), 'write_text_reviews_block_main_page', $single = true ); ?></a>
                         </div>
                     </div>
                 </div>

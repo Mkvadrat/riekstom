@@ -28,10 +28,14 @@ Version: 1.0
     <link rel="stylesheet" href="<?php echo esc_url( get_template_directory_uri() ); ?>/css/owl.theme.default.min.css">
     <link rel="stylesheet" href="<?php echo esc_url( get_template_directory_uri() ); ?>/css/stylesheets.css">
     <link rel="stylesheet" href="<?php echo esc_url( get_template_directory_uri() ); ?>/css/media.css">
+    <link rel="stylesheet" href="<?php echo esc_url( get_template_directory_uri() ); ?>/css/sweetalert.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.dotdotdot/3.2.2/jquery.dotdotdot.js"></script>
     <script src="<?php echo esc_url( get_template_directory_uri() ); ?>/js/owl.carousel.min.js"></script>
 	<script src="<?php echo esc_url( get_template_directory_uri() ); ?>/js/custom.js"></script>
+    <script src="<?php echo esc_url( get_template_directory_uri() ); ?>/js/maskedinput.js"></script>
+    <script src="<?php echo esc_url( get_template_directory_uri() ); ?>/js/sweetalert.min.js"></script>
+    <script src="<?php echo esc_url( get_template_directory_uri() ); ?>/js/reviews.js"></script>
 </head>
 <body>
     <header>
