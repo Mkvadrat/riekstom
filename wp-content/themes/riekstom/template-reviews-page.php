@@ -25,7 +25,7 @@ get_header();
         <div class="container reviews-page">
             <div class="row">
                 <div class="col-md-9">
-                    <h1 class="title">Отзывы</h1>
+                    <h1 class="title"><?php echo get_post_meta( get_the_ID(), 'title_reviews_page', $single = true ); ?></h1>
                     <?php 
                     
                         define( 'DEFAULT_COMMENTS_PER_PAGE', $GLOBALS['wp_query']->query_vars['comments_per_page']);
@@ -97,9 +97,28 @@ get_header();
                     
                 </div>
                 <aside class="col-md-3 right-side-links">
-                    <a href="#">Свежие Акции</a>
-                    <a href="#">Узнать об оплате</a>
-                    <a href="#">Контактные данные</a>
+ 					<?php
+						if (has_nav_menu('reviews_menu')){
+							wp_nav_menu( array(
+								'theme_location'  => 'reviews_menu',
+								'menu'            => '',
+								'container'       => false,
+								'container_class' => '',
+								'container_id'    => '',
+								'menu_class'      => '',
+								'menu_id'         => '',
+								'echo'            => true,
+								'fallback_cb'     => 'wp_page_menu',
+								'before'          => '',
+								'after'           => '',
+								'link_before'     => '',
+								'link_after'      => '',
+								'items_wrap'      => '<ul>%3$s</ul>',
+								'depth'           => 1,
+								'walker'          => new reviews_menu(),
+							) );
+						}
+					?>
                 </aside>
             </div>
         </div>
@@ -119,7 +138,6 @@ get_header();
                             <?php } ?>
                         </ul>
                         <?php } ?>
-                        
                     </div>
                 </div>
             </div>
@@ -130,18 +148,18 @@ get_header();
             <div class="row">
                 <div class="col-md-12">
                     <form class="reviews-form" id="commentform">
-                        <h2 class="title">Оставить отзыв</h2>
+                        <h2 class="title"><?php echo get_post_meta( get_the_ID(), 'title_form_block_reviews_page', $single = true ); ?></h2>
                         <div class="text-inputs">
-                            <label for="name">Имя</label>
-                            <input type="text" name="author" id="author" placeholder="Введите имя">
-                            <label for="telephone">Телефон</label>
-                            <input type="text" name="phone" id="phone" class="phone" placeholder="Введите телефон">
-                            <label for="mail">Почта</label>
-                            <input type="text" name="email" id="email" placeholder="Введите почту">
+                            <label for="name"><?php echo get_post_meta( get_the_ID(), 'item_a_title_input_main_page', $single = true ); ?></label>
+                            <input type="text" name="author" id="author" placeholder="<?php echo get_post_meta( get_the_ID(), 'item_a_title_placeholder_main_page', $single = true ); ?>">
+                            <label for="telephone"><?php echo get_post_meta( get_the_ID(), 'item_b_title_input_main_page', $single = true ); ?></label>
+                            <input type="text" name="phone" id="phone" class="phone" placeholder="<?php echo get_post_meta( get_the_ID(), 'item_b_title_placeholder_main_page', $single = true ); ?>">
+                            <label for="mail"><?php echo get_post_meta( get_the_ID(), 'item_c_title_input_main_page', $single = true ); ?></label>
+                            <input type="text" name="email" id="email" placeholder="<?php echo get_post_meta( get_the_ID(), 'item_c_title_placeholder_main_page', $single = true ); ?>">
                         </div>
                         <div class="text-field">
-                            <label for="comment">Отзыв</label>
-                            <textarea name="comment" id="comment" rows="7" placeholder="Напишите отзыв"></textarea>
+                            <label for="comment"><?php echo get_post_meta( get_the_ID(), 'item_d_title_input_main_page', $single = true ); ?></label>
+                            <textarea name="comment" id="comment" rows="7" placeholder="<?php echo get_post_meta( get_the_ID(), 'item_d_title_placeholder_main_page', $single = true ); ?>"></textarea>
                         </div>
                         <?php echo comment_id_fields(); ?>
                         <div id="respond"></div>
@@ -149,8 +167,8 @@ get_header();
                     
                     <div class="accept">
                         <input type="checkbox" name="" id="confirm">
-                        <label for="confirm"><span class="check-arrow"></span>Нажимая на кнопку «Отправить отзыв» я даю свое согласие на <a href="#">обработку компанией ООО "СММ"</a> моих персональных данных в соответствии с требованиями Федерального закона от 27.07.2006г. № 152-ФЗ «О персональных данных».</label>
-                        <button type="submit" onclick="submit();" class="greenbutton">Отправить отзыв</button>
+                        <label for="confirm"><span class="check-arrow"></span><?php echo get_post_meta( get_the_ID(), 'confirm_reviews_page', $single = true ); ?></label>
+                        <button type="submit" onclick="submit();" class="greenbutton"><?php echo get_post_meta( get_the_ID(), 'item_e_title_input_main_page', $single = true ); ?></button>
                     </div>
                 </div>
             </div>
