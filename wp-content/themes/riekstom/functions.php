@@ -108,6 +108,33 @@ function getAttachment($meta_key){
 	return $value;
 }
 
+function getLinks($meta_key){
+	global $wpdb;
+	
+	$value = $wpdb->get_var( $wpdb->prepare("SELECT meta_value FROM $wpdb->postmeta WHERE meta_key = %s ORDER BY meta_id DESC LIMIT 1", $meta_key) );
+	
+	$unserialize_value = unserialize($value);
+	
+	$results = array();
+	
+	$data = array();
+	
+	if($unserialize_value){
+		foreach($unserialize_value as $value){
+			$results[] = $wpdb->get_results( $wpdb->prepare("SELECT ID, post_title FROM $wpdb->posts WHERE ID = %s", $value));
+		}
+
+		foreach($results as $result){
+			$data[] = array(
+				'title' => $result[0]->post_title,
+				'link'  => get_permalink($result[0]->ID)
+			);
+		}
+	}
+	
+	return $data;
+}
+
 /**********************************************************************************************************************************************************
 ***********************************************************************************************************************************************************
 ****************************************************************************МЕНЮ САЙТА*********************************************************************
