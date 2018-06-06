@@ -98,9 +98,9 @@ get_header();
                 </div>
                 <aside class="col-md-3 right-side-links">
  					<?php
-						if (has_nav_menu('reviews_menu')){
+						if (has_nav_menu('sidebar_menu')){
 							wp_nav_menu( array(
-								'theme_location'  => 'reviews_menu',
+								'theme_location'  => 'sidebar_menu',
 								'menu'            => '',
 								'container'       => false,
 								'container_class' => '',
