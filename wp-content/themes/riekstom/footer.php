@@ -109,6 +109,9 @@ Version: 1.0
             </div>
         </div>
     </footer>
+    
+    <script src="<?php echo esc_url( get_template_directory_uri() ); ?>/js/custom.js"></script>
+    
 </body>
 </html>
 

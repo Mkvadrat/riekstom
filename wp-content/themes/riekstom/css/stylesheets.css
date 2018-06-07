@@ -51,8 +51,8 @@ a:hover {
     color: #fff;
 }
 ul {
-    padding: 0 0 0 0px;
-    list-style-position: inside;
+    padding: 0 0 0px 20px;
+    list-style-position: outside;
 }
 li, p {
     font-size: 18px;
@@ -477,12 +477,15 @@ header.sticky .logo a span {
     width: auto;
     height: 90%;
 }
-.help>div>span {
+.help>div>span,
+.help>div>h2 {
     display: block;
     font-size: 24px;
     line-height: 24px;
     height: 80px;
     padding-top: 20px;
+    font-weight: normal;
+    margin: 0;
 }
 .help>div>a {
     display: block;
@@ -517,7 +520,7 @@ header.sticky .logo a span {
     border-radius: 30px;
     overflow: hidden;
 }
-.reviews-slider span {
+.reviews-slider .title {
     font-size: 60px;
     line-height: 60px;
     display: block;
@@ -725,12 +728,16 @@ footer .copyright a {
     list-style: none;
     display: none;
 }
+.services-list span+ul p {
+    margin: 0;
+}
 .services-list span+ul a {
     font-size: 24px;
     line-height: 24px;
     padding: 10px 0 10px 15px;
     display: block;
 }
+
 span.active-rubric {
     background: #ebebeb;
     border-bottom: 1px solid #dedede;
@@ -748,8 +755,22 @@ span.active-rubric {
 aside.right-side-links a {
     display: block;
     font-size: 24px;
+    line-height: 26px;
     margin-bottom: 20px;
 }
+aside.right-side-links div {
+    background: #f0f0f0;
+    border-radius: 20px;
+    margin: 0 -30px 30px;
+    padding: 20px 30px;
+}
+aside.right-side-links p {
+    margin: 0;
+}
+aside.right-side-links div span {
+    font-size: 40px;
+}
+aside.right-side-links div a {}
 .map {
     height: 0;
     position: relative;
@@ -777,6 +798,7 @@ aside.right-side-links a {
 }
 .reviews-page .reviews p {
     display: inline-block;
+    width: 100%;
     box-sizing: content-box;
     height: auto;
     margin: 0 0 40px;
@@ -818,7 +840,7 @@ form input,
 form textarea {
     width: 100%;
     font-size: 24px;
-    color: #767676;
+    color: #000;
     border-radius: 40px;
     border: none;
     padding: 15px 30px;
@@ -899,4 +921,121 @@ form .accept button {
     border-top: none;
     float: right;
     transform: translateY(-15px);
+}
+.article {
+    display: inline-block;
+    margin-bottom: 40px;
+}
+.article:last-child {
+    margin-bottom: 0;
+}
+.article>a {
+    display: inline-block;
+    float: left;
+    width: 330px;
+    height: 250px;
+    border-radius: 5px;
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-right: 30px;
+}
+.article>div {
+    width: 480px;
+    float: left;
+}
+.article>div a:last-child {
+    font-size: 24px;
+    margin-top: 10px;
+    display: inline-block;
+}
+.article>div h2 {
+    margin: 0;
+    font-size: inherit;
+}
+.article>div a.sub-title {
+    color: #000;
+    text-decoration: none;
+    font-size: 30px;
+    margin: 0;
+}
+.article>div a.sub-title:hover {
+    text-decoration: underline;
+}
+.in-articles-page {
+    margin-bottom: 30px;
+}
+.in-articles {
+    padding-right: 40px;
+}
+.shares,
+.examples {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: -35px;
+}
+.shares div,
+.examples div {
+    margin-bottom: 35px;
+}
+.examples div a {
+    display: block;
+    font-size: 18px;
+    line-height: 18px;
+    color: #000;
+    text-decoration: none;
+}
+.shares div>a,
+.examples div>a {
+    display: block;
+    padding-bottom: 83%;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    background-repeat: no-repeat;
+    background-size: auto 100%;
+    background-position: center;
+}
+.examples div p a:hover {
+    text-decoration: underline;
+}
+.shares {}
+.shares .sub-title {
+    margin: 15px 0 0;
+}
+.shares .sub-title a {
+    color: #000;
+    text-decoration: none;
+}
+.shares .sub-title a:hover {
+    text-decoration: underline;
+}
+.shares p {
+    margin: 10px 0;
+    color: #323232;
+}
+.shares div>a:last-child {
+    padding: 0;
+    font-size: 24px;
+    line-height: 24px;
+}
+.page-404 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 10%;
+}
+.page-404 img {
+    width: 300px;
+}
+.page-404 .title {
+    margin: 30px 0;
+}
+.page-404 p {
+    margin: 0;
+    line-height: 18px;
+}
+.page-404 a {
+    font-size: 24px;
+    margin-top: 30px;
 }
