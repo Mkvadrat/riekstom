@@ -25,53 +25,68 @@ get_header();
         <div class="container">
             <div class="row">
                 <aside class="col-md-3 services-list">
-                    <span>Если зуб болит</span>
+                    <span><?php echo getMeta('title_a_tooth_hurts_services_page'); ?></span>
                     <ul>
-                        <li><p><a href="#">Пункт выехал</a></p></li>
-                        <li><p><a href="#">Пункт выехал</a></p></li>
+					<?php $get_pages_a = getLinks('links_a_tooth_hurts_services_page'); ?>
+					<?php foreach($get_pages_a as $pages){ ?>
+						 <li><p><a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a></p></li>
+					<?php } ?> 
                     </ul>
-                    <span>Если зуб разрушен</span>
+                    <span><?php echo getMeta('title_b_tooth_destroyed_services_page'); ?></span>
                     <ul>
-                        <li><p><a href="#">Пункт выехал</a></p></li>
-                        <li><p><a href="#">Пункт выехал</a></p></li>
+                    <?php $get_pages_b = getLinks('links_b_tooth_destroyed_services_page'); ?>
+					<?php foreach($get_pages_b as $pages){ ?>
+						<li><p><a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a></p></li>
+					<?php } ?> 
                     </ul>
-                    <span>Чтобы зуб не болел</span>
+                    <span><?php echo getMeta('title_c_tooth_not_hurt_services_page'); ?></span>
                     <ul>
-                        <li><p><a href="#">Пункт выехал</a></p></li>
-                        <li><p><a href="#">Пункт выехал</a></p></li>
+					<?php $get_pages_с = getLinks('links_c_tooth_not_hurt_services_page'); ?>
+					<?php foreach($get_pages_с as $pages){ ?>
+						<li><p><a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a></p></li>
+					<?php } ?> 
                     </ul>
-                    <span>Особый уход</span>
+                    <span><?php echo getMeta('title_d_special_care_services_page'); ?></span>
                     <ul>
-                        <li><p><a href="#">Пункт выехал</a></p></li>
-                        <li><p><a href="#">Пункт выехал</a></p></li>
+					<?php $get_pages_d = getLinks('links_d_special_care_services_page'); ?>
+					<?php foreach($get_pages_d as $pages){ ?>
+						<li><p><a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a></p></li>
+					<?php } ?> 
                     </ul>
-                    <span>Сделать зубы ровными, выровнять прикус</span>
+                    <span><?php echo getMeta('title_e_align_bite_services_page'); ?></span>
                     <ul>
-                        <li><p><a href="#">Пункт выехал</a></p></li>
-                        <li><p><a href="#">Пункт выехал</a></p></li>
+					<?php $get_pages_e = getLinks('links_e_align_bite_services_page'); ?>
+					<?php foreach($get_pages_e as $pages){ ?>
+						<li><p><a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a></p></li>
+					<?php } ?> 
                     </ul>
-                    <span>Если болит височно-нижечелюстной сустав</span>
+                    <span><?php echo getMeta('title_f_temporomandibular_joint_hurts_services_page'); ?></span>
                     <ul>
-                        <li><p><a href="#">Пункт выехал</a></p></li>
-                        <li><p><a href="#">Пункт выехал</a></p></li>
+					<?php $get_pages_f = getLinks('links_f_temporomandibular_joint_hurts_services_page'); ?>
+					<?php foreach($get_pages_f as $pages){ ?>
+						<li><p><a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a></p></li>
+					<?php } ?> 
                     </ul>
-                    <span>Плазмолифтинг</span>
+                    <span><?php echo getMeta('title_g_plasmolifting_services_page'); ?></span>
                     <ul>
-                        <li><p><p><a href="#">Пункт выехал</a></p></p></li>
-                        <li><p><a href="#">Пункт выехал</a></p></li>
+					<?php $get_pages_g = getLinks('links_g_plasmolifting_services_page'); ?>
+					<?php foreach($get_pages_g as $pages){ ?>
+						<li><p><a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a></p></li>
+					<?php } ?> 
                     </ul>
-                    <span>Терапия</span>
+                    <span><?php echo getMeta('title_h_therapy_services_page'); ?></span>
                     <ul>
-                        <li><p><a href="#">Лечение кариеса методом прямой реставрации</a></p></li>
-                        <li><p><a href="#">Лечение осложнений кариеса – пульпиты, периодонтиты, путем эндодонтического лечения</a></p></li>
-                        <li><p><a href="#">Профессиональная гигиена полости рта</a></p></li>
-                        <li><p><a href="#">Профилактика кариеса с использованием фторсодержащих препаратов</a></p></li>
-                        <li><p><a href="#">Лечение и профилактика заболеваний зубов у беременных</a></p></li>
+					<?php $get_pages_h = getLinks('links_h_therapy_services_page'); ?>
+					<?php foreach($get_pages_h as $pages){ ?>
+						<li><p><a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a></p></li>
+					<?php } ?> 
                     </ul>
-                    <span>Ортопедия</span>
+                    <span><?php echo getMeta('title_i_orthopedics_services_page'); ?></span>
                     <ul>
-                        <li><p><a href="#">Пункт выехал</a></p></li>
-                        <li><p><a href="#">Пункт выехал</a></p></li>
+					<?php $get_pages_i = getLinks('links_i_orthopedics_services_page'); ?>
+					<?php foreach($get_pages_i as $pages){ ?>
+						<li><p><a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a></p></li>
+					<?php } ?> 
                     </ul>
                 </aside>
                 <article class="col-md-8 in-services">
