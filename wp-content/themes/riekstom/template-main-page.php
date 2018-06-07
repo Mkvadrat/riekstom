@@ -149,7 +149,7 @@ get_header();
             <div class="row">
                 <div class="col-md-12">
                     <div class="reviews-slider">
-                        <span><?php echo get_post_meta( get_the_ID(), 'title_reviews_block_main_page', $single = true ); ?></span>
+                        <h2 class="title"><?php echo get_post_meta( get_the_ID(), 'title_reviews_block_main_page', $single = true ); ?></h2>
                         <div class="reviews">
                             <?php
                                 foreach ($comments as $comment) {
