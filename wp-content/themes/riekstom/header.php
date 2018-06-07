@@ -31,6 +31,7 @@ Version: 1.0
     <link rel="stylesheet" href="<?php echo esc_url( get_template_directory_uri() ); ?>/css/sweetalert.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.dotdotdot/3.2.2/jquery.dotdotdot.js"></script>
+    <script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
     <script src="<?php echo esc_url( get_template_directory_uri() ); ?>/js/owl.carousel.min.js"></script>
 	<script src="<?php echo esc_url( get_template_directory_uri() ); ?>/js/custom.js"></script>
     <script src="<?php echo esc_url( get_template_directory_uri() ); ?>/js/maskedinput.js"></script>

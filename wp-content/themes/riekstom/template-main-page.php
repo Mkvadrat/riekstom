@@ -68,47 +68,75 @@ get_header();
             <div class="row help">
                 <div class="col-md-3">
                     <div>
-                        <img src="<?php echo getAttachment('image_a_help_block_main_page'); ?>" alt="<?php echo getAltImage('image_a_help_block_main_page'); ?>">
+                        <img src="<?php echo getAttachment('image_a_tooth_hurts_main_page'); ?>" alt="<?php echo getAltImage('image_a_tooth_hurts_main_page'); ?>">
                     </div>
-                    <?php echo get_post_meta( get_the_ID(), 'text_a_help_block_main_page', $single = true ); ?>
+                    <span><?php echo get_post_meta( get_the_ID(), 'title_a_tooth_hurts_main_page', $single = true ); ?></span>
+					<?php $get_pages_a = getLinks('links_a_tooth_hurts_main_page'); ?>
+					<?php foreach($get_pages_a as $pages){ ?>
+						<a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a>
+					<?php } ?> 
                 </div>
                 <div class="col-md-3">
                     <div>
-                        <img src="<?php echo getAttachment('image_b_help_block_main_page'); ?>" alt="<?php echo getAltImage('image_b_help_block_main_page'); ?>">
+                        <img src="<?php echo getAttachment('image_b_tooth_destroyed_main_page'); ?>" alt="<?php echo getAltImage('image_b_tooth_destroyed_main_page'); ?>">
                     </div>
-                    <?php echo get_post_meta( get_the_ID(), 'text_b_help_block_main_page', $single = true ); ?>
+                    <span><?php echo get_post_meta( get_the_ID(), 'title_b_tooth_destroyed_main_page', $single = true ); ?></span>
+					<?php $get_pages_b = getLinks('links_b_tooth_destroyed_main_page'); ?>
+					<?php foreach($get_pages_b as $pages){ ?>
+						<a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a>
+					<?php } ?> 
                 </div>
                 <div class="col-md-3">
                     <div>
-                        <img src="<?php echo getAttachment('image_c_help_block_main_page'); ?>" alt="<?php echo getAltImage('image_c_help_block_main_page'); ?>">
+                        <img src="<?php echo getAttachment('image_c_tooth_not_hurt_main_page'); ?>" alt="<?php echo getAltImage('image_c_tooth_not_hurt_main_page'); ?>">
                     </div>
-                    <?php echo get_post_meta( get_the_ID(), 'text_c_help_block_main_page', $single = true ); ?>
+                    <span><?php echo get_post_meta( get_the_ID(), 'title_c_tooth_not_hurt_main_page', $single = true ); ?></span>
+					<?php $get_pages_c = getLinks('links_c_tooth_not_hurt_main_page'); ?>
+					<?php foreach($get_pages_c as $pages){ ?>
+						<a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a>
+					<?php } ?> 
                 </div>
                 <div class="col-md-3">
                     <div>
-                        <img src="<?php echo getAttachment('image_d_help_block_main_page'); ?>" alt="<?php echo getAltImage('image_d_help_block_main_page'); ?>">
+                        <img src="<?php echo getAttachment('image_d_special_care_main_page'); ?>" alt="<?php echo getAltImage('image_d_special_care_main_page'); ?>">
                     </div>
-                    <?php echo get_post_meta( get_the_ID(), 'text_d_help_block_main_page', $single = true ); ?>
+                    <span><?php echo get_post_meta( get_the_ID(), 'title_d_special_care_main_page', $single = true ); ?></span>
+					<?php $get_pages_d = getLinks('links_d_special_care_main_page'); ?>
+					<?php foreach($get_pages_d as $pages){ ?>
+						<a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a>
+					<?php } ?> 
                 </div>
             </div>
             <div class="row help">
                 <div class="col-md-3">
                     <div>
-                        <img src="<?php echo getAttachment('image_e_help_block_main_page'); ?>" alt="<?php echo getAltImage('image_e_help_block_main_page'); ?>">
+                        <img src="<?php echo getAttachment('image_e_align_bite_main_page'); ?>" alt="<?php echo getAltImage('image_e_align_bite_main_page'); ?>">
                     </div>
-                    <?php echo get_post_meta( get_the_ID(), 'text_e_help_block_main_page', $single = true ); ?>
+                    <span><?php echo get_post_meta( get_the_ID(), 'title_e_align_bite_main_page', $single = true ); ?></span>
+					<?php $get_pages_e = getLinks('links_e_align_bite_main_page'); ?>
+					<?php foreach($get_pages_e as $pages){ ?>
+						<a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a>
+					<?php } ?> 
                 </div>
                 <div class="col-md-3">
                     <div>
-                        <img src="<?php echo getAttachment('image_f_help_block_main_page'); ?>" alt="<?php echo getAltImage('image_f_help_block_main_page'); ?>">
+                        <img src="<?php echo getAttachment('image_f_temporomandibular_joint_hurts_main_page'); ?>" alt="<?php echo getAltImage('image_f_temporomandibular_joint_hurts_main_page'); ?>">
                     </div>
-                    <?php echo get_post_meta( get_the_ID(), 'text_f_help_block_main_page', $single = true ); ?>
+                    <span><?php echo get_post_meta( get_the_ID(), 'title_f_temporomandibular_joint_hurts_main_page', $single = true ); ?></span>
+					<?php $get_pages_f = getLinks('links_f_temporomandibular_joint_hurts_main_page'); ?>
+					<?php foreach($get_pages_f as $pages){ ?>
+						<a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a>
+					<?php } ?> 
                 </div>
                 <div class="col-md-3">
                     <div>
-                        <img src="<?php echo getAttachment('image_g_help_block_main_page'); ?>" alt="<?php echo getAltImage('image_g_help_block_main_page'); ?>">
+                        <img src="<?php echo getAttachment('image_g_plasmolifting_main_page'); ?>" alt="<?php echo getAltImage('image_g_plasmolifting_main_page'); ?>">
                     </div>
-                    <?php echo get_post_meta( get_the_ID(), 'text_g_help_block_main_page', $single = true ); ?>
+                    <span><?php echo get_post_meta( get_the_ID(), 'title_g_plasmolifting_main_page', $single = true ); ?></span>
+					<?php $get_pages_g = getLinks('links_g_plasmolifting_main_page'); ?>
+					<?php foreach($get_pages_g as $pages){ ?>
+						<a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a>
+					<?php } ?> 
                 </div>
             </div>
         </div>
