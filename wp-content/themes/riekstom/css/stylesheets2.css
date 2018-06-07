@@ -51,8 +51,8 @@ a:hover {
     color: #fff;
 }
 ul {
-    padding: 0 0 0px 20px;
-    list-style-position: outside;
+    padding: 0 0 0 0px;
+    list-style-position: inside;
 }
 li, p {
     font-size: 18px;
@@ -201,7 +201,7 @@ header .logo a span {
     border-top: 1px solid #dedede;
 }
 .menu li a+ul li>a {
-    display: block;
+    display: inline-block;
     padding: 10px 15px;
     font-size: 16px;
 }
@@ -477,15 +477,12 @@ header.sticky .logo a span {
     width: auto;
     height: 90%;
 }
-.help>div>span,
-.help>div>h2 {
+.help>div>span {
     display: block;
     font-size: 24px;
     line-height: 24px;
     height: 80px;
     padding-top: 20px;
-    font-weight: normal;
-    margin: 0;
 }
 .help>div>a {
     display: block;
@@ -520,7 +517,7 @@ header.sticky .logo a span {
     border-radius: 30px;
     overflow: hidden;
 }
-.reviews-slider .title {
+.reviews-slider span {
     font-size: 60px;
     line-height: 60px;
     display: block;
@@ -553,7 +550,6 @@ header.sticky .logo a span {
     margin: 0;
     padding: 20px 30px;
     border-bottom: 1px solid #f0f0f0;
-    word-break: break-word;
 }
 .reviews span {
     font-size: 18px;
@@ -729,16 +725,12 @@ footer .copyright a {
     list-style: none;
     display: none;
 }
-.services-list span+ul p {
-    margin: 0;
-}
 .services-list span+ul a {
     font-size: 24px;
     line-height: 24px;
     padding: 10px 0 10px 15px;
     display: block;
 }
-
 span.active-rubric {
     background: #ebebeb;
     border-bottom: 1px solid #dedede;
@@ -753,30 +745,11 @@ span.active-rubric {
 .contacts-info a:hover {
     text-decoration: underline;
 }
-aside.right-side-links ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
 aside.right-side-links a {
     display: block;
     font-size: 24px;
-    line-height: 26px;
     margin-bottom: 20px;
 }
-aside.right-side-links div {
-    background: #f0f0f0;
-    border-radius: 20px;
-    margin: 0 -30px 30px;
-    padding: 20px 30px;
-}
-aside.right-side-links p {
-    margin: 0;
-}
-aside.right-side-links div span {
-    font-size: 40px;
-}
-aside.right-side-links div a {}
 .map {
     height: 0;
     position: relative;
@@ -804,7 +777,6 @@ aside.right-side-links div a {}
 }
 .reviews-page .reviews p {
     display: inline-block;
-    width: 100%;
     box-sizing: content-box;
     height: auto;
     margin: 0 0 40px;
@@ -813,30 +785,19 @@ aside.right-side-links div a {}
 .paggination {
     margin: 40px 0;
 }
-.paggination ul {
-    list-style: none;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-end;
-    padding: 0;
-}
-.paggination li>* {
+.paggination * {
     font-size: 24px;
     text-decoration: underline;
     color: #060e77;
     margin-right: 10px;
     line-height: 30px;
 }
-.paggination .current {
+.paggination .active-paggination {
     margin: 0 20px 0 10px;
     font-size: 30px;
     font-weight: bold;
 }
-.paggination li:first-child .current {
-    margin: 0 20px 0 0;
-}
-.reviews-form>div {
+form {
     background: #f0f0f0;
     padding: 60px;
     border-radius: 15px;
@@ -844,20 +805,20 @@ aside.right-side-links div a {}
     display: inline-block;
     width: 100%;
 }
-.reviews-form .text-inputs {
+form .text-inputs {
     float: left;
     width: 30%;
     padding-right: 20px;
 }
-.reviews-form label {
+form label {
     display: block;
     font-size: 18px;
 }
-.reviews-form input,
-.reviews-form textarea {
+form input,
+form textarea {
     width: 100%;
     font-size: 24px;
-    color: #000;
+    color: #767676;
     border-radius: 40px;
     border: none;
     padding: 15px 30px;
@@ -865,29 +826,29 @@ aside.right-side-links div a {}
     -moz-appearance: none;
     -webkit-appearance: none;
 }
-.reviews-form input:focus,
-.reviews-form textarea:focus {
+form input:focus,
+form textarea:focus {
     border: none;
     outline: none;
 }
-.reviews-form .text-field {
+form .text-field {
     float: right;
     width: 70%;
     padding-left: 20px;
 }
-.reviews-form .text-field textarea {
+form .text-field textarea {
     resize: none;
     height: 282px;
 }
-.reviews-form .accept {
+form .accept {
     display: inline-block;
     width: 100%;
     margin-top: 35px;
 }
-.reviews-form .accept input[type="checkbox"] {
+form .accept input[type="checkbox"] {
     display: none;
 }
-.reviews-form .accept label {
+form .accept label {
     position: relative;
     color: #767676;
     font-size: 15px;
@@ -897,7 +858,7 @@ aside.right-side-links div a {}
     cursor: pointer;
     padding-left: 20px;
 }
-.reviews-form .accept label::before {
+form .accept label::before {
     content: " ";
     background: #fff;
     width: 14px;
@@ -907,10 +868,10 @@ aside.right-side-links div a {}
     left: 0;
     top: 0;
 }
-.reviews-form .accept label .check-arrow {
+form .accept label .check-arrow {
     display: none;
 }
-.reviews-form .accept label .check-arrow::before {
+form .accept label .check-arrow::before {
     content: " ";
     display: block;
     width: 4px;
@@ -920,7 +881,7 @@ aside.right-side-links div a {}
     top: 7px;
     transform: rotate(45deg);
 }
-.reviews-form .accept label .check-arrow::after {
+form .accept label .check-arrow::after {
     content: " ";
     display: block;
     width: 7px;
@@ -930,7 +891,7 @@ aside.right-side-links div a {}
     top: 6px;
     transform: rotate(-45deg);
 }
-.reviews-form .accept button {
+form .accept button {
     display: inline-block;
     padding: 15px 40px;
     border-left: none;
@@ -938,126 +899,4 @@ aside.right-side-links div a {}
     border-top: none;
     float: right;
     transform: translateY(-15px);
-}
-
-.reviews-form .accept button[disabled] {
-    opacity: 0.5;
-}
-
-.article {
-    display: inline-block;
-    margin-bottom: 40px;
-}
-.article:last-child {
-    margin-bottom: 0;
-}
-.article>a {
-    display: inline-block;
-    float: left;
-    width: 330px;
-    height: 250px;
-    border-radius: 5px;
-    background-size: auto;
-    background-repeat: no-repeat;
-    background-position: center;
-    margin-right: 30px;
-}
-.article>div {
-    width: 480px;
-    float: left;
-}
-.article>div a:last-child {
-    font-size: 24px;
-    margin-top: 10px;
-    display: inline-block;
-}
-.article>div h2 {
-    margin: 0;
-    font-size: inherit;
-}
-.article>div a.sub-title {
-    color: #000;
-    text-decoration: none;
-    font-size: 30px;
-    margin: 0;
-}
-.article>div a.sub-title:hover {
-    text-decoration: underline;
-}
-.in-articles-page {
-    margin-bottom: 30px;
-}
-.in-articles {
-    padding-right: 40px;
-}
-.shares,
-.examples {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    margin-bottom: -35px;
-}
-.shares div,
-.examples div {
-    margin-bottom: 35px;
-}
-.examples div a {
-    display: block;
-    font-size: 18px;
-    line-height: 18px;
-    color: #000;
-    text-decoration: none;
-}
-.shares div>a,
-.examples div>a {
-    display: block;
-    padding-bottom: 83%;
-    margin-bottom: 15px;
-    border-radius: 6px;
-    background-repeat: no-repeat;
-    background-size: auto 100%;
-    background-position: center;
-}
-.examples div p a:hover {
-    text-decoration: underline;
-}
-.shares {}
-.shares .sub-title {
-    margin: 15px 0 0;
-}
-.shares .sub-title a {
-    color: #000;
-    text-decoration: none;
-}
-.shares .sub-title a:hover {
-    text-decoration: underline;
-}
-.shares p {
-    margin: 10px 0;
-    color: #323232;
-}
-.shares div>a:last-child {
-    padding: 0;
-    font-size: 24px;
-    line-height: 24px;
-}
-.page-404 {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-bottom: 10%;
-}
-.page-404 img {
-    width: 300px;
-}
-.page-404 .title {
-    margin: 30px 0;
-}
-.page-404 p {
-    margin: 0;
-    line-height: 18px;
-}
-.page-404 a {
-    font-size: 24px;
-    margin-top: 30px;
 }

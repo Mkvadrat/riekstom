@@ -146,29 +146,31 @@ get_header();
     <section id="reviews-form">
         <div class="container">
             <div class="row">
-                <div class="col-md-12">
-                    <form class="reviews-form" id="commentform">
-                        <h2 class="title"><?php echo get_post_meta( get_the_ID(), 'title_form_block_reviews_page', $single = true ); ?></h2>
-                        <div class="text-inputs">
-                            <label for="name"><?php echo get_post_meta( get_the_ID(), 'item_a_title_input_main_page', $single = true ); ?></label>
-                            <input type="text" name="author" id="author" placeholder="<?php echo get_post_meta( get_the_ID(), 'item_a_title_placeholder_main_page', $single = true ); ?>">
-                            <label for="telephone"><?php echo get_post_meta( get_the_ID(), 'item_b_title_input_main_page', $single = true ); ?></label>
-                            <input type="text" name="phone" id="phone" class="phone" placeholder="<?php echo get_post_meta( get_the_ID(), 'item_b_title_placeholder_main_page', $single = true ); ?>">
-                            <label for="mail"><?php echo get_post_meta( get_the_ID(), 'item_c_title_input_main_page', $single = true ); ?></label>
-                            <input type="text" name="email" id="email" placeholder="<?php echo get_post_meta( get_the_ID(), 'item_c_title_placeholder_main_page', $single = true ); ?>">
+                <div class="col-md-12 reviews-form">
+                    <div>
+                        <form id="commentform">
+                            <h2 class="title"><?php echo get_post_meta( get_the_ID(), 'title_form_block_reviews_page', $single = true ); ?></h2>
+                            <div class="text-inputs">
+                                <label for="name"><?php echo get_post_meta( get_the_ID(), 'item_a_title_input_main_page', $single = true ); ?></label>
+                                <input type="text" name="author" id="author" placeholder="<?php echo get_post_meta( get_the_ID(), 'item_a_title_placeholder_main_page', $single = true ); ?>">
+                                <label for="telephone"><?php echo get_post_meta( get_the_ID(), 'item_b_title_input_main_page', $single = true ); ?></label>
+                                <input type="text" name="phone" id="phone" class="phone" placeholder="<?php echo get_post_meta( get_the_ID(), 'item_b_title_placeholder_main_page', $single = true ); ?>">
+                                <label for="mail"><?php echo get_post_meta( get_the_ID(), 'item_c_title_input_main_page', $single = true ); ?></label>
+                                <input type="text" name="email" id="email" placeholder="<?php echo get_post_meta( get_the_ID(), 'item_c_title_placeholder_main_page', $single = true ); ?>">
+                            </div>
+                            <div class="text-field">
+                                <label for="comment"><?php echo get_post_meta( get_the_ID(), 'item_d_title_input_main_page', $single = true ); ?></label>
+                                <textarea name="comment" id="comment" rows="7" placeholder="<?php echo get_post_meta( get_the_ID(), 'item_d_title_placeholder_main_page', $single = true ); ?>"></textarea>
+                            </div>
+                            <?php echo comment_id_fields(); ?>
+                            <div id="respond"></div>
+                        </form>
+                        
+                        <div class="accept">
+                            <input type="checkbox" name="" id="confirm">
+                            <label for="confirm"><span class="check-arrow"></span><?php echo get_post_meta( get_the_ID(), 'confirm_reviews_page', $single = true ); ?></label>
+                            <button type="submit" onclick="submit();" class="greenbutton" disabled><?php echo get_post_meta( get_the_ID(), 'item_e_title_input_main_page', $single = true ); ?></button>
                         </div>
-                        <div class="text-field">
-                            <label for="comment"><?php echo get_post_meta( get_the_ID(), 'item_d_title_input_main_page', $single = true ); ?></label>
-                            <textarea name="comment" id="comment" rows="7" placeholder="<?php echo get_post_meta( get_the_ID(), 'item_d_title_placeholder_main_page', $single = true ); ?>"></textarea>
-                        </div>
-                        <?php echo comment_id_fields(); ?>
-                        <div id="respond"></div>
-                    </form>
-                    
-                    <div class="accept">
-                        <input type="checkbox" name="" id="confirm">
-                        <label for="confirm"><span class="check-arrow"></span><?php echo get_post_meta( get_the_ID(), 'confirm_reviews_page', $single = true ); ?></label>
-                        <button type="submit" onclick="submit();" class="greenbutton"><?php echo get_post_meta( get_the_ID(), 'item_e_title_input_main_page', $single = true ); ?></button>
                     </div>
                 </div>
             </div>
