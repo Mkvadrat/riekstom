@@ -67,6 +67,20 @@ if ( function_exists( 'add_theme_support' ) ) {
     add_theme_support( 'post-thumbnails' );
 }
 
+//Вывод id articles
+function getCurrentArticlesID(){
+	global $wpdb;
+	global $wp_query;
+	if(is_taxonomy('articles-list')){
+		$slug = get_query_var('articles-list');
+		$cat_ID = $wpdb->get_var( $wpdb->prepare("SELECT term_id FROM $wpdb->terms WHERE slug = %s" , $slug));
+	}else{
+		$cat_ID = 0;
+	}
+	
+	return $cat_ID;
+}
+
 //Удаляем ненужные пункты меню
 /*function remove_menus(){
 	remove_menu_page( 'edit-comments.php' );          //Комментарии
@@ -374,7 +388,7 @@ function dimox_breadcrumbs() {
 	$link_attr = '';
 	$link_in_before = '';
 	$link_in_after = '';
-	$link = $link_before . '<a href="%1$s"' . $link_attr . '> # ' . $link_in_before . '%2$s' . $link_in_after . '</a>' . $link_after;
+	$link = $link_before . '<a href="%1$s"' . $link_attr . '>' . $link_in_before . '%2$s' . $link_in_after . '</a>' . $link_after;
 	$frontpage_id = get_option('page_on_front');
 	$parent_id = ($post) ? $post->post_parent : '';
 	$sep = ' ' . $sep_before . $sep . $sep_after . ' ';
@@ -433,7 +447,7 @@ function dimox_breadcrumbs() {
 		//Категории (для single.php)
 		if ($show_home_link) echo $sep;
 		if ( get_post_type() != 'post' ) {
-		  /*if( get_post_type() == 'videocatalogue' ){			
+		  if( get_post_type() == 'articles' ){			
 			  printf($link, $home_url, $post_type->labels->singular_name);
 			  
 			  if ($show_current) echo $before . get_the_title() . $after;
@@ -442,12 +456,12 @@ function dimox_breadcrumbs() {
 												  
 			  printf($link, $home_url . $term[0]->slug . '/', $term[0]->name);
 			  if ($show_current) echo $sep . $before . get_the_title() . $after;
-		  }else{*/
+		  }else{
 			  $post_type = get_post_type_object(get_post_type());
 			  $slug = $post_type->rewrite;
 			  printf($link, $home_url . $slug['slug'] . '/', $post_type->labels->singular_name);
 			  if ($show_current) echo $sep . $before . get_the_title() . $after;
-		  //}
+		  }
 		} else {
 		  $cat = get_the_category(); $cat = $cat[0];
 		  $cats = get_category_parents($cat, TRUE, $sep);
@@ -464,9 +478,9 @@ function dimox_breadcrumbs() {
 	  // custom post type
 	  } elseif ( !is_single() && !is_page() && get_post_type() != 'post' && !is_404() ) {
 	  //Категории (для category.php)
-	  if(get_post_type() == 'projects'){		
+	  if(get_post_type() == 'articles-list'){		
 		  $term = get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) );
-		  
+		  var_dump($term);
 		  if ( get_query_var('paged') ) {		
 			  echo $sep . sprintf($link, get_category_link($term->term_id), $term->name) . $sep . $before . sprintf($text['page'], get_query_var('paged')) . $after;
 		  } else {
@@ -652,3 +666,237 @@ function true_add_ajax_comment(){
 }
 add_action('wp_ajax_ajaxcomments', 'true_add_ajax_comment'); // wp_ajax_{значение параметра action}
 add_action('wp_ajax_nopriv_ajaxcomments', 'true_add_ajax_comment'); // wp_ajax_nopriv_{значение параметра action}
+
+/**********************************************************************************************************************************************************
+***********************************************************************************************************************************************************
+***********************************************************************РАЗДЕЛ "СТАТЬИ" В АДМИНКЕ***********************************************************
+***********************************************************************************************************************************************************
+***********************************************************************************************************************************************************/
+//Вывод в админке раздела
+function register_post_type_articles() {
+	$labels = array(
+	 'name' => 'Статьи',
+	 'singular_name' => 'Статьи',
+	 'add_new' => 'Добавить статью',
+	 'add_new_item' => 'Добавить новую статью',
+	 'edit_item' => 'Редактировать статью',
+	 'new_item' => 'Новая статья',
+	 'all_items' => 'Все статьи',
+	 'view_item' => 'Просмотр блога на сайте',
+	 'search_items' => 'Искать статью',
+	 'not_found' => 'Статья не найдена.',
+	 'not_found_in_trash' => 'В корзине нет статей.',
+	 'menu_name' => 'Статьи'
+	 );
+	 $args = array(
+		 'labels' => $labels,
+		 'public' => true,
+		 'exclude_from_search' => false,
+		 'show_ui' => true,
+		 'has_archive' => false,
+		 'menu_icon' => 'dashicons-welcome-write-blog', // иконка в меню
+		 'menu_position' => 20,
+		 'supports' =>  array('title','editor', 'thumbnail'),
+	 );
+ 	register_post_type('articles', $args);
+}
+add_action( 'init', 'register_post_type_articles' );
+
+function true_post_type_articles( $articles ) {
+	global $post, $post_ID;
+
+	$articles['articles'] = array(
+			0 => '',
+			1 => sprintf( 'Статьи обновлены. <a href="%s">Просмотр</a>', esc_url( get_permalink($post_ID) ) ),
+			2 => 'Статья обновлёна.',
+			3 => 'Статья удалёна.',
+			4 => 'Статья обновлена.',
+			5 => isset($_GET['revision']) ? sprintf( 'Статья восстановлена из редакции: %s', wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+			6 => sprintf( 'Статья опубликована на сайте. <a href="%s">Просмотр</a>', esc_url( get_permalink($post_ID) ) ),
+			7 => 'Статья сохранена.',
+			8 => sprintf( 'Отправлена на проверку. <a target="_blank" href="%s">Просмотр</a>', esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
+			9 => sprintf( 'Запланирована на публикацию: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Просмотр</a>', date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink($post_ID) ) ),
+			10 => sprintf( 'Черновик обновлён. <a target="_blank" href="%s">Просмотр</a>', esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
+	);
+	return $articles;
+}
+add_filter( 'post_updated_messages', 'true_post_type_articles' );
+
+//Категории для пользовательских записей "Портфолио"
+function create_taxonomies_articles()
+{
+    // Cats Categories
+    register_taxonomy('articles-list',array('articles'),array(
+        'hierarchical' => true,
+        'label' => 'Рубрики',
+        'singular_name' => 'Рубрика',
+        'show_ui' => true,
+        'query_var' => true,
+        'rewrite' => array('slug' => 'articles-list' )
+    ));
+}
+add_action( 'init', 'create_taxonomies_articles', 0 );
+
+/**********************************************************************************************************************************************************
+***********************************************************************************************************************************************************
+*****************************************************************REMOVE CATEGORY_TYPE SLUG*********************************************************************
+***********************************************************************************************************************************************************
+***********************************************************************************************************************************************************/
+//Удаление  из url таксономии
+function true_remove_slug_from_category( $url, $term, $taxonomy ){
+
+	$taxonomia_name = 'category';
+	$taxonomia_slug = 'category';
+
+	if ( strpos($url, $taxonomia_slug) === FALSE || $taxonomy != $taxonomia_name ) return $url;
+
+	$url = str_replace('/' . $taxonomia_slug, '', $url);
+
+	return $url;
+}
+add_filter( 'term_link', 'true_remove_slug_from_category', 10, 3 );
+
+//Перенаправление url в случае удаления category
+function parse_request_url_category( $query ){
+
+	$taxonomia_name = 'category';
+
+	if( $query['attachment'] ) :
+		$condition = true;
+		$main_url = $query['attachment'];
+	else:
+		$condition = false;
+		$main_url = $query['name'];
+	endif;
+
+	$termin = get_term_by('slug', $main_url, $taxonomia_name);
+
+	if ( isset( $main_url ) && $termin && !is_wp_error( $termin )):
+
+		if( $condition ) {
+			unset( $query['attachment'] );
+			$parent = $termin->parent;
+			while( $parent ) {
+				$parent_term = get_term( $parent, $taxonomia_name);
+				$main_url = $parent_term->slug . '/' . $main_url;
+				$parent = $parent_term->parent;
+			}
+		} else {
+			unset($query['name']);
+		}
+
+		switch( $taxonomia_name ):
+			case 'category':{
+				$query['category_name'] = $main_url;
+				break;
+			}
+			case 'post_tag':{
+				$query['tag'] = $main_url;
+				break;
+			}
+			default:{
+				$query[$taxonomia_name] = $main_url;
+				break;
+			}
+		endswitch;
+
+	endif;
+
+	return $query;
+
+}
+add_filter('request', 'parse_request_url_category', 1, 1 );
+
+//Удаление portfolio-list из url таксономии
+function true_remove_slug_from_articles( $url, $term, $taxonomy ){
+
+	$taxonomia_name = 'articles-list';
+	$taxonomia_slug = 'articles-list';
+
+	if ( strpos($url, $taxonomia_slug) === FALSE || $taxonomy != $taxonomia_name ) return $url;
+
+	$url = str_replace('/' . $taxonomia_slug, '', $url);
+
+	return $url;
+}
+add_filter( 'term_link', 'true_remove_slug_from_articles', 10, 3 );
+
+//Перенаправление portfolio url в случае удаления category
+function parse_request_url_articles( $query ){
+
+	$taxonomia_name = 'articles-list';
+
+	if( $query['attachment'] ) :
+		$condition = true;
+		$main_url = $query['attachment'];
+	else:
+		$condition = false;
+		$main_url = $query['name'];
+	endif;
+
+	$termin = get_term_by('slug', $main_url, $taxonomia_name);
+
+	if ( isset( $main_url ) && $termin && !is_wp_error( $termin )):
+
+		if( $condition ) {
+			unset( $query['attachment'] );
+			$parent = $termin->parent;
+			while( $parent ) {
+				$parent_term = get_term( $parent, $taxonomia_name);
+				$main_url = $parent_term->slug . '/' . $main_url;
+				$parent = $parent_term->parent;
+			}
+		} else {
+			unset($query['name']);
+		}
+
+		switch( $taxonomia_name ):
+			case 'category':{
+				$query['category_name'] = $main_url;
+				break;
+			}
+			case 'post_tag':{
+				$query['tag'] = $main_url;
+				break;
+			}
+			default:{
+				$query[$taxonomia_name] = $main_url;
+				break;
+			}
+		endswitch;
+
+	endif;
+
+	return $query;
+
+}
+add_filter('request', 'parse_request_url_articles', 1, 1 );
+
+/**********************************************************************************************************************************************************
+***********************************************************************************************************************************************************
+*****************************************************************REMOVE POST_TYPE SLUG*********************************************************************
+***********************************************************************************************************************************************************
+***********************************************************************************************************************************************************/
+//Удаление sluga из url таксономии 
+function remove_slug_from_post( $post_link, $post, $leavename ) {
+	if ( 'articles' != $post->post_type || 'publish' != $post->post_status ) {
+		return $post_link;
+	}
+		$post_link = str_replace( '/' . $post->post_type . '/', '/', $post_link );
+	return $post_link;
+}
+add_filter( 'post_type_link', 'remove_slug_from_post', 10, 3 );
+
+function parse_request_url_post( $query ) {
+	if ( ! $query->is_main_query() )
+		return;
+
+	if ( 2 != count( $query->query ) || ! isset( $query->query['page'] ) ) {
+		return;
+	}
+
+	if ( ! empty( $query->query['name'] ) ) {
+		$query->set( 'post_type', array( 'post', 'articles', 'page' ) );
+	}
+}
+add_action( 'pre_get_posts', 'parse_request_url_post' );
