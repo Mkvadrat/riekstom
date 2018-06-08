@@ -67,18 +67,13 @@ if ( function_exists( 'add_theme_support' ) ) {
     add_theme_support( 'post-thumbnails' );
 }
 
-//Вывод id articles
-function getCurrentArticlesID(){
+//Вывод * категории
+function getRubricByID($id){
 	global $wpdb;
-	global $wp_query;
-	if(is_taxonomy('articles-list')){
-		$slug = get_query_var('articles-list');
-		$cat_ID = $wpdb->get_var( $wpdb->prepare("SELECT term_id FROM $wpdb->terms WHERE slug = %s" , $slug));
-	}else{
-		$cat_ID = 0;
-	}
+
+	$value = $wpdb->get_results( $wpdb->prepare("SELECT * FROM $wpdb->terms t JOIN $wpdb->term_relationships tr ON (tr.term_taxonomy_id = t.term_id) AND tr.object_id = %s", $id) );
 	
-	return $cat_ID;
+	return $value;
 }
 
 //Удаляем ненужные пункты меню
@@ -395,170 +390,154 @@ function dimox_breadcrumbs() {
 	$home_link = $link_before . '<a href="' . $home_url . '"' . $link_attr . '>' . $link_in_before . $text['home'] . $link_in_after . '</a>' . $link_after;
   
 	if (is_home() || is_front_page()) {
-  
-	  if ($show_on_home) echo $wrap_before . $home_link . $wrap_after;
-  
+		if ($show_on_home) echo $wrap_before . $home_link . $wrap_after;
 	} else {
   
-	  echo $wrap_before;
-	  if ($show_home_link) echo $home_link;
-  
-	  if ( is_category() ) {
-		$cat = get_category(get_query_var('cat'), false);
-		if ($cat->parent != 0) {
-		  $cats = get_category_parents($cat->parent, TRUE, $sep);
-		  $cats = preg_replace("#^(.+)$sep$#", "$1", $cats);
-		  $cats = preg_replace('#<a([^>]+)>([^<]+)<\/a>#', $link_before . '<a$1' . $link_attr .'>' . $link_in_before . '$2' . $link_in_after .'</a>' . $link_after, $cats);
-		  if ($show_home_link) echo $sep;
-		  echo $cats;
-		}
-		if ( get_query_var('paged') ) {
-		  $cat = $cat->cat_ID;
-		  echo $sep . sprintf($link, get_category_link($cat), get_cat_name($cat)) . $sep . $before . sprintf($text['page'], get_query_var('paged')) . $after;
-		} else {
-		  if ($show_current) echo $sep . $before . sprintf($text['category'], single_cat_title('', false)) . $after;
-		}
-  
-	  } elseif ( is_search() ) {
-		if (have_posts()) {
-		  if ($show_home_link && $show_current) echo $sep;
-		  if ($show_current) echo $before . sprintf($text['search'], get_search_query()) . $after;
-		} else {
-		  if ($show_home_link) echo $sep;
-		  echo $before . sprintf($text['search'], get_search_query()) . $after;
-		}
-  
-	  } elseif ( is_day() ) {
-		if ($show_home_link) echo $sep;
-		echo sprintf($link, get_year_link(get_the_time('Y')), get_the_time('Y')) . $sep;
-		echo sprintf($link, get_month_link(get_the_time('Y'), get_the_time('m')), get_the_time('F'));
-		if ($show_current) echo $sep . $before . get_the_time('d') . $after;
-  
-	  } elseif ( is_month() ) {
-		if ($show_home_link) echo $sep;
-		echo sprintf($link, get_year_link(get_the_time('Y')), get_the_time('Y'));
-		if ($show_current) echo $sep . $before . get_the_time('F') . $after;
-  
-	  } elseif ( is_year() ) {
-		if ($show_home_link && $show_current) echo $sep;
-		if ($show_current) echo $before . get_the_time('Y') . $after;
-  
-	  } elseif ( is_single() && !is_attachment() ) {
-		//Категории (для single.php)
-		if ($show_home_link) echo $sep;
-		if ( get_post_type() != 'post' ) {
-		  if( get_post_type() == 'articles' ){			
-			  printf($link, $home_url, $post_type->labels->singular_name);
-			  
-			  if ($show_current) echo $before . get_the_title() . $after;
-		  }else if(get_post_type() == 'about-us' || get_post_type() == 'news'){
-			  $term = getRubricByID(get_the_ID());
-												  
-			  printf($link, $home_url . $term[0]->slug . '/', $term[0]->name);
-			  if ($show_current) echo $sep . $before . get_the_title() . $after;
-		  }else{
-			  $post_type = get_post_type_object(get_post_type());
-			  $slug = $post_type->rewrite;
-			  printf($link, $home_url . $slug['slug'] . '/', $post_type->labels->singular_name);
-			  if ($show_current) echo $sep . $before . get_the_title() . $after;
-		  }
-		} else {
-		  $cat = get_the_category(); $cat = $cat[0];
-		  $cats = get_category_parents($cat, TRUE, $sep);
-		  if (!$show_current || get_query_var('cpage')) $cats = preg_replace("#^(.+)$sep$#", "$1", $cats);
-		  $cats = preg_replace('#<a([^>]+)>([^<]+)<\/a>#', $link_before . '<li><a$1' . $link_attr .'>' . $link_in_before . '$2' . $link_in_after .'</a></li>' . $link_after, $cats);
-		  echo $cats;
-		  if ( get_query_var('cpage') ) {
-			echo $sep . sprintf($link, get_permalink(), get_the_title()) . $sep . $before . sprintf($text['cpage'], get_query_var('cpage')) . $after;
-		  } else {
-			if ($show_current) echo $before . get_the_title() . $after;
-		  }
-		}
-  
-	  // custom post type
-	  } elseif ( !is_single() && !is_page() && get_post_type() != 'post' && !is_404() ) {
-	  //Категории (для category.php)
-	  if(get_post_type() == 'articles-list'){		
-		  $term = get_term_by( 'slug', get_query_var( 'term' ), get_query_var( 'taxonomy' ) );
-		  var_dump($term);
-		  if ( get_query_var('paged') ) {		
-			  echo $sep . sprintf($link, get_category_link($term->term_id), $term->name) . $sep . $before . sprintf($text['page'], get_query_var('paged')) . $after;
-		  } else {
-			if ($show_current) echo $sep . $before . $term->name . $after;
-		  }
-	  }else{
-		  $post_type = get_post_type_object(get_post_type());	  
-		  if ( get_query_var('paged') ) {
-			echo $sep . sprintf($link, get_page_link( $post_type->name), $post_type->label) . $sep . $before . sprintf($text['page'], get_query_var('paged')) . $after;
-		  } else {
-			if ($show_current) echo $sep . $before . $post_type->label . $after;
-		  }
-	  }
-  
-	  } elseif ( is_attachment() ) {
-		if ($show_home_link) echo $sep;
-		$parent = get_post($parent_id);
-		$cat = get_the_category($parent->ID); $cat = $cat[0];
-		if ($cat) {
-		  $cats = get_category_parents($cat, TRUE, $sep);
-		  $cats = preg_replace('#<a([^>]+)>([^<]+)<\/a>#', $link_before . '<a$1' . $link_attr .'>' . $link_in_before . '$2' . $link_in_after .'</a>' . $link_after, $cats);
-		  echo $cats;
-		}
-		printf($link, get_permalink($parent), $parent->post_title);
-		if ($show_current) echo $sep . $before . get_the_title() . $after;
-  
-	  } elseif ( is_page() && !$parent_id ) {
-		if ($show_current) echo $sep . $before . get_the_title() . $after;
-  
-	  } elseif ( is_page() && $parent_id ) {
-		if ($show_home_link) echo $sep;
-		if ($parent_id != $frontpage_id) {
-		  $breadcrumbs = array();
-		  while ($parent_id) {
-			$page = get_page($parent_id);
-			if ($parent_id != $frontpage_id) {
-			  $breadcrumbs[] = sprintf($link, get_permalink($page->ID), get_the_title($page->ID));
+		echo $wrap_before;
+		if ($show_home_link) echo $home_link;
+	
+		if ( is_category() ) {
+			$cat = get_category(get_query_var('cat'), false);
+			if ($cat->parent != 0) {
+				$cats = get_category_parents($cat->parent, TRUE, $sep);
+				$cats = preg_replace("#^(.+)$sep$#", "$1", $cats);
+				$cats = preg_replace('#<a([^>]+)>([^<]+)<\/a>#', $link_before . '<a$1' . $link_attr .'>' . $link_in_before . '$2' . $link_in_after .'</a>' . $link_after, $cats);
+				if ($show_home_link) echo $sep;
+				echo $cats;
 			}
-			$parent_id = $page->post_parent;
+			if ( get_query_var('paged') ) {
+				$cat = $cat->cat_ID;
+				echo $sep . sprintf($link, get_category_link($cat), get_cat_name($cat)) . $sep . $before . sprintf($text['page'], get_query_var('paged')) . $after;
+			} else {
+				if ($show_current) echo $sep . $before . sprintf($text['category'], single_cat_title('', false)) . $after;
+			}
+	
+		} elseif ( is_search() ) {
+			if (have_posts()) {
+				if ($show_home_link && $show_current) echo $sep;
+				if ($show_current) echo $before . sprintf($text['search'], get_search_query()) . $after;
+			} else {
+				if ($show_home_link) echo $sep;
+				echo $before . sprintf($text['search'], get_search_query()) . $after;
+			}
+	
+		} elseif ( is_day() ) {
+			if ($show_home_link) echo $sep;
+			echo sprintf($link, get_year_link(get_the_time('Y')), get_the_time('Y')) . $sep;
+			echo sprintf($link, get_month_link(get_the_time('Y'), get_the_time('m')), get_the_time('F'));
+			if ($show_current) echo $sep . $before . get_the_time('d') . $after;
+	
+		} elseif ( is_month() ) {
+			if ($show_home_link) echo $sep;
+			echo sprintf($link, get_year_link(get_the_time('Y')), get_the_time('Y'));
+			if ($show_current) echo $sep . $before . get_the_time('F') . $after;
+	
+		} elseif ( is_year() ) {
+			if ($show_home_link && $show_current) echo $sep;
+			if ($show_current) echo $before . get_the_time('Y') . $after;
+	
+		} elseif ( is_single() && !is_attachment() ) {
+		  //Категории (для single.php)
+			if ($show_home_link) echo $sep;
+			if ( get_post_type() != 'post' ) {
+				if( get_post_type() == 'articles' ){			
+					$term = getRubricByID(get_the_ID());		  
+					printf($link, $home_url . $term[0]->slug . '/', $term[0]->name);
+					if ($show_current) echo $sep . $before . get_the_title() . $after;
+				}else if(get_post_type() == 'shares'){
+					$term = getRubricByID(get_the_ID());		  
+					printf($link, $home_url . $term[0]->slug . '/', $term[0]->name);
+					if ($show_current) echo $sep . $before . get_the_title() . $after;
+				}else{
+					$post_type = get_post_type_object(get_post_type());
+					$slug = $post_type->rewrite;
+					printf($link, $home_url . $slug['slug'] . '/', $post_type->labels->singular_name);
+					if ($show_current) echo $sep . $before . get_the_title() . $after;
+				}
+			} else {
+				$cat = get_the_category(); $cat = $cat[0];
+				$cats = get_category_parents($cat, TRUE, $sep);
+				if (!$show_current || get_query_var('cpage')) $cats = preg_replace("#^(.+)$sep$#", "$1", $cats);
+				$cats = preg_replace('#<a([^>]+)>([^<]+)<\/a>#', $link_before . '<li><a$1' . $link_attr .'>' . $link_in_before . '$2' . $link_in_after .'</a></li>' . $link_after, $cats);
+				echo $cats;
+			if ( get_query_var('cpage') ) {
+				echo $sep . sprintf($link, get_permalink(), get_the_title()) . $sep . $before . sprintf($text['cpage'], get_query_var('cpage')) . $after;
+			} else {
+				if ($show_current) echo $before . get_the_title() . $after;
+			}
 		  }
-		  $breadcrumbs = array_reverse($breadcrumbs);
-		  for ($i = 0; $i < count($breadcrumbs); $i++) {
-			echo $breadcrumbs[$i];
-			if ($i != count($breadcrumbs)-1) echo $sep;
-		  }
-		}
-		if ($show_current) echo $sep . $before . get_the_title() . $after;
-	  } elseif ( is_tag() ) {
-		if ( get_query_var('paged') ) {
-		  $tag_id = get_queried_object_id();
-		  $tag = get_tag($tag_id);
-		  echo $sep . sprintf($link, get_tag_link($tag_id), $tag->name) . $sep . $before . sprintf($text['page'], get_query_var('paged')) . $after;
-		} else {
-		  if ($show_current) echo $sep . $before . sprintf($text['tag'], single_tag_title('', false)) . $after;
-		}
+	
+		// custom post type
+		} elseif ( !is_single() && !is_page() && get_post_type() != 'post' && !is_404() ) {
+		//Категории (для category.php)
+			$post_type = get_post_type_object(get_post_type());	  
+			if ( get_query_var('paged') ) {
+				echo $sep . sprintf($link, get_page_link( $post_type->name), $post_type->label) . $sep . $before . sprintf($text['page'], get_query_var('paged')) . $after;
+			} else {
+				if ($show_current) echo $sep . $before . $post_type->label . $after;
+			}
   
-	  } elseif ( is_author() ) {
-		global $author;
-		$author = get_userdata($author);
-		if ( get_query_var('paged') ) {
+		} elseif ( is_attachment() ) {
 		  if ($show_home_link) echo $sep;
-		  echo sprintf($link, get_author_posts_url($author->ID), $author->display_name) . $sep . $before . sprintf($text['page'], get_query_var('paged')) . $after;
-		} else {
-		  if ($show_home_link && $show_current) echo $sep;
-		  if ($show_current) echo $before . sprintf($text['author'], $author->display_name) . $after;
+			$parent = get_post($parent_id);
+			$cat = get_the_category($parent->ID); $cat = $cat[0];
+			if ($cat) {
+				$cats = get_category_parents($cat, TRUE, $sep);
+				$cats = preg_replace('#<a([^>]+)>([^<]+)<\/a>#', $link_before . '<a$1' . $link_attr .'>' . $link_in_before . '$2' . $link_in_after .'</a>' . $link_after, $cats);
+				echo $cats;
+			}
+		  printf($link, get_permalink($parent), $parent->post_title);
+		  if ($show_current) echo $sep . $before . get_the_title() . $after;
+	
+		} elseif ( is_page() && !$parent_id ) {
+			if ($show_current) echo $sep . $before . get_the_title() . $after;
+	
+		} elseif ( is_page() && $parent_id ) {
+			if ($show_home_link) echo $sep;
+			if ($parent_id != $frontpage_id) {
+			  $breadcrumbs = array();
+			  while ($parent_id) {
+				$page = get_page($parent_id);
+				if ($parent_id != $frontpage_id) {
+					$breadcrumbs[] = sprintf($link, get_permalink($page->ID), get_the_title($page->ID));
+				}
+				$parent_id = $page->post_parent;
+			  }
+			  $breadcrumbs = array_reverse($breadcrumbs);
+			  for ($i = 0; $i < count($breadcrumbs); $i++) {
+				echo $breadcrumbs[$i];
+				if ($i != count($breadcrumbs)-1) echo $sep;
+			  }
+			}
+			if ($show_current) echo $sep . $before . get_the_title() . $after;
+		} elseif ( is_tag() ) {
+			if ( get_query_var('paged') ) {
+				$tag_id = get_queried_object_id();
+				$tag = get_tag($tag_id);
+				echo $sep . sprintf($link, get_tag_link($tag_id), $tag->name) . $sep . $before . sprintf($text['page'], get_query_var('paged')) . $after;
+			} else {
+				if ($show_current) echo $sep . $before . sprintf($text['tag'], single_tag_title('', false)) . $after;
+			}
+	
+		} elseif ( is_author() ) {
+			global $author;
+			$author = get_userdata($author);
+			if ( get_query_var('paged') ) {
+				if ($show_home_link) echo $sep;
+				echo sprintf($link, get_author_posts_url($author->ID), $author->display_name) . $sep . $before . sprintf($text['page'], get_query_var('paged')) . $after;
+			} else {
+				if ($show_home_link && $show_current) echo $sep;
+				if ($show_current) echo $before . sprintf($text['author'], $author->display_name) . $after;
+			}
+		} elseif ( is_404() ) {
+			if ($show_home_link && $show_current) echo $sep;
+			if ($show_current) echo $before . $text['404'] . $after;
+		} elseif ( has_post_format() && !is_singular() ) {
+			if ($show_home_link) echo $sep;
+			echo get_post_format_string( get_post_format() );
 		}
-  
-	  } elseif ( is_404() ) {
-		if ($show_home_link && $show_current) echo $sep;
-		if ($show_current) echo $before . $text['404'] . $after;
-  
-	  } elseif ( has_post_format() && !is_singular() ) {
-		if ($show_home_link) echo $sep;
-		echo get_post_format_string( get_post_format() );
-	  }
-  
-	  echo $wrap_after;
-  
+	
+		echo $wrap_after;
 	}
 }
 
@@ -739,6 +718,76 @@ add_action( 'init', 'create_taxonomies_articles', 0 );
 
 /**********************************************************************************************************************************************************
 ***********************************************************************************************************************************************************
+***********************************************************************РАЗДЕЛ "АКЦИИ" В АДМИНКЕ************************************************************
+***********************************************************************************************************************************************************
+***********************************************************************************************************************************************************/
+//Вывод в админке раздела
+function register_post_type_shares() {
+	$labels = array(
+	 'name' => 'Акции',
+	 'singular_name' => 'Акции',
+	 'add_new' => 'Добавить статью',
+	 'add_new_item' => 'Добавить новую статью',
+	 'edit_item' => 'Редактировать статью',
+	 'new_item' => 'Новая статья',
+	 'all_items' => 'Все статьи',
+	 'view_item' => 'Просмотр блога на сайте',
+	 'search_items' => 'Искать статью',
+	 'not_found' => 'Статья не найдена.',
+	 'not_found_in_trash' => 'В корзине нет статей.',
+	 'menu_name' => 'Акции'
+	 );
+	 $args = array(
+		 'labels' => $labels,
+		 'public' => true,
+		 'exclude_from_search' => false,
+		 'show_ui' => true,
+		 'has_archive' => false,
+		 'menu_icon' => 'dashicons-welcome-write-blog', // иконка в меню
+		 'menu_position' => 21,
+		 'supports' =>  array('title','editor', 'thumbnail'),
+	 );
+ 	register_post_type('shares', $args);
+}
+add_action( 'init', 'register_post_type_shares' );
+
+function true_post_type_shares( $shares ) {
+	global $post, $post_ID;
+
+	$shares['shares'] = array(
+			0 => '',
+			1 => sprintf( 'Статьи обновлены. <a href="%s">Просмотр</a>', esc_url( get_permalink($post_ID) ) ),
+			2 => 'Статья обновлёна.',
+			3 => 'Статья удалёна.',
+			4 => 'Статья обновлена.',
+			5 => isset($_GET['revision']) ? sprintf( 'Статья восстановлена из редакции: %s', wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+			6 => sprintf( 'Статья опубликована на сайте. <a href="%s">Просмотр</a>', esc_url( get_permalink($post_ID) ) ),
+			7 => 'Статья сохранена.',
+			8 => sprintf( 'Отправлена на проверку. <a target="_blank" href="%s">Просмотр</a>', esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
+			9 => sprintf( 'Запланирована на публикацию: <strong>%1$s</strong>. <a target="_blank" href="%2$s">Просмотр</a>', date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink($post_ID) ) ),
+			10 => sprintf( 'Черновик обновлён. <a target="_blank" href="%s">Просмотр</a>', esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ) ),
+	);
+	return $shares;
+}
+add_filter( 'post_updated_messages', 'true_post_type_shares' );
+
+//Категории для пользовательских записей "Портфолио"
+function create_taxonomies_shares()
+{
+    // Cats Categories
+    register_taxonomy('shares-list',array('shares'),array(
+        'hierarchical' => true,
+        'label' => 'Рубрики',
+        'singular_name' => 'Рубрика',
+        'show_ui' => true,
+        'query_var' => true,
+        'rewrite' => array('slug' => 'shares-list' )
+    ));
+}
+add_action( 'init', 'create_taxonomies_shares', 0 );
+
+/**********************************************************************************************************************************************************
+***********************************************************************************************************************************************************
 *****************************************************************REMOVE CATEGORY_TYPE SLUG*********************************************************************
 ***********************************************************************************************************************************************************
 ***********************************************************************************************************************************************************/
@@ -872,6 +921,72 @@ function parse_request_url_articles( $query ){
 }
 add_filter('request', 'parse_request_url_articles', 1, 1 );
 
+//
+//Удаление shares-list из url таксономии
+function true_remove_slug_from_shares( $url, $term, $taxonomy ){
+
+	$taxonomia_name = 'shares-list';
+	$taxonomia_slug = 'shares-list';
+
+	if ( strpos($url, $taxonomia_slug) === FALSE || $taxonomy != $taxonomia_name ) return $url;
+
+	$url = str_replace('/' . $taxonomia_slug, '', $url);
+
+	return $url;
+}
+add_filter( 'term_link', 'true_remove_slug_from_shares', 10, 3 );
+
+//Перенаправление shares url в случае удаления category
+function parse_request_url_shares( $query ){
+
+	$taxonomia_name = 'shares-list';
+
+	if( $query['attachment'] ) :
+		$condition = true;
+		$main_url = $query['attachment'];
+	else:
+		$condition = false;
+		$main_url = $query['name'];
+	endif;
+
+	$termin = get_term_by('slug', $main_url, $taxonomia_name);
+
+	if ( isset( $main_url ) && $termin && !is_wp_error( $termin )):
+
+		if( $condition ) {
+			unset( $query['attachment'] );
+			$parent = $termin->parent;
+			while( $parent ) {
+				$parent_term = get_term( $parent, $taxonomia_name);
+				$main_url = $parent_term->slug . '/' . $main_url;
+				$parent = $parent_term->parent;
+			}
+		} else {
+			unset($query['name']);
+		}
+
+		switch( $taxonomia_name ):
+			case 'category':{
+				$query['category_name'] = $main_url;
+				break;
+			}
+			case 'post_tag':{
+				$query['tag'] = $main_url;
+				break;
+			}
+			default:{
+				$query[$taxonomia_name] = $main_url;
+				break;
+			}
+		endswitch;
+
+	endif;
+
+	return $query;
+
+}
+add_filter('request', 'parse_request_url_shares', 1, 1 );
+
 /**********************************************************************************************************************************************************
 ***********************************************************************************************************************************************************
 *****************************************************************REMOVE POST_TYPE SLUG*********************************************************************
@@ -879,7 +994,7 @@ add_filter('request', 'parse_request_url_articles', 1, 1 );
 ***********************************************************************************************************************************************************/
 //Удаление sluga из url таксономии 
 function remove_slug_from_post( $post_link, $post, $leavename ) {
-	if ( 'articles' != $post->post_type || 'publish' != $post->post_status ) {
+	if ( 'articles' != $post->post_type && 'shares' != $post->post_type|| 'publish' != $post->post_status ) {
 		return $post_link;
 	}
 		$post_link = str_replace( '/' . $post->post_type . '/', '/', $post_link );
@@ -896,7 +1011,7 @@ function parse_request_url_post( $query ) {
 	}
 
 	if ( ! empty( $query->query['name'] ) ) {
-		$query->set( 'post_type', array( 'post', 'articles', 'page' ) );
+		$query->set( 'post_type', array( 'post', 'articles', 'shares', 'page' ) );
 	}
 }
 add_action( 'pre_get_posts', 'parse_request_url_post' );

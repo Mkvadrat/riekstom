@@ -27,7 +27,7 @@ get_header();
 			'post_type'   => 'articles',
 			'orderby'     => 'date',
 			'order'       => 'DESC',
-			'posts_per_page' => $GLOBALS['wp_query']->query_vars['posts_per_page'],
+			'posts_per_page' => 4,
 			'paged'          => $current_page,
 
 		);
@@ -38,7 +38,9 @@ get_header();
         <div class="container articles-page">
             <div class="row">
                 <div class="col-md-9">
-                    <h1 class="title"><?php echo get_cat_name(getCurrentArticlesID()); ?></h1>
+					<?php  $term = get_queried_object(); ?>
+                    <h1 class="title"><?php echo $term->name; ?></h1>
+					
 					<?php if($articles){ ?>
 					<?php foreach($articles as $article){ ?>
 					<?php
