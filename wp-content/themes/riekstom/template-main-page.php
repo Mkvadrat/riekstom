@@ -18,7 +18,7 @@ get_header();
                 <div class="owl-carousel baner">
                     <?php
                         global $nggdb;
-                        $slider_id = getNextGallery('7', 'banners_main_page');
+                        $slider_id = getNextGallery(get_the_ID(), 'banners_main_page');
                         $slider_image = $nggdb->get_gallery($slider_id[0]["ngg_id"], 'sortorder', 'ASC', false, 0, 0);
                         if($slider_image){
                             foreach($slider_image as $image) {
