@@ -48,7 +48,8 @@ if(function_exists('register_nav_menus')){
 		  'footer_first_menu'  => 'Меню в футере (1 блок)',
 		  'footer_second_menu' => 'Меню в футере (2 блок)',
 		  'footer_third_menu'  => 'Меню в футере (3 блок)',
-		  'sidebar_menu'       => 'Меню страница "Правый блок"',
+		  'sidebar_menu'       => 'Меню страница (Правый блок)',
+		  'sidebar_other_menu' => 'Меню страница (Правый блок - Other page)',
 		)
 	);
 }
