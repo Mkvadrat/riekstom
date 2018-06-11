@@ -1007,7 +1007,7 @@ aside.right-side-links div a {}
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    margin-bottom: -35px;
+    #margin-bottom: -35px;
 }
 .shares div,
 .examples div {
