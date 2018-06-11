@@ -109,7 +109,7 @@ get_header();
         <div class="container servicess-therapy">
             <div class="row">
                 <div class="col-md-3"><span><?php echo get_post_meta( get_the_ID(), 'title_h_therapy_services_page', $single = true ); ?></span></div>
-                <div class="col-md-6">
+                <div class="col-md-9 therapy">
 					<?php $get_pages_h = getLinks('links_h_therapy_services_page'); ?>
 					<?php foreach($get_pages_h as $pages){ ?>
 						<a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a>
@@ -119,7 +119,7 @@ get_header();
             <hr>
             <div class="row">
                 <div class="col-md-3"><span><?php echo get_post_meta( get_the_ID(), 'title_i_orthopedics_services_page', $single = true ); ?></span></div>
-                <div class="col-md-6">
+                <div class="col-md-9 therapy">
 					<?php $get_pages_i = getLinks('links_i_orthopedics_services_page'); ?>
 					<?php foreach($get_pages_i as $pages){ ?>
 						<a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a>

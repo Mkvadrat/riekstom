@@ -46,9 +46,10 @@ a:hover {
 }
 
 .greenbutton:hover {
-    background-position: center top;
-    /* border-color: #6aac0b; */
+    /*background-position: center top;
+     border-color: #6aac0b; */
     color: #fff;
+    box-shadow: inset 0 2px 40px -8px #a8fd43, inset 0 -10px 40px -10px #456908
 }
 ul {
     padding: 0 0 0px 20px;
@@ -443,11 +444,22 @@ header.sticky .logo a span {
 .servicess-therapy a:hover::before {
     background-image: url(../images/greenteeth.png);
 }
-.servicess-therapy .row {
-    padding-bottom: 20px;
-}
 .servicess-therapy hr+.row {
     padding-top: 20px;
+}
+.therapy {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: left;
+}
+.therapy>a {
+    width: 31%;
+    margin: 0 3% 20px 0;
+    padding: 0 15px 0 0;
+}
+.therapy>a:nth-child(3n) {
+    margin-right: 0;
 }
 .help {
     margin-bottom: 80px;
