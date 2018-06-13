@@ -96,7 +96,7 @@ get_header();
                         <?php the_content(); ?>
                     <?php endwhile; endif; ?>
             
-                    <a href="" class="greenbutton samebutton">Посмотреть примеры работ</a>
+                    <a href="<?php echo get_permalink( 284 ); ?>" class="greenbutton samebutton"><?php echo getMeta('view_examples_in_services_page'); ?></a>
                     <a href="<?php echo get_permalink( 69 ); ?>" class="greenbutton samebutton"><?php echo getMeta('all_text_reviews_block_main_page'); ?></a>
                 </article>
             </div>
