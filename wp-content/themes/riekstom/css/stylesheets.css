@@ -73,9 +73,11 @@ p+ul {
 }
 /* header */
 header {
+    top: -80px;
     padding-top: 10px;
     border-bottom: 1px solid #f0f0f0;
     height: 87px;
+    transition: top 0.5s;
 }
 header .logo a {
     font-family: 'Myriad Pro Bold';
@@ -411,7 +413,7 @@ header.sticky .logo a span {
     font-size: 60px;
     font-weight: normal;
     line-height: 60px;
-    margin: 0 0 50px;
+    margin: 0 0 30px;
 }
 .servicess-therapy {
     margin-top: 30px;
@@ -1072,4 +1074,7 @@ aside.right-side-links div a {}
 .page-404 a {
     font-size: 24px;
     margin-top: 30px;
+}
+.faden-section {
+    opacity: 0;
 }
