@@ -34,6 +34,7 @@ Version: 1.0
     <link rel="stylesheet" href="<?php echo esc_url( get_template_directory_uri() ); ?>/css/stylesheets.css">
     <link rel="stylesheet" href="<?php echo esc_url( get_template_directory_uri() ); ?>/css/media.css">
     <link rel="stylesheet" href="<?php echo esc_url( get_template_directory_uri() ); ?>/css/sweetalert.css">
+    <link rel="stylesheet" href="<?php echo esc_url( get_template_directory_uri() ); ?>/css/jquery.mmenu.all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.dotdotdot/3.2.2/jquery.dotdotdot.js"></script>
@@ -41,52 +42,90 @@ Version: 1.0
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.js"></script>
     <script src="<?php echo esc_url( get_template_directory_uri() ); ?>/js/owl.carousel.min.js"></script>
     <script src="<?php echo esc_url( get_template_directory_uri() ); ?>/js/maskedinput.js"></script>
+    <script src="<?php echo esc_url( get_template_directory_uri() ); ?>/js/jquery.mmenu.all.js"></script>
     <script src="<?php echo esc_url( get_template_directory_uri() ); ?>/js/sweetalert.min.js"></script>
     <script src="<?php echo esc_url( get_template_directory_uri() ); ?>/js/reviews.js"></script>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3 logo">
-					<a class="header__logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
-						<img
-						src="<?php header_image(); ?>"
-						height="<?php echo get_custom_header()->height; ?>"
-						width="<?php echo get_custom_header()->width; ?>"
-						alt="logotype"
-						/>
-						<span><?php echo getMeta('text_logo_main_page'); ?></span>
-					</a>
-                </div>
-                <div class="col-md-6 menu">
-					<?php
-						if (has_nav_menu('header_first_menu')){
-							wp_nav_menu( array(
-								'theme_location'  => 'header_first_menu',
-								'menu'            => '',
-								'container'       => false,
-								'container_class' => '',
-								'container_id'    => '',
-								'menu_class'      => '',
-								'menu_id'         => '',
-								'echo'            => true,
-								'fallback_cb'     => 'wp_page_menu',
-								'before'          => '',
-								'after'           => '',
-								'link_before'     => '',
-								'link_after'      => '',
-								'items_wrap'      => '<ul>%3$s</ul>',
-								'depth'           => 2,
-								'walker'          => new primary_menu(),
-							) );
-						}
-					?>
-                </div>
-                <div class="col-md-3 headling-info">
-                    <a href="tel:<?php echo getMeta('phone_header_main_page'); ?>"><?php echo getMeta('phone_header_main_page'); ?></a>
-                    <p><?php echo getMeta('mode_operation_header_main_page'); ?></p>
+    <div id="page">
+        <nav id="menu">
+            <ul>
+                <li><a href="http://stoma.loc/o-klinike/">О клинике</a>
+                    <ul>
+                        <li><a href="http://1">Выпадающий список</a></li>
+                        <li><a href="http://2">Выпадающий список</a></li>
+                    </ul>
+                </li>
+                <li><a href="http://stoma.loc/services/">Услуги</a>
+                    <ul>
+                        <li><a href="http://stoma.loc/lechenie-kariesa/">Лечение кариеса</a></li>
+                        <li><a href="http://stoma.loc/lechenie-pulpita/">Лечение пульпита</a></li>
+                        <li><a href="http://stoma.loc/lechenie-periodontita/">Лечение периодонтита</a></li>
+                        <li><a href="http://stoma.loc/protezirovanie/">Протезирование</a></li>
+                        <li><a href="http://stoma.loc/restavraciya/">Реставрация</a></li>
+                        <li><a href="http://stoma.loc/profosmotr/">Профосмотр</a></li>
+                        <li><a href="http://stoma.loc/chistka-naleta-i-zubnogo-kamnya/">Чистка налета и зубного камня</a></li>
+                        <li><a href="http://stoma.loc/brekety/">Брекеты</a></li>
+                        <li><a href="http://stoma.loc/lechenie-zubov-pri-beremennosti/">Лечение зубов при беременности</a></li>
+                        <li><a href="http://stoma.loc/apparaty-ortodonticheskie-semnye-i-n/">Аппараты ортодонтические сьемные и несъемные</a></li>
+                        <li><a href="http://stoma.loc/kineziologicheskie-metody-resheniya-pr/">Кинезиологические методы решения проблемы сустава</a></li>
+                        <li><a href="http://stoma.loc/zashhitnye-kappy-vakuum-former/">Защитные каппы (вакуум-формер)</a></li>
+                        <li><a href="http://stoma.loc/reshenie-problem-desen/">Решение проблем десен</a></li>
+                    </ul>
+                </li>
+                <li><a href="http://stoma.loc/oplata/">Оплата</a></li>
+                <li><a href="http://stoma.loc/all-shares/">Акции</a></li>
+                <li><a href="http://stoma.loc/reviews/">Отзывы</a></li>
+                <li><a href="http://stoma.loc/contacts/">Контакты</a></li>
+            </ul>
+        </nav>
+        <header>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 col-sm-4 col-xs-6 logo">
+                        <a class="header__logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
+                            <img
+                            src="<?php header_image(); ?>"
+                            height="<?php echo get_custom_header()->height; ?>"
+                            width="<?php echo get_custom_header()->width; ?>"
+                            alt="logotype"
+                            />
+                            <span><?php echo getMeta('text_logo_main_page'); ?></span>
+                        </a>
+                    </div>
+                    <div class="col-md-6 menu">
+                        <?php
+                            if (has_nav_menu('header_first_menu')){
+                                wp_nav_menu( array(
+                                    'theme_location'  => 'header_first_menu',
+                                    'menu'            => '',
+                                    'container'       => false,
+                                    'container_class' => '',
+                                    'container_id'    => '',
+                                    'menu_class'      => '',
+                                    'menu_id'         => '',
+                                    'echo'            => true,
+                                    'fallback_cb'     => 'wp_page_menu',
+                                    'before'          => '',
+                                    'after'           => '',
+                                    'link_before'     => '',
+                                    'link_after'      => '',
+                                    'items_wrap'      => '<ul>%3$s</ul>',
+                                    'depth'           => 2,
+                                    'walker'          => new primary_menu(),
+                                ) );
+                            }
+                        ?>
+                    </div>
+                    <div class="col-md-3 col-sm-8 col-xs-6 headling-info">
+                        <a class="mobile-button greenbutton" href="#menu">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </a>
+                        <a href="tel:<?php echo getMeta('phone_header_main_page'); ?>"><?php echo getMeta('phone_header_main_page'); ?></a>
+                        <p><?php echo getMeta('mode_operation_header_main_page'); ?></p>
+                    </div>
                 </div>
             </div>
-        </div>
-    </header>
+        </header>

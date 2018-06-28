@@ -100,14 +100,20 @@ header .logo a span {
     top: 10px;
     left: 10px;
 }
+.mm-slideout {
+    z-index: 999;
+}
 .sticky {
     position: fixed;
     top: 0;
     width: 100%;
-    z-index: 9999;
+    z-index: 9;
     background: rgba(255, 255, 255, 0.98);
     padding: 0;
     height: 67px;
+}
+.sticky.if-wp {
+    top: 32px;
 }
 .sticky + section {
     padding-top: 87px;
@@ -174,9 +180,20 @@ header .logo a span {
     transform: rotate(180deg);
     border-top-color: #62a700;
 }
+.menu li:hover.drop>a.current-menu-link::after {
+    transform: rotate(180deg);
+    border-top-color: #62a700;
+}
 .menu a:hover {
     text-decoration: underline;
     color: #62a700;
+}
+.menu a.current-menu-link,
+.menu li.drop>a.current-menu-link::after {
+    border-top-color: #62a700;
+    text-decoration: underline;
+    color: #62a700;
+    pointer-events: none;
 }
 .menu li ul {
     list-style: none;
@@ -212,7 +229,7 @@ header .logo a span {
     background: #fafafa;
     border-radius: 5px 5px 0 0;
 }
-.menu li a:hover+ul,
+.menu li:hover a+ul,
 .menu li a+ul:hover {
     height: auto;
 }
@@ -241,6 +258,9 @@ header .logo a span {
     top: 43%;
     transform: translateY(-50%);
 }
+.headling-info a.mobile-button {
+    transition: none;
+}
 .headling-info a:hover {
     text-decoration: underline;
 }
@@ -251,6 +271,27 @@ header .logo a span {
     float: right;
     position: relative;
     bottom: 10px;
+}
+.mobile-button {
+    display: none;
+    float: right;
+    background: linear-gradient(0, #64a600 30%, #96d051 100%);
+    background-size: 100% 100%;
+    width: 67px;
+    padding: 15px 20px;
+    margin-left: 10px;
+}
+.mobile-button span {
+    display: inline-block;
+    float: left;
+    width: 27px;
+    height: 5px;
+    background: #fff;
+    border: 2px solid #fff;
+    border-radius: 5px;
+}
+.mobile-button span+span {
+    margin-top: 5px;
 }
 .sticky .headling-info p {
     display: none;
@@ -266,6 +307,7 @@ header.sticky .logo a span {
 .sticky .menu>ul {
     height: 67px;
 }
+
 /* header */
 /* carousel */
 .owl-carousel.baner {
@@ -274,16 +316,26 @@ header.sticky .logo a span {
 .owl-carousel.baner .owl-item {
     height: 550px;
     width: 100%;
+    z-index: 99;
+}
+.owl-carousel.baner .owl-item>div {
+    overflow: hidden;
+    z-index: 99;
+    height: 100%;
 }
 .owl-carousel.baner .owl-item img {
     width: auto;
     height: 100%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
 }
 .baner-carousel {
     position: absolute;
     margin-left: 55px;
     top: 50%;
     transform: translateY(-50%);
+    z-index: 999;
 }
 .baner-carousel * {
     color: #fff;
@@ -496,7 +548,7 @@ header.sticky .logo a span {
     display: block;
     font-size: 24px;
     line-height: 24px;
-    height: 80px;
+    min-height: 80px;
     padding-top: 20px;
     font-weight: normal;
     margin: 0;
@@ -565,6 +617,7 @@ header.sticky .logo a span {
     line-height: 18px;
     height: 90px;
     margin: 0;
+    width: 100%;
     padding: 20px 30px;
     border-bottom: 1px solid #f0f0f0;
     word-break: break-word;
@@ -632,7 +685,12 @@ footer ul li a {
     display: block;
     margin-top: 20px;
 }
-footer .footer-contacts {
+footer ul li a.current-footer-link {
+    color: #62a700;
+    text-decoration: none;
+    pointer-events: none;
+}
+.footer-contacts {
     text-align: right;
 }
 footer .footer-info a {
@@ -667,9 +725,13 @@ footer .footer-contacts .socials a {
     margin-left: 5px;
     transition: .5s;
 }
+.footer-contacts-mobile {
+    display: none;
+}
 footer .footer-contacts .socials a:hover {
     transform: rotateX(360deg);
 }
+
 footer .copyright {
     margin-top: 30px;
 }
@@ -752,6 +814,11 @@ footer .copyright a {
     padding: 10px 0 10px 15px;
     display: block;
 }
+.services-list span+ul a.current-service-link {
+    color: #62a700;
+    text-decoration: none;
+    pointer-events: none;
+}
 
 span.active-rubric {
     background: #ebebeb;
@@ -798,6 +865,11 @@ aside.right-side-links div a {}
     overflow: hidden;
     border-radius: 10px;
     margin-bottom: 50px;
+}
+aside.right-side-links a.current-sidebar-link {
+    color: #62a700;
+    text-decoration: none;
+    pointer-events: none;
 }
 .map>div {
     position: absolute;
@@ -849,6 +921,12 @@ aside.right-side-links div a {}
 }
 .paggination li:first-child .current {
     margin: 0 20px 0 0;
+}
+.article+.paggination {
+    margin-top: 0;
+}
+.article+.paggination ul {
+    margin: 0;
 }
 .reviews-form>div {
     background: #f0f0f0;
@@ -907,7 +985,7 @@ aside.right-side-links div a {}
     font-size: 15px;
     line-height: 16px;
     float: left;
-    width: 78%;
+    width: 75%;
     cursor: pointer;
     padding-left: 20px;
 }
@@ -962,9 +1040,6 @@ aside.right-side-links div a {}
     display: inline-block;
     margin-bottom: 40px;
 }
-.article:last-child {
-    margin-bottom: 0;
-}
 .article>a {
     display: inline-block;
     float: left;
@@ -1009,7 +1084,9 @@ aside.right-side-links div a {}
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    #margin-bottom: -35px;
+}
+.shares {
+    margin-bottom: -35px;
 }
 .shares div,
 .examples div {

@@ -95,6 +95,18 @@ get_header();
                     <?php } ?>
                     <?php } ?>
                     
+                    <div class="paggination">
+                        <?php $pagination = paginate_links($args);
+                            
+                        if($pagination){
+                        ?>
+                        <ul class="list-pages">
+                            <?php foreach ($pagination as $pag){ ?>
+                                <li><?php echo $pag; ?></li>
+                            <?php } ?>
+                        </ul>
+                        <?php } ?>
+                    </div>
                 </div>
                 <aside class="col-md-3 right-side-links">
  					<?php
@@ -124,26 +136,6 @@ get_header();
         </div>
     </section>
     <section>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="paggination">
-                        <?php $pagination = paginate_links($args);
-                            
-                        if($pagination){
-                        ?>
-                        <ul class="list-pages">
-                            <?php foreach ($pagination as $pag){ ?>
-                                <li><?php echo $pag; ?></li>
-                            <?php } ?>
-                        </ul>
-                        <?php } ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section id="reviews-form">
         <div class="container">
             <div class="row">
                 <div class="col-md-12 reviews-form">

@@ -6,7 +6,13 @@ $(document).ready(function(){
         nav : true,
     });    
 
-    $('.reviews-slider .reviews p, .examples div p a').dotdotdot({
+    $('.reviews-slider .reviews p').dotdotdot({
+        height : 55,
+        ellipsis : "\u2026",
+        truncate : "word",
+        watch: "word",
+    });
+    $('.examples div p a').dotdotdot({
         height : 55,
         ellipsis : "\u2026",
         truncate : "word",
@@ -35,7 +41,9 @@ $(document).ready(function(){
         if (window.pageYOffset > 200) {
             $("header").addClass("sticky");
         } else {
-            $(".sticky").animate({'top':'0'},1500,$("header").removeClass("sticky"));
+            $(".sticky").animate({'top':'-80'}, 200, function() {
+                $("header").removeClass("sticky").removeAttr('style');
+            });
         }
     });
 
@@ -51,10 +59,10 @@ $(document).ready(function(){
             return $(this).next().slideToggle();
         }
     });
-   
-    $('form .accept label').on('click', function(){
+    
+    /* $('form .accept label').on('click', function(){
         $('.check-arrow').toggle();
-    });
+    }); */
 
     $(".phone").mask("+7(999) 999-9999");
     
@@ -71,7 +79,7 @@ $(document).ready(function(){
     }
 
 
-    $('section:not(header+section)').addClass('faden-section');
+    $('section').not('header+section').addClass('faden-section');
     $('.faden-section').each(function(i) {
         var $winows = ($(window).innerHeight() + $(window).scrollTop());
         var $targer = ($(this).offset().top + 200);
@@ -91,4 +99,66 @@ $(document).ready(function(){
                 $('section.faden-section:first').fadeIn().removeClass('faden-section');
             } */
     });
+    $(function () { 
+        $('.menu a').each(function () {
+            var location = window.location.href;
+            var link = this.href; 
+            if(location == link) {
+                $(this).addClass('current-menu-link');
+            }
+        });
+    });
+    $(function () { 
+        $('aside.right-side-links a').each(function () {
+            var location = window.location.href;
+            var link = this.href; 
+            if(location == link) {
+                $(this).addClass('current-sidebar-link');
+            }
+        });
+    });
+    $(function () { 
+        $('footer ul li a').each(function () {
+            var location = window.location.href;
+            var link = this.href; 
+            if(location == link) {
+                $(this).addClass('current-footer-link');
+            }
+        });
+    });
+    $(function () { 
+        $('.services-list span+ul a').each(function () {
+            var location = window.location.href;
+            var link = this.href; 
+            if(location == link) {
+                $(this).addClass('current-service-link');
+                $(this).parents('ul').css('display','block')
+                $(this).parents('ul').prev('span').addClass('active-rubric');
+            }
+        });
+    });
+
+    $('.menu>ul>li>a').each(function() {
+        if($(this).text() == 'Акции') {
+            $(this).addClass('discounts');
+        }
+    });
+
+    /* $('.mobile-button').on('click', function() {
+    }); */
+    $("#menu").mmenu({
+        "extensions": [
+            "pagedim-black",
+            "position-right"
+        ],
+        "counters": true,
+        navbar: {
+            title: "riekstom"
+        }
+    });
+
+
+
+
+    
 });
