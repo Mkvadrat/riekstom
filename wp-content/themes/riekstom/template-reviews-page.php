@@ -179,7 +179,7 @@ get_header();
     
     <script language="javascript">
         function submit(){
-            $(".reviews-form").submit();
+            $("#commentform").submit();
         }
     </script>
   
