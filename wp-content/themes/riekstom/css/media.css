@@ -4,3 +4,418 @@
         height: auto;
     }
 }
+@media (max-width: 1200px) {
+    header {
+        height: 77px;
+    }
+    .sticky + section {
+        padding-top: 77px;
+    }
+    header .logo a {
+        height: 67px;
+        font-size: 18px;
+        line-height: 18px;
+    }
+    header .logo a span {
+        top: 15px;
+    }
+    .menu>ul {
+        height: 67px;
+    }
+    .menu>ul>li>a{
+        font-size: 14px;
+        padding: 0 15px;
+    }
+    .menu li ul {
+        top: 66px;
+    }
+    .menu li a+ul li>a {
+        font-size: 14px;
+    }
+    .menu li a.discounts::before {
+        width: 60px;
+        margin: 0 4px;
+    }
+    .headling-info a {
+        font-size: 26px;
+    }
+    .headling-info p {
+        font-size: 13px;
+    }
+    .underbanner .big {
+        width: 450px;
+    }
+    .help>div {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    footer .footer-info a {
+        font-size: 30px;
+    }
+    .article>a {
+        width: 25%;
+        height: auto;
+        padding-bottom: 25%;
+    }
+    .article>div {
+        width: 70%;
+    }
+    aside.right-side-links div {
+        margin: 0 -15px 30px;
+    }
+    .reviews-form .accept label {
+        width: 70%;
+    }
+    .reviews-form .text-inputs {
+        width: 40%;
+    }
+    .reviews-form .text-field {
+        width: 60%;
+    }
+    .servicess-therapy span {
+        padding: 0;
+        display: block;
+        margin-bottom: 50px;
+    }
+    .therapy>a {
+        width: 50%;
+        margin: 0 0 30px;
+    }
+}
+@media (max-width: 991px) {
+    .baner-carousel .baner-title {
+        font-size: 36px;
+        line-height: normal;
+    }
+    .baner-carousel p {
+        font-size: 21px;
+    }
+    .owl-carousel.baner .owl-item {
+        height: 430px;
+    }
+    .owl-carousel:hover .owl-nav button.owl-prev {
+        left: 15px;
+    }
+    .owl-carousel:hover .owl-nav button.owl-next {
+        right: 15px;
+    }
+    .menu,
+    .headling-info p {
+        display: none;
+    }
+    header>div {
+        position: relative;
+    }
+    .headling-info a:not(.mobile-button) {
+        margin-top: 15px;
+    }
+    .sticky .headling-info a {
+        margin-top: 0;
+    }
+    .mobile-button {
+        display: inline-block;
+    }
+    .baner-carousel {
+        margin-left: 0;
+    }
+    .underbanner {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+    .underbanner .big {
+        width: 80%;
+        margin-bottom: 20px;
+    }
+    .underbanner .small+.small {
+        margin-left: 30px;
+    }
+    .help>div>div {
+        position: absolute;
+        right: 0;
+    }
+    .help>div>span {
+        width: 60%;
+        height: auto;
+        min-height: 1px;
+    }
+    .help>div>a {
+        width: 80%;
+    }
+    .help>div>a:last-of-type {
+        margin-bottom: 30px;
+    }
+    .help {
+        margin-bottom: 0;
+    }
+    .help:last-of-type {
+        margin-bottom: 50px;
+    }
+    .reviews-slider .title {
+        text-align: left;
+    }
+    .reviews div {
+        width: 100%;
+        margin-bottom: 40px;
+    }
+    .seo-text .sub-title {
+        width: 70%;
+    }
+    .footer-contacts {
+        display: none;
+    } 
+    .footer-contacts-mobile {
+        display: block;
+        text-align: left;
+    }
+    footer .title {
+        margin-top: 30px;
+    }
+    footer .copyright p span {
+        position: absolute;
+        bottom: 30px;
+        left: 15px;
+    }
+    footer .copyright p+a {
+        margin-bottom: 100px;
+        display: inline-block;
+    }
+    footer {
+        padding-bottom: 0;
+    }
+    .in-articles {
+        padding-bottom: 40px;
+    }
+    .services-list {
+        margin-bottom: 40px;
+    }
+    .right-side-links {
+        margin-bottom: 40px;
+    }
+    aside.right-side-links div {
+        margin: 0 0 30px;
+    }
+    .reviews-form .text-inputs,
+    .reviews-form .text-field  {
+        width: 100%;
+        padding: 0;
+    }
+    .reviews-form .accept label {
+        width: 100%;
+        margin: 0px 0 40px;
+    }
+    .reviews-form .accept button {
+        display: block;
+        margin: 0 auto;
+        float: none;
+    }
+    .therapy>a {
+        padding: 0 0 0 30px;
+    }
+    .servicess-therapy a::before {
+        left: 0;
+    }
+    .help>div>span {
+        font-size: 30px;
+        font-weight: bold;
+    }
+    .servicess .title {
+        font-size: 48px;
+    }
+}
+@media (max-width: 768px) {
+    .article>a {
+        width: 100%;
+        padding-bottom: 50%;
+        background-size: cover;
+        margin: 0 0 30px;
+    }
+    .article>div {
+        width: 100%;
+    }
+    .baner-carousel {
+        max-width: 300px;
+    }
+    .underbanner .big {
+        width: 100%;
+    }
+    .headling-info a:not(.mobile-button) {
+        margin-top: 20px;
+        font-size: 18px;
+        position: absolute;
+        right: 90px;
+    } 
+    .sticky .headling-info a {
+        margin-top: 0;
+    }
+    .owl-carousel:hover .owl-nav button.owl-prev {
+        left: 5px;
+    }
+    .owl-carousel:hover .owl-nav button.owl-next {
+        right: 5px;
+    }
+    .servicess .title {
+        font-size: 36px;
+    }
+    .proud-text {
+        display: inline-block;
+    }
+    .proud-photo {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    .title {
+        font-size: 48px;
+    }
+}
+@media (max-width: 560px) {
+    .underbanner {
+        flex-direction: column;
+        align-items: center;
+        margin-top: 30px;
+    }
+    .underbanner .small {
+        margin-bottom: 20px;
+    }
+    .underbanner .small+.small {
+        margin-left: 0;
+    }
+    .help>div>div {
+        position: static;
+    }
+    .help>div {
+        margin-bottom: 60px;
+    }
+    .help:last-of-type {
+        margin-bottom: 0px;
+    }
+    .help>div>span {
+        width: 100%;
+    }
+    .help>div>a {
+        width: 100%;
+    }
+    .therapy {
+        flex-direction: column;
+    }
+    .therapy>a {
+        width: 100%;
+    }
+    .text-photo {
+        flex-direction: column-reverse;
+        align-items: center;
+    }
+    .text-photo div {
+        width: 100%;
+    }
+    .text-photo p {
+        margin: 0 0 20px;
+    }
+    .in-services a {
+        margin: 30px 20px 10px 0;
+    }
+    .in-services a+a {
+        margin: 10px 20px 30px 0;
+    }
+}
+@media (max-width: 480px) {
+    header .logo a span {
+        position: absolute;
+        top: 3px;
+        left: 90px;
+    }
+    header.sticky .logo a span {
+        top: 3px;
+    }
+    .headling-info {
+        position: static;
+    }
+    .headling-info a:not(.mobile-button) {
+        font-size: 18px;
+        position: absolute;
+        left: 90px;
+        margin: 0;
+        top: 35px;
+        width: fit-content;
+    } 
+    .sticky .headling-info a:not(.mobile-button) {
+        top: 50px;
+    }
+    .reviews {
+        margin: 0 -10px;
+    }
+    .reviews div {
+        margin-bottom: 30px;
+        height: 150px;
+    }
+    .reviews p {
+        padding: 15px 10px;
+        margin-bottom: 60px;
+    }
+    .reviews span {
+        left: 10px;
+        bottom: 32px;
+    }
+    .reviews span+span {
+        right: auto;
+        left: 10px;
+        bottom: 10px;
+    }
+    .reviews-page .reviews p {
+        margin: 0 0 60px;
+    }
+    .reviews-slider {
+        margin: 0 -15px;
+        padding: 30px 15px;
+    }
+    .reviews-slider .title {
+        margin: 0px 0 20px;
+        font-size: 36px;
+        line-height: 36px;
+    }
+    .review-me {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .review-me a {
+        margin: 0;
+    }
+    .review-me a+a {
+        margin-top: 30px;
+    }
+    .proud-photo {
+        max-width: 280px;
+        margin: 0 auto;
+    }
+    .proud-text {
+        width: 100%;
+    }
+    .proud-text span {
+        font-size: 48px;
+        line-height: 48px;
+        margin: 10px 0;
+    }
+    .proud-text span+span {
+        font-size: 24px;
+        line-height: 24px;
+    }
+    .underbanner h3 {
+        font-size: 30px;
+        line-height: 35px;
+    }
+    .seo-text>div>div>*:not(.common-margin-50) {
+        display: none;
+    }
+    .reviews-form {
+        padding: 0;
+    }
+    .reviews-form>div {
+        padding: 30px 15px;
+    }
+    .reviews-form .accept {
+        margin-top: 10px;
+    }
+    aside.right-side-links div {
+        margin: 0 -15px 30px;
+        padding: 20px 15px;
+    }
+}
