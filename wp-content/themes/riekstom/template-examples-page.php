@@ -34,7 +34,7 @@ get_header();
                         if($slider_image){
                             foreach($slider_image as $image) {
                     ?>
-                        <div class="col-md-3 col-sm-4">
+                        <div class="col-md-3 col-sm-4 col-xs-6">
                             <a data-fancybox="gallery" data-caption="<?php echo htmlspecialchars_decode($image->alttext); ?>" href="<?php echo nextgen_esc_url($image->imageURL); ?>" data-fancybox style="background-image: url('<?php echo nextgen_esc_url($image->imageURL); ?>')"></a>
                             <p><a data-fancybox="gallery-2" data-caption="<?php echo htmlspecialchars_decode($image->alttext); ?>" href="<?php echo nextgen_esc_url($image->imageURL); ?>"><?php echo htmlspecialchars_decode($image->alttext); ?></a></p>
                         </div>

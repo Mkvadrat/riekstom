@@ -93,6 +93,7 @@ header .logo a img {
     width: auto;
     height: 100%;
     float: left;
+    margin-left: -12px;
 }
 header .logo a span {
     color: #62a700;

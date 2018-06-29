@@ -79,7 +79,7 @@ $(document).ready(function(){
     }
 
 
-    $('section').not('header+section').addClass('faden-section');
+    $('section').not('header+section').not($('.breadkrumbs').parents('section').next('section')).addClass('faden-section');
     $('.faden-section').each(function(i) {
         var $winows = ($(window).innerHeight() + $(window).scrollTop());
         var $targer = ($(this).offset().top + 200);

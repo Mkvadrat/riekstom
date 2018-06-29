@@ -33,7 +33,7 @@ get_header();
                     <h2 class="sub-title"><?php echo get_post_meta( get_the_ID(), 'title_maps_block_contacts_page', $single = true ); ?></h2>  
                     <div class="map">
                         <div>
-							<div id="maps" style="width:100%; height:500px"></div>
+							<div id="maps" style="width:100%; height:100%"></div>
 							<script type="text/javascript">
 								var myMap;
 								ymaps.ready(init);
