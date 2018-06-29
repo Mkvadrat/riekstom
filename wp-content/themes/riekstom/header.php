@@ -49,35 +49,28 @@ Version: 1.0
 <body>
     <div id="page">
         <nav id="menu">
-            <ul>
-                <li><a href="http://stoma.loc/o-klinike/">О клинике</a>
-                    <ul>
-                        <li><a href="http://1">Выпадающий список</a></li>
-                        <li><a href="http://2">Выпадающий список</a></li>
-                    </ul>
-                </li>
-                <li><a href="http://stoma.loc/services/">Услуги</a>
-                    <ul>
-                        <li><a href="http://stoma.loc/lechenie-kariesa/">Лечение кариеса</a></li>
-                        <li><a href="http://stoma.loc/lechenie-pulpita/">Лечение пульпита</a></li>
-                        <li><a href="http://stoma.loc/lechenie-periodontita/">Лечение периодонтита</a></li>
-                        <li><a href="http://stoma.loc/protezirovanie/">Протезирование</a></li>
-                        <li><a href="http://stoma.loc/restavraciya/">Реставрация</a></li>
-                        <li><a href="http://stoma.loc/profosmotr/">Профосмотр</a></li>
-                        <li><a href="http://stoma.loc/chistka-naleta-i-zubnogo-kamnya/">Чистка налета и зубного камня</a></li>
-                        <li><a href="http://stoma.loc/brekety/">Брекеты</a></li>
-                        <li><a href="http://stoma.loc/lechenie-zubov-pri-beremennosti/">Лечение зубов при беременности</a></li>
-                        <li><a href="http://stoma.loc/apparaty-ortodonticheskie-semnye-i-n/">Аппараты ортодонтические сьемные и несъемные</a></li>
-                        <li><a href="http://stoma.loc/kineziologicheskie-metody-resheniya-pr/">Кинезиологические методы решения проблемы сустава</a></li>
-                        <li><a href="http://stoma.loc/zashhitnye-kappy-vakuum-former/">Защитные каппы (вакуум-формер)</a></li>
-                        <li><a href="http://stoma.loc/reshenie-problem-desen/">Решение проблем десен</a></li>
-                    </ul>
-                </li>
-                <li><a href="http://stoma.loc/oplata/">Оплата</a></li>
-                <li><a href="http://stoma.loc/all-shares/">Акции</a></li>
-                <li><a href="http://stoma.loc/reviews/">Отзывы</a></li>
-                <li><a href="http://stoma.loc/contacts/">Контакты</a></li>
-            </ul>
+            <?php
+                if (has_nav_menu('header_first_menu')){
+                    wp_nav_menu( array(
+                        'theme_location'  => 'header_first_menu',
+                        'menu'            => '',
+                        'container'       => false,
+                        'container_class' => '',
+                        'container_id'    => '',
+                        'menu_class'      => '',
+                        'menu_id'         => '',
+                        'echo'            => true,
+                        'fallback_cb'     => 'wp_page_menu',
+                        'before'          => '',
+                        'after'           => '',
+                        'link_before'     => '',
+                        'link_after'      => '',
+                        'items_wrap'      => '<ul>%3$s</ul>',
+                        'depth'           => 2,
+                        'walker'          => new primary_menu(),
+                    ) );
+                }
+            ?>
         </nav>
         <header>
             <div class="container">
