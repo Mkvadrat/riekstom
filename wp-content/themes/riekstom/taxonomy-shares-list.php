@@ -50,7 +50,7 @@ get_header();
 								$link = get_permalink($share->ID);
 							
 							?>
-							<div class="col-md-4 col-sm-6">
+							<div class="col-md-4 col-sm-4 col-xs-6">
 								<a href="<?php echo $link; ?>" style="background-image: url('<?php echo $image_url[0] ? $image_url[0] : esc_url( get_template_directory_uri() ) . '/images/shares.jpg'; ?>')"></a>
 								<h2 class="sub-title"><a href="<?php echo $link; ?>"><?php echo $title; ?></a></h2>
 								<p><?php echo $descr; ?></p>
