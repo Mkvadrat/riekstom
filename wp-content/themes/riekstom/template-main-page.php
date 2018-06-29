@@ -25,7 +25,7 @@ get_header();
                     ?>
                     <div>
                         <div class="container">
-                            <div class="col-md-4 baner-carousel">
+                            <div class="col-md-4 col-sm-5 col-xs-10 baner-carousel">
                                 <?php echo htmlspecialchars_decode($image->alttext); ?>
                                 <?php echo htmlspecialchars_decode($image->description); ?>
                             </div>
@@ -145,7 +145,7 @@ get_header();
     <section>
         <div class="container">
             <div class="row proud">
-                <div class="col-md-6">
+                <div class="col-md-6 col-sm-6">
                     <div class="proud-photo">
                         <img src="<?php echo getAttachment('image_clinic_block_main_page'); ?>" alt="<?php echo getAltImage('image_clinic_block_main_page'); ?>">
                     </div>

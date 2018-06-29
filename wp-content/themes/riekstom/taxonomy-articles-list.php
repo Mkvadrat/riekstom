@@ -37,7 +37,7 @@ get_header();
     <section>
         <div class="container articles-page">
             <div class="row">
-                <div class="col-md-9">
+                <div class="col-md-9 articles-list">
 					<?php  $term = get_queried_object(); ?>
                     <h1 class="title"><?php echo $term->name; ?></h1>
 					
@@ -65,8 +65,27 @@ get_header();
 						<div>В данной категории статей не найдено!</div>
 					</div>
 					<?php } ?>
-                    
-                </div>
+                    <?php
+						$defaults = array(
+							'type' => 'array',
+							'prev_next'    => false,
+							'prev_text'    => __('В начало'),
+							'next_text'    => __('В конец'),
+						);
+					
+						$pagination = paginate_links($defaults);
+					?>
+					<?php if($pagination){ ?>
+                    <div class="paggination">
+                        <ul>
+							<?php foreach ($pagination as $pag){ ?>
+								<li><?php echo $pag; ?></li>
+							<?php } ?>
+						</ul>
+                    </div>
+					<?php } ?>
+				</div>
+				
                 <aside class="col-md-3 right-side-links">
                     <div>
                         <span>Статьи</span>
@@ -115,33 +134,6 @@ get_header();
 						}
 					?>
                 </aside>
-            </div>
-        </div>
-    </section>
-    <section>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-					<?php
-						$defaults = array(
-							'type' => 'array',
-							'prev_next'    => false,
-							'prev_text'    => __('В начало'),
-							'next_text'    => __('В конец'),
-						);
-					
-						$pagination = paginate_links($defaults);
-					?>
-					<?php if($pagination){ ?>
-                    <div class="paggination">
-                        <ul>
-							<?php foreach ($pagination as $pag){ ?>
-								<li><?php echo $pag; ?></li>
-							<?php } ?>
-						</ul>
-                    </div>
-					<?php } ?>
-                </div>
             </div>
         </div>
     </section>
