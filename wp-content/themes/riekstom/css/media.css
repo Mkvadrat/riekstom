@@ -440,9 +440,10 @@
 }
 @media (max-width: 350px) {
     .headling-info a:not(.mobile-button) {
-        font-size: 16px;
-        top: 38px;
+        font-size: 14px;
+        top: 40px;
         word-spacing: -3px;
+        display: inline-block;
     }
     .baner-carousel p {
         font-size: 20px;
