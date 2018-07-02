@@ -336,7 +336,8 @@
         left: 90px;
         margin: 0;
         top: 35px;
-        width: 145px;
+        display: inline-block;
+        width: 180px;
     } 
     .sticky .headling-info a:not(.mobile-button) {
         top: 50px;
@@ -444,6 +445,7 @@
         top: 40px;
         word-spacing: -3px;
         display: inline-block;
+        width: 160px;
     }
     .baner-carousel p {
         font-size: 20px;
