@@ -93,6 +93,7 @@ header .logo a img {
     width: auto;
     height: 100%;
     float: left;
+    margin-left: -12px;
 }
 header .logo a span {
     color: #62a700;
@@ -767,16 +768,23 @@ footer .copyright a {
 }
 .text-photo div {
     width: 60%;
+    padding-right: 20px;
 }
 .text-photo p {
     margin: 0;
     padding: 0;
 }
+.text-photo>p {
+    width: 40%;
+}
 .text-photo p+p {
     margin-top: 20px;
 }
 .text-photo img {
-    width: auto;
+    width: 100%;
+}
+.text-photo.vcentered {
+    align-items: center;
 }
 .in-services a {
     margin: 40px 20px 40px 0;
@@ -784,6 +792,7 @@ footer .copyright a {
 .services-list {
     background: #f0f0f0;
     border-radius: 20px;
+    margin-bottom: 20px;
 }
 .services-list span {
     font-size: 24px;
@@ -1154,4 +1163,8 @@ aside.right-side-links a.current-sidebar-link {
 }
 .faden-section {
     opacity: 0;
+}
+
+.reviews-text p {
+    margin: 1em 0px 1em;
 }

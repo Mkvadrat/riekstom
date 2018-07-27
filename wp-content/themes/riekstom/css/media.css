@@ -265,6 +265,7 @@
     }
     .title {
         font-size: 48px;
+        line-height: 48px;
     }
 }
 @media (max-width: 560px) {
@@ -335,7 +336,8 @@
         left: 90px;
         margin: 0;
         top: 35px;
-        width: fit-content;
+        display: inline-block;
+        width: 180px;
     } 
     .sticky .headling-info a:not(.mobile-button) {
         top: 50px;
@@ -405,6 +407,12 @@
     .seo-text>div>div>*:not(.common-margin-50) {
         display: none;
     }
+    .seo-text .common-margin-50 {
+        margin-bottom: 0;
+    }
+    .right-side-links {
+        margin-bottom: 0;
+    }
     .reviews-form {
         padding: 0;
     }
@@ -417,5 +425,32 @@
     aside.right-side-links div {
         margin: 0 -15px 30px;
         padding: 20px 15px;
+    }
+    .shares div, .examples div {
+        width: 100%;
+    }
+    .breadkrumbs {
+        margin: 20px auto;
+    }
+    .title {
+        margin-bottom: 20px;
+    }
+    .map {
+        padding-bottom: 80%;
+    }
+}
+@media (max-width: 350px) {
+    .headling-info a:not(.mobile-button) {
+        font-size: 14px;
+        top: 40px;
+        word-spacing: -3px;
+        display: inline-block;
+        width: 160px;
+    }
+    .baner-carousel p {
+        font-size: 20px;
+    }
+    .baner-carousel .baner-title {
+        font-size: 32px;
     }
 }

@@ -26,6 +26,11 @@ get_header();
             <div class="row">
                 <div class="col-md-9">
                     <h1 class="title"><?php echo get_post_meta( get_the_ID(), 'title_reviews_page', $single = true ); ?></h1>
+                    
+                    <div class="reviews-text">
+                            <?php echo wpautop(get_post_meta( get_the_ID(), 'text_reviews_page', $single = true )); ?>
+                    </div>
+                    
                     <?php 
                     
                         define( 'DEFAULT_COMMENTS_PER_PAGE', $GLOBALS['wp_query']->query_vars['comments_per_page']);

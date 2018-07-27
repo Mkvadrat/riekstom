@@ -27,7 +27,7 @@ get_header();
 			'post_type'   => 'articles',
 			'orderby'     => 'date',
 			'order'       => 'DESC',
-			'posts_per_page' => 4,
+			'posts_per_page' => $GLOBALS['wp_query']->query_vars['posts_per_page'],
 			'paged'          => $current_page,
 
 		);

@@ -26,6 +26,10 @@ get_header();
             <div class="row">
                 <div class="col-md-12">
                     <h3 class="title"><?php the_title(); ?></h3>
+					
+					<div class="reviews-text">
+                            <?php echo wpautop(get_post_meta( get_the_ID(), 'text_services_page', $single = true )); ?>
+                    </div>
                 </div>
             </div>
             <div class="row help">
