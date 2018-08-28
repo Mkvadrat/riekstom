@@ -23,6 +23,7 @@ get_header();
 	<?php
 		$current_page = (get_query_var('paged')) ? get_query_var('paged') : 1;
 		$args = array(
+            'post_status' => 'publish',
 			'taxonomy'    => 'articles-list',
 			'post_type'   => 'articles',
 			'orderby'     => 'date',

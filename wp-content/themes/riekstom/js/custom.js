@@ -1,9 +1,12 @@
 $(document).ready(function(){
     $(".owl-carousel.baner").owlCarousel({
         items : 1,
-        loop : false,
+        loop : true,
         dots : false,
         nav : true,
+        autoplay : true,
+        autoplayTimeout : 5000,
+        autoplayHoverPause : true
     });    
 
     $('.reviews-slider .reviews p').dotdotdot({
@@ -26,6 +29,12 @@ $(document).ready(function(){
     });
     $('.article a.sub-title, .shares p').dotdotdot({
         height : 65,
+        ellipsis : "\u2026",
+        truncate : "word",
+        watch: "word",
+    });
+    $('.baner .baner-carousel span').dotdotdot({
+        height : ($(document).innerWidth() < 481) ? 75 : 100,
         ellipsis : "\u2026",
         truncate : "word",
         watch: "word",
@@ -79,7 +88,7 @@ $(document).ready(function(){
     }
 
 
-    $('section').not('header+section').not($('.breadkrumbs').parents('section').next('section')).addClass('faden-section');
+    $('section').not('header+section').not($('.breadkrumbs').parents('section').next('section')).not('header+section+section').addClass('faden-section');
     $('.faden-section').each(function(i) {
         var $winows = ($(window).innerHeight() + $(window).scrollTop());
         var $targer = ($(this).offset().top + 200);
