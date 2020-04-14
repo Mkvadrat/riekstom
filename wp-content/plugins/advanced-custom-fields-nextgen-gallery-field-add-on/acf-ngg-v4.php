@@ -29,7 +29,7 @@ class acf_nggallery_field_plugin
    
 }
 
-error_log("calling Plugin Construct");
+//error_log("calling Plugin Construct");
 new acf_nggallery_field_plugin();
 
 class ACF_NGGallery_Field extends acf_field

@@ -1,0 +1,789 @@
+/* часть кода можно перенести в главную css*/
+
+.cont-head, .top-media, .foot-menu {	
+	display: none;
+}
+.advise-thumb{
+	width: 130px;
+}
+.all-page-cont{
+	width: 500px;
+	float: left;
+}
+.feedback-content{
+	font-size: 16px; line-height: 20px;
+}
+.feedback-content span{
+	display: inline-block;
+}
+/*-------------------------------*/
+
+
+@media (max-width: 959px) {
+	
+	.nowr{
+		display: inline-block;
+	}
+	
+	
+	/*отзывы*/
+	.text-input, .select-input, .textarea-input{
+		width: 90% !important;
+		float: none !important;
+		margin: 0 auto !important;
+		padding: 12px 6px !important;
+		font-size: 18px !important;
+	}
+	
+	
+	.select-input{
+	-webkit-appearance: none;
+		}
+	.testmonial-form .submit-input{
+	-webkit-appearance: none;
+		font-family: Tahoma, Geneva, sans-serif;
+		font-size: 30px;
+		line-height: 80px;
+		color: #ffffff;
+		padding: 0px 0px;
+		text-decoration: none;
+		background: #309245;
+		background: linear-gradient(top,#309245 0%,#29793c);
+		border-radius: 3px;
+		border: 1px solid #29793c;
+		box-shadow: 0px 1px 3px rgba(000,000,000,0.5),inset 0px 0px 1px rgba(255,255,255,0.7);
+		text-shadow: 0px -1px 0px rgba(000,000,000,0.4),0px 1px 0px rgba(255,255,255,0.3);
+		width: 100%;
+		margin: 5px auto;
+		float: none;
+		cursor: pointer;
+		display: block;
+	}
+	.req-annotation{
+		font-size: 18px;
+	}
+	.testmonial-form .fieldset label{
+		font-size:18px;
+	}
+	.form-annotation{
+		font-size:14px;
+	}	
+	.testmonials-list li .testmonial-title{
+		font-size:24px;
+	}
+	.testmonials-list li.positive-testmonial .testmonial-title{
+		background-position: 0px 7px;
+	}
+	.testmonials-list li{
+		font-size: 21px;
+		color: #202020;
+	}
+	.testmonials-list li{
+		margin-bottom: 20px;
+	}
+	/*конец отзывы*/
+	
+	/*советы*/
+	.advises-list .advise-title{
+		font-size: 24px;
+	}
+	.advises-list .advise-title a{
+		text-decoration: none;
+	}
+	.advises-list .advise-more{
+		font-size: 21px;
+	}
+	.advises-list .advise-body{
+		font-size: 21px;
+		color: #202020;
+	}
+	
+	.advise-thumb {
+		float: none;
+		margin: 20px 0px 20px 0;
+		width: 100%;
+		max-width: 300px;
+	}
+	.big-thumb{
+		float: none;
+		margin: 20px 0px 20px 0;
+	}
+	/*конец советам*/
+	
+	
+	/*контакты*/
+	.map {
+		margin-bottom: 20px;
+	}
+	/*конец контакты*/
+	
+	
+	
+	.page-leftside{
+		display: none;
+	}
+	.page-leftside.show{
+		display: block;
+	}
+	.site-navigation, .container{width: 640px; background: none; border: none; box-shadow: none; padding: 0;
+		position:relative;
+	margin: 0 auto;}
+	#main{
+		padding-bottom: 135px;
+		
+	}
+	#header{
+		position:absolute;
+		z-index: 100;
+		width: 100%;
+	}
+	.all-page-cont{
+	    width: 100%;
+		float: none;
+	}
+	.top-media{
+		position: relative;
+		width: 590px;
+		height:130px;
+		margin: 0 auto -15px;
+		z-index: 101;
+		display: block;
+		
+	}
+	.logo-m{
+		width: 442px;
+		height: 129px;
+		background: url('/web/20171014115407im_/http://riekstom.com/wp-content/themes/brain-tooth/layout/media-img/logo-med.png') top center no-repeat;
+		display: block;
+		float: left;
+		
+	}
+	#menu-m{
+		display: block;
+		width:54px;
+		height:48px;
+		background: url('/web/20171014115407im_/http://riekstom.com/wp-content/themes/brain-tooth/layout/media-img/menu-m.png') top center no-repeat;
+		float: right;
+		margin-top: 35px;
+		cursor: pointer;
+		margin-right: 20px;
+	}
+	
+	.site-navigation:before{
+		content:"";
+		display: block;
+		top: 1px;
+		right: 50px;
+		position: relative;
+		float: right;
+		width: 48px;
+		height: 25px;
+		background: url('/web/20171014115407im_/http://riekstom.com/wp-content/themes/brain-tooth/layout/media-img/tr-top.png') top center no-repeat;
+	}
+	
+	.page-content{width: 540px; padding: 40px 25px 25px; margin: 0 auto; float: none;    
+		border: 1px #fff solid;
+		box-shadow: 0 2px 5px rgba(0,0,0, .3);
+		background: url('/web/20171014115407im_/http://riekstom.com/wp-content/themes/brain-tooth/layout/media-img/container-bg.jpg') top center repeat-y;
+		margin-bottom: 20px;
+		
+	}
+	.page-title h1{
+		background: none;
+		font-weight: bold;
+	}
+	.section-title span{
+		background: none;
+		font-size: 30px;
+		line-height: 31px;
+		margin-bottom: 50px;
+	}
+	.page-leftside{width: 590px; padding: 0; margin: 0 auto; float: none;}
+	.page-fx{
+		display: none;
+	}
+	
+	
+	.side-testmonials{
+		display: none;
+	}
+	.side-advises{
+		display: none;
+	}
+	.side-facts{
+		display: none;
+	}
+	.page-rightside{
+		display: none;
+	}
+	.footer-fx{
+		display: none;
+	}
+	
+	/* меню */
+	
+	.site-navigation ul{
+		background: rgba(250,248,236, .9);
+		border: 1px solid #1e970f;
+		overflow: hidden;
+		width: 620px;
+		margin: 0 auto;
+		display: -moz-box;
+		display: -webkit-flexbox;
+		display: flex;
+		-webkit-flex-direction: column-reverse; /* Safari */
+		flex-direction: column-reverse;
+		box-shadow: 0 0 3px;
+	}
+	.site-navigation ul li .star{
+		display: none;
+	}
+	.site-navigation ul li{
+		background: none;
+		border-radius: 0px;
+		border: none;
+		width: 100%;
+		padding: 0;
+		margin: 0;
+		float: none;
+	}
+	.site-navigation ul li a{
+		font-size:21px;
+		line-height: 63px;
+		text-align: center;
+		width: 590px;
+		display: block;
+		margin: 0 auto;
+		border-bottom: 1px solid #1e970f;
+		float: none;
+	}
+	.site-navigation ul li:first-child a{
+		border: none;
+	}
+	.site-navigation{
+		display: none;
+		margin-top: -25px;
+	}
+	.site-navigation.open{
+		display: block;
+	}    
+	
+	/**/
+	
+	.cont-head{
+		display: block;
+		width: 620px;
+		height: 210px;
+		margin: 0 auto;
+		background: url(/web/20171014115407im_/http://riekstom.com/wp-content/themes/brain-tooth/layout/media-img/cont-head.png) top center no-repeat;	
+		padding-top: 35px;
+	}
+	.cont-head p{
+		font-size: 18px;
+		line-height: 30px;
+		font-style: italic;
+		text-align: center;
+	}
+	.cont-head p span{
+		font-style: normal;
+		font-size: 21px;
+		color: #1b520a;
+		font-weight: bold;
+	}
+	.cont-head p.adress{
+		font-style: normal;
+		font-size: 21px;
+	}
+	
+	.philosofy-wrapper{
+		background: url(/web/20171014115407im_/http://riekstom.com/wp-content/themes/brain-tooth/layout/media-img/philosofy-bg.png) bottom right no-repeat;
+		height: 230px;
+		margin: 0;
+		float: none;
+		margin-bottom: 20px;
+	}
+	
+	.philosofy-wrapper .philosofy-title{
+		background:url(/web/20171014115407im_/http://riekstom.com/wp-content/themes/brain-tooth/layout/media-img/philosofy-title.png) 50% 0px no-repeat;
+		text-indent: 0;
+		font-size: 0px;
+		height: 95px;
+	}
+	.philosofy-wrapper ul{
+		column-count: 2;
+		padding-left: 80px;
+	}
+	
+	.philosofy-wrapper ul li{
+		padding: 5px 0px 5px 20px;
+		background: url(/web/20171014115407im_/http://riekstom.com/wp-content/themes/brain-tooth/layout/images/philosofy-pin.png) left center no-repeat;
+		width: 200px;
+		float: left;
+		display: block;
+		font-size: 18px;
+	}
+	
+	.page-title{padding-bottom: 35px;}
+	.page-title, .section-title{
+		background: none;
+		
+	}
+	.page-body p {
+		text-align: left;
+		font-size: 21px;
+		line-height: 30px;
+		color: #202020;
+	}
+	.page-body p span{
+		font-size:21px !important;
+		line-height: 30px !important;
+		color: #202020 !important;
+		
+	}
+	.homepage-contacts .phones span{
+		font-weight: bold;
+	}
+	.homepage-contacts .worktime li.wortk-title, .homepage-contacts .phones, .homepage-contacts .phones .code, .homepage-contacts .address span{
+		font-size: 21px;
+		line-height: 41px;
+		font-weight: normal;
+		padding: 0px;
+	}
+	.homepage-contacts .address{
+		padding: 0px;
+	}
+	.homepage-contacts .address .name{
+		font-size: 24px;
+		line-height: 31px;
+		font-weight: bold;
+		margin-bottom: 15px;
+	}
+	.homepage-contacts .worktime{
+		padding: 0px;
+	}
+	.homepage-contacts .email{
+		font-size: 21px;
+		line-height: 31px;
+	}
+	.homepage-contacts .worktime li.wortk-value {
+		font-size: 24px;
+		color: #1b520a;
+		line-height: 41px;
+		font-weight: bold;
+	}	
+	.homepage-contacts .worktime li{
+		padding: 0px;
+	}
+	.homepage-sertificates-ticker{
+		display: -moz-box;
+		display: -webkit-flexbox;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-around;
+		-webkit-box-pack: justify;
+		-moz-box-pack: justify;
+		-webkit-flex-pack: justify;
+		width: 500px;
+		margin: 0 auto;
+		
+	}
+	
+	
+	.all-sertificates{
+		text-align: center;
+		margin-top: 60px;
+		font-size: 21px;
+		line-height: 31px;
+		margin-bottom: 45px;
+	}
+	.footer-container{
+		left: 0;	
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		margin-top: 25px;
+	}
+	.footer-container .adress, .footer-container .copyrights{
+		float: none;
+		text-align: center;
+		width: 100%;
+		margin: 0;
+		font-size: 18px;
+		line-height: 30px;
+	}
+	#footer{
+		margin-top: -135px;
+		height: 135px;
+	}
+	.foot-menu{
+		display: block;
+		width: 640px;
+		margin-left: -50px;
+	}
+	.foot-menu ul li{
+		width: 100%;
+		background: url(/web/20171014115407im_/http://riekstom.com/wp-content/themes/brain-tooth/layout/media-img/foot-menu-bg.png) top center no-repeat;	
+		height: 75px;
+	}
+	.foot-menu ul li a{
+		display: block;
+		width: 100%;
+		text-align: center;
+		font-size: 30px;
+		text-decoration: none;
+		font-weight: bold;
+		color: #32721c;
+		padding-top: 5px;
+	}
+}	
+
+@media (max-width: 639px) {
+	.page-leftside{
+		display: none;
+	}
+	.page-leftside.show{
+		display: block;
+	}
+	.site-navigation, .container{width: 320px; background: none; border: none; box-shadow: none; padding: 0;
+		position:relative;
+		margin: 0 auto;
+	}
+	#main{
+		padding-bottom: 135px;
+		overflow: inherit;
+	}
+	#header{
+		position:absolute;
+		z-index: 100;
+		width: 100%;
+	}
+	.all-page-cont{
+	    width: 100%;
+		float: none;
+	}
+	.top-media{
+		position: relative;
+		width: 290px;
+		height:70px;
+		margin: 0 auto -15px;
+		z-index: 101;
+		display: block;
+		
+	}
+	.logo-m{
+		width: 221px;
+		height: 64px;
+		background: url('/web/20171014115407im_/http://riekstom.com/wp-content/themes/brain-tooth/layout/media-img/logo-med.png') top center no-repeat;
+		display: block;
+		float: left;
+		background-size: cover;
+	}
+	#menu-m{
+		display: block;
+		width:54px;
+		height:48px;
+		background: url('/web/20171014115407im_/http://riekstom.com/wp-content/themes/brain-tooth/layout/media-img/menu-m.png') top center no-repeat;
+		float: right;
+		margin-top: 5px;
+		cursor: pointer;
+		margin-right: 0px;
+	}
+	
+	.site-navigation:before{
+		content:"";
+		display: block;
+		top: 1px;
+		right: 20px;
+		position: relative;
+		float: right;
+		width: 48px;
+		height: 25px;
+		background: url('/web/20171014115407im_/http://riekstom.com/wp-content/themes/brain-tooth/layout/media-img/tr-top.png') top center no-repeat;
+	}
+	
+	.page-content{width: 260px; padding: 40px 5px 25px; margin: 0 auto; float: none;    
+		border: 1px #fff solid;
+		box-shadow: 0 2px 5px rgba(0,0,0, .3);
+		background: url('/web/20171014115407im_/http://riekstom.com/wp-content/themes/brain-tooth/layout/media-img/container-bg.jpg') top center repeat-y;
+		margin-bottom: 20px;
+		
+	}
+	.page-title h1{
+		background: none;
+		font-weight: bold;
+	}
+	.section-title span{
+		background: none;
+		font-size: 30px;
+		line-height: 31px;
+		margin-bottom: 50px;
+	}
+	.page-leftside{width: 290px; padding: 0; margin: 0 auto; float: none;}
+	.page-fx{
+		display: none;
+	}
+	
+	
+	.side-testmonials{
+		display: none;
+	}
+	.side-advises{
+		display: none;
+	}
+	.side-facts{
+		display: none;
+	}
+	.page-rightside{
+		display: none;
+	}
+	.footer-fx{
+		display: none;
+	}
+	
+	/* меню */
+	
+	.site-navigation ul{
+		background: rgba(250,248,236, .9);
+		border: 1px solid #1e970f;
+		overflow: hidden;
+		width: 300px;
+		margin: 0 auto;
+		display: -moz-box;
+		display: -webkit-flexbox;
+		display: flex;
+		-webkit-flex-direction: column-reverse; /* Safari */
+		flex-direction: column-reverse;
+		box-shadow: 0 0 3px;
+	}
+	.site-navigation ul li .star{
+		display: none;
+	}
+	.site-navigation ul li{
+		background: none;
+		border-radius: 0px;
+		border: none;
+		width: 100%;
+		padding: 0;
+		margin: 0;
+		float: none;
+	}
+	.site-navigation ul li a{
+		font-size:21px;
+		line-height: 63px;
+		text-align: center;
+		width: 290px;
+		display: block;
+		margin: 0 auto;
+		border-bottom: 1px solid #1e970f;
+		float: none;
+	}
+	.site-navigation ul li:first-child a{
+		border: none;
+	}
+	.site-navigation{
+		display: none;
+		margin-top: -5px;
+	}
+	.site-navigation.open{
+		display: block;
+	}    
+	
+	/**/
+	
+	.cont-head{
+		display: block;
+		width: 300px;
+		height: 230px;
+		margin: 0 auto;
+		background: url(/web/20171014115407im_/http://riekstom.com/wp-content/themes/brain-tooth/layout/media-img/cont-head2.png) top center no-repeat;	
+		padding-top: 0px;
+	}
+	.cont-head p{
+		font-size: 20px;
+		line-height: 28px;
+		font-style: italic;
+		text-align: center;
+	}
+	.cont-head p span{
+		font-style: normal;
+		font-size: 21px;
+		color: #1b520a;
+		font-weight: bold;
+		padding: 0 10px;
+	}
+	.cont-head p.adress{
+		font-style: normal;
+		font-size: 21px;
+	}
+	
+	.philosofy-wrapper{
+		background: url(/web/20171014115407im_/http://riekstom.com/wp-content/themes/brain-tooth/layout/media-img/philosofy-bg2.png) bottom right no-repeat;
+		height: 295px;
+		margin: 0;
+		float: none;
+		margin-bottom: 20px;
+	}
+	
+	.philosofy-wrapper .philosofy-title{
+		background:url(/web/20171014115407im_/http://riekstom.com/wp-content/themes/brain-tooth/layout/images/philosofy-title.png) 10px 0px no-repeat;
+		text-indent: 0;
+		font-size: 0px;
+		height: 95px;
+	}
+	.philosofy-wrapper ul{
+		column-count: 1;
+		padding-left: 40px;
+	}
+	
+	.philosofy-wrapper ul li{
+		padding: 4px 0px 4px 20px;
+		background: url(/web/20171014115407im_/http://riekstom.com/wp-content/themes/brain-tooth/layout/images/philosofy-pin.png) left center no-repeat;
+		width: 220px;
+		float: left;
+		display: block;
+		font-size: 18px;
+	}
+	
+	.page-title{padding-bottom: 35px;}
+	.page-title, .section-title{
+		background: none;
+		
+	}
+	.page-body p {
+		text-align: left;
+		font-size: 21px;
+		line-height: 30px;
+		color: #202020;
+	}
+	.page-body p span{
+		font-size:21px !important;
+		line-height: 30px !important;
+		color: #202020 !important;
+	}
+	.homepage-contacts .phones span{
+		font-weight: bold;
+		display: inline-block;
+	}
+	.homepage-contacts .worktime li.wortk-title, .homepage-contacts .phones, .homepage-contacts .phones .code, .homepage-contacts .address span{
+		font-size: 21px;
+		line-height: 41px;
+		font-weight: normal;
+		padding: 0px;
+	}
+	.homepage-contacts .address{
+		padding: 0px;
+	}
+	.homepage-contacts .address .name{
+		font-size: 24px;
+		line-height: 31px;
+		font-weight: bold;
+		margin-bottom: 15px;
+	}
+	.homepage-contacts .worktime{
+		padding: 0px;
+	}
+	.homepage-contacts .email{
+		font-size: 21px;
+		line-height: 31px;
+	}
+	.homepage-contacts .worktime li.wortk-value {
+		font-size: 24px;
+		color: #1b520a;
+		line-height: 41px;
+		font-weight: bold;
+	}	
+	.homepage-contacts .worktime li{
+		padding: 0px;
+	}
+	.homepage-sertificates-ticker{
+		display: -moz-box;
+		display: -webkit-flexbox;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-around;
+		-webkit-box-pack: justify;
+		-moz-box-pack: justify;
+		-webkit-flex-pack: justify;
+		width: 270px;
+		margin: 0 auto;
+		
+	}
+	
+	
+	.all-sertificates{
+		text-align: center;
+		margin-top: 60px;
+		font-size: 21px;
+		line-height: 31px;
+		margin-bottom: 45px;
+	}
+	.footer-container{
+		left: 0;	
+		width: 100%;
+		margin: 0;
+		padding: 0;
+		margin-top: -5px;
+	}
+	.footer-container .adress, .footer-container .copyrights{
+		float: none;
+		text-align: center;
+		width: 100%;
+		margin: 0;
+		font-size: 18px;
+		line-height: 30px;
+	}
+	#footer{
+		margin-top: -135px;
+		height: 135px;
+	}
+	.foot-menu{
+		display: block;
+		width: 300px;
+		margin-left: -20px;
+	}
+	.foot-menu ul li{
+		width: 100%;
+		background: url(/web/20171014115407im_/http://riekstom.com/wp-content/themes/brain-tooth/layout/media-img/foot-menu-bg2.png) top center no-repeat;	
+		height: 75px;
+	}
+	.foot-menu ul li a{
+		display: block;
+		width: 100%;
+		text-align: center;
+		font-size: 30px;
+		text-decoration: none;
+		font-weight: bold;
+		color: #32721c;
+		padding-top: 5px;
+	}
+}	
+
+
+
+
+
+
+
+
+
+/*
+     FILE ARCHIVED ON 11:54:07 Oct 14, 2017 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 08:36:49 Apr 26, 2018.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+*/
+/*
+playback timings (ms):
+  LoadShardBlock: 50.029 (3)
+  esindex: 0.008
+  captures_list: 67.786
+  CDXLines.iter: 11.013 (3)
+  PetaboxLoader3.datanode: 41.018 (4)
+  exclusion.robots: 0.21
+  exclusion.robots.policy: 0.185
+  RedisCDXSource: 3.477
+  PetaboxLoader3.resolve: 40.72
+  load_resource: 476.036
+*/

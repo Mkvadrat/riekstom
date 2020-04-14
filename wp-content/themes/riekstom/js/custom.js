@@ -87,7 +87,6 @@ $(document).ready(function(){
         $('a+.drop-menu').parent('li').addClass('drop');
     }
 
-
     $('section').not('header+section').not($('.breadkrumbs').parents('section').next('section')).not('header+section+section').addClass('faden-section');
     $('.faden-section').each(function(i) {
         var $winows = ($(window).innerHeight() + $(window).scrollTop());
@@ -164,10 +163,5 @@ $(document).ready(function(){
         navbar: {
             title: "riekstom"
         }
-    });
-
-
-
-
-    
+    }); 
 });

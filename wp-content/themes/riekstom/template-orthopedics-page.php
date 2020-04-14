@@ -26,10 +26,12 @@ get_header();
             <div class="row">
                 <div class="col-md-3"><span><?php echo get_post_meta( get_the_ID(), 'title_a_orthopedics_page', $single = true ); ?></span></div>
                 <div class="col-md-9 therapy">
-					<?php $get_pages_i = getLinks('links_a_orthopedics_page'); ?>
-					<?php foreach($get_pages_i as $pages){ ?>
-						<a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a>
-					<?php } ?> 
+                    <?php $get_pages_i = get_field_object('links_a_orthopedics_page', get_the_ID()); ?>
+                    <?php if($get_pages_i['value']){ ?>
+					<?php foreach($get_pages_i['value'] as $pages){ ?>
+						<a href="<?php echo get_permalink($pages->ID) ?>"><?php echo $pages->post_title; ?></a>
+					<?php } ?>
+                    <?php } ?>
                 </div>
             </div>
         </div>

@@ -35,75 +35,103 @@ get_header();
             <div class="row help">
                 <div class="col-md-3">
                     <div>
-                        <img src="<?php echo getAttachment('image_a_tooth_hurts_services_page'); ?>" alt="<?php echo getAltImage('image_a_tooth_hurts_services_page'); ?>">
+                        <?php $a_image = get_field('image_a_tooth_hurts_services_page', get_the_ID()); ?>
+                        <img src="<?php echo $a_image['url']; ?>" alt="<?php echo $a_image['alt']; ?>">
                     </div>
                     <span><?php echo get_post_meta( get_the_ID(), 'title_a_tooth_hurts_services_page', $single = true ); ?></span>
-					<?php $get_pages_a = getLinks('links_a_tooth_hurts_services_page'); ?>
-					<?php foreach($get_pages_a as $pages){ ?>
-						<a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a>
-					<?php } ?> 
+                    
+                    <?php $get_pages_a = get_field_object('links_a_tooth_hurts_services_page', get_the_ID()); ?>
+                    <?php if($get_pages_a['value']){ ?>
+					<?php foreach($get_pages_a['value'] as $pages){ ?>
+						<a href="<?php echo get_permalink($pages->ID) ?>"><?php echo $pages->post_title; ?></a>
+					<?php } ?>
+                    <?php } ?>
                 </div>
                 <div class="col-md-3">
                     <div>
-                        <img src="<?php echo getAttachment('image_b_tooth_destroyed_services_page'); ?>" alt="<?php echo getAltImage('image_b_tooth_destroyed_services_page'); ?>">
+                        <?php $b_image = get_field('image_b_tooth_destroyed_services_page', get_the_ID()); ?>
+                        <img src="<?php echo $b_image['url']; ?>" alt="<?php echo $b_image['alt']; ?>">
                     </div>
                     <span><?php echo get_post_meta( get_the_ID(), 'title_b_tooth_destroyed_services_page', $single = true ); ?></span>
-					<?php $get_pages_b = getLinks('links_b_tooth_destroyed_services_page'); ?>
-					<?php foreach($get_pages_b as $pages){ ?>
-						<a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a>
-					<?php } ?> 
+                    
+                    <?php $get_pages_b = get_field_object('links_b_tooth_destroyed_services_page', get_the_ID()); ?>
+                    <?php if($get_pages_b['value']){ ?>
+					<?php foreach($get_pages_b['value'] as $pages){ ?>
+						<a href="<?php echo get_permalink($pages->ID) ?>"><?php echo $pages->post_title; ?></a>
+					<?php } ?>
+                    <?php } ?>
                 </div>
                 <div class="col-md-3">
                     <div>
-                        <img src="<?php echo getAttachment('image_c_tooth_not_hurt_services_page'); ?>" alt="<?php echo getAltImage('image_c_tooth_not_hurt_services_page'); ?>">
+                        <?php $c_image = get_field('image_c_tooth_not_hurt_services_page', get_the_ID()); ?>
+                        <img src="<?php echo $c_image['url']; ?>" alt="<?php echo $c_image['alt']; ?>">
                     </div>
                     <span><?php echo get_post_meta( get_the_ID(), 'title_c_tooth_not_hurt_services_page', $single = true ); ?></span>
-					<?php $get_pages_с = getLinks('links_c_tooth_not_hurt_services_page'); ?>
-					<?php foreach($get_pages_с as $pages){ ?>
-						<a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a>
-					<?php } ?> 
+                    
+                    <?php $get_pages_с = get_field_object('links_c_tooth_not_hurt_services_page', get_the_ID()); ?>
+                    <?php if($get_pages_с['value']){ ?>
+					<?php foreach($get_pages_с['value'] as $pages){ ?>
+						<a href="<?php echo get_permalink($pages->ID) ?>"><?php echo $pages->post_title; ?></a>
+					<?php } ?>
+                    <?php } ?>
                 </div>
                 <div class="col-md-3">
                     <div>
-                        <img src="<?php echo getAttachment('image_d_special_care_services_page'); ?>" alt="<?php echo getAltImage('image_d_special_care_services_page'); ?>">
+                        <?php $d_image = get_field('image_d_special_care_services_page', get_the_ID()); ?>
+                        <img src="<?php echo $d_image['url']; ?>" alt="<?php echo $d_image['alt']; ?>">
                     </div>
                     <span><?php echo get_post_meta( get_the_ID(), 'title_d_special_care_services_page', $single = true ); ?></span>
-					<?php $get_pages_d = getLinks('links_d_special_care_services_page'); ?>
-					<?php foreach($get_pages_d as $pages){ ?>
-						<a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a>
-					<?php } ?> 
+					
+                    <?php $get_pages_d = get_field_object('links_d_special_care_services_page', get_the_ID()); ?>
+                    <?php if($get_pages_d['value']){ ?>
+					<?php foreach($get_pages_d['value'] as $pages){ ?>
+						<a href="<?php echo get_permalink($pages->ID) ?>"><?php echo $pages->post_title; ?></a>
+					<?php } ?>
+                    <?php } ?>
                 </div>
             </div>
             <div class="row help">
                 <div class="col-md-3">
 					<div>
-                        <img src="<?php echo getAttachment('image_e_align_bite_services_page'); ?>" alt="<?php echo getAltImage('image_e_align_bite_services_page'); ?>">
+                        <?php $e_image = get_field('image_e_align_bite_services_page', get_the_ID()); ?>
+                        <img src="<?php echo $e_image['url']; ?>" alt="<?php echo $e_image['alt']; ?>">
                     </div>
                     <span><?php echo get_post_meta( get_the_ID(), 'title_e_align_bite_services_page', $single = true ); ?></span>
-					<?php $get_pages_e = getLinks('links_e_align_bite_services_page'); ?>
-					<?php foreach($get_pages_e as $pages){ ?>
-						<a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a>
-					<?php } ?> 
+                    
+                    <?php $get_pages_e = get_field_object('links_e_align_bite_services_page', get_the_ID()); ?>
+                    <?php if($get_pages_e['value']){ ?>
+					<?php foreach($get_pages_e['value'] as $pages){ ?>
+						<a href="<?php echo get_permalink($pages->ID) ?>"><?php echo $pages->post_title; ?></a>
+					<?php } ?>
+                    <?php } ?>
                 </div>
                 <div class="col-md-3">
 					<div>
-                        <img src="<?php echo getAttachment('image_f_temporomandibular_joint_hurts_services_page'); ?>" alt="<?php echo getAltImage('image_e_align_bite_services_page'); ?>">
+                        <?php $f_image = get_field('image_f_temporomandibular_joint_hurts_services_page', get_the_ID()); ?>
+                        <img src="<?php echo $f_image['url']; ?>" alt="<?php echo $f_image['alt']; ?>">
                     </div>
                     <span><?php echo get_post_meta( get_the_ID(), 'title_f_temporomandibular_joint_hurts_services_page', $single = true ); ?></span>
-					<?php $get_pages_f = getLinks('links_f_temporomandibular_joint_hurts_services_page'); ?>
-					<?php foreach($get_pages_f as $pages){ ?>
-						<a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a>
-					<?php } ?> 
+                    
+                    <?php $get_pages_f = get_field_object('links_f_temporomandibular_joint_hurts_services_page', get_the_ID()); ?>
+                    <?php if($get_pages_f['value']){ ?>
+					<?php foreach($get_pages_f['value'] as $pages){ ?>
+						<a href="<?php echo get_permalink($pages->ID) ?>"><?php echo $pages->post_title; ?></a>
+					<?php } ?>
+                    <?php } ?>
                 </div>
                 <div class="col-md-3">
 					<div>
-                        <img src="<?php echo getAttachment('image_g_plasmolifting_services_page'); ?>" alt="<?php echo getAltImage('image_g_plasmolifting_services_page'); ?>">
+                        <?php $g_image = get_field('image_g_plasmolifting_services_page', get_the_ID()); ?>
+                        <img src="<?php echo $g_image['url']; ?>" alt="<?php echo $g_image['alt']; ?>">
                     </div>
                     <span><?php echo get_post_meta( get_the_ID(), 'title_g_plasmolifting_services_page', $single = true ); ?></span>
-					<?php $get_pages_g = getLinks('links_g_plasmolifting_services_page'); ?>
-					<?php foreach($get_pages_g as $pages){ ?>
-						<a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a>
-					<?php } ?> 
+                    
+                    <?php $get_pages_g = get_field_object('links_g_plasmolifting_services_page', get_the_ID()); ?>
+                    <?php if($get_pages_g['value']){ ?>
+					<?php foreach($get_pages_g['value'] as $pages){ ?>
+						<a href="<?php echo get_permalink($pages->ID) ?>"><?php echo $pages->post_title; ?></a>
+					<?php } ?>
+                    <?php } ?>
                 </div>
             </div>
         </div>
@@ -114,20 +142,24 @@ get_header();
             <div class="row">
                 <div class="col-md-3"><span><?php echo get_post_meta( get_the_ID(), 'title_h_therapy_services_page', $single = true ); ?></span></div>
                 <div class="col-md-9 therapy">
-					<?php $get_pages_h = getLinks('links_h_therapy_services_page'); ?>
-					<?php foreach($get_pages_h as $pages){ ?>
-						<a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a>
-					<?php } ?> 
+                    <?php $get_pages_h = get_field_object('links_h_therapy_services_page', get_the_ID()); ?>
+                    <?php if($get_pages_h['value']){ ?>
+					<?php foreach($get_pages_h['value'] as $pages){ ?>
+						<a href="<?php echo get_permalink($pages->ID) ?>"><?php echo $pages->post_title; ?></a>
+					<?php } ?>
+                    <?php } ?>
                 </div>
             </div>
             <hr>
             <div class="row">
                 <div class="col-md-3"><span><?php echo get_post_meta( get_the_ID(), 'title_i_orthopedics_services_page', $single = true ); ?></span></div>
                 <div class="col-md-9 therapy">
-					<?php $get_pages_i = getLinks('links_i_orthopedics_services_page'); ?>
-					<?php foreach($get_pages_i as $pages){ ?>
-						<a href="<?php echo $pages['link']; ?>"><?php echo $pages['title']; ?></a>
-					<?php } ?> 
+                    <?php $get_pages_i = get_field_object('links_i_orthopedics_services_page', get_the_ID()); ?>
+                    <?php if($get_pages_i['value']){ ?>
+					<?php foreach($get_pages_i['value'] as $pages){ ?>
+						<a href="<?php echo get_permalink($pages->ID) ?>"><?php echo $pages->post_title; ?></a>
+					<?php } ?>
+                    <?php } ?>
                 </div>
             </div>
         </div>

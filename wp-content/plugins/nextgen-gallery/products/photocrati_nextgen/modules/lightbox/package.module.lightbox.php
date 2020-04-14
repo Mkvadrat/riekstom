@@ -32,6 +32,9 @@ class C_Lightbox_Library_Manager
      * @var C_Lightbox_Library_Manager
      */
     static $_instance = NULL;
+    /**
+     * @return C_Lightbox_Library_Manager
+     */
     static function get_instance()
     {
         if (!isset(self::$_instance)) {
@@ -49,6 +52,13 @@ class C_Lightbox_Library_Manager
         $none = new C_NGG_Lightbox('none');
         $none->title = __('None', 'nggallery');
         $this->register('none', $none);
+        // Add Simplelightbox
+        $simplelightbox = new C_NGG_Lightbox('simplelightbox');
+        $simplelightbox->title = __('Simplelightbox', 'nggallery');
+        $simplelightbox->code = 'class="ngg-simplelightbox" rel="%GALLERY_NAME%"';
+        $simplelightbox->styles = array('photocrati-lightbox#simplelightbox/simplelightbox.css');
+        $simplelightbox->scripts = array('photocrati-lightbox#simplelightbox/simple-lightbox.js', 'photocrati-lightbox#simplelightbox/nextgen_simple_lightbox_init.js');
+        $this->register('simplelightbox', $simplelightbox);
         // Add Fancybox
         $fancybox = new C_NGG_Lightbox('fancybox');
         $fancybox->title = __('Fancybox', 'nggallery');
@@ -187,13 +197,15 @@ class C_Lightbox_Library_Manager
         if (!wp_script_is('ngg_lightbox_context')) {
             wp_enqueue_script('ngg_lightbox_context', $router->get_static_url('photocrati-lightbox#lightbox_context.js'), array('ngg_common', 'photocrati_ajax'), NGG_SCRIPT_VERSION, TRUE);
         }
-        // Make the path to the static resources available for libraries
-        // Shutter-Reloaded in particular depends on this
+        // Make the path to the static resources available for libraries.
+        //
+        // Yes the {placeholder} is a stupid hack but it's necessary for Shutter Reloaded and is much faster
+        // than making get_static_url() function without requesting a filename parameter
         $this->_add_script_data(
             'ngg_common',
             // TODO: Should this be ngg_lightbox_context instead?
             'nextgen_lightbox_settings',
-            array('static_path' => $router->get_static_url('', 'photocrati-lightbox'), 'context' => $thumbEffectContext),
+            array('static_path' => M_Static_Assets::get_static_url('{placeholder}', 'photocrati-lightbox'), 'context' => $thumbEffectContext),
             TRUE,
             TRUE
         );
@@ -216,7 +228,7 @@ class C_Lightbox_Library_Manager
                     wp_enqueue_style(array_pop($parts));
                 } else {
                     if (!empty($src)) {
-                        wp_enqueue_style($lightbox->name . "-{$i}", $this->_handle_url($src), FALSE, NGG_SCRIPT_VERSION);
+                        wp_enqueue_style($lightbox->name . "-{$i}", $this->_handle_url($src), array(), NGG_SCRIPT_VERSION);
                     }
                 }
             }
@@ -239,6 +251,7 @@ class C_Lightbox_Library_Manager
      * Parses certain paths through get_static_url
      *
      * @param string $url
+     * @param string $type Unused
      * @return string Resulting URL
      */
     static function _handle_url($url, $type = 'script')
@@ -257,6 +270,7 @@ class C_Lightbox_Library_Manager
      * @param string $object_name
      * @param mixed $object_value
      * @param bool $define
+     * @return bool
      */
     function _add_script_data($handle, $object_name, $object_value, $define = TRUE, $override = FALSE)
     {

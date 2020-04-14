@@ -20,7 +20,7 @@ class M_I18N extends C_Base_Module
             'photocrati-i18n',
             'Internationalization',
             "Adds I18N resources and methods",
-            '3.0.0',
+            '3.2.10',
             'https://www.imagely.com/languages/',
             'Imagely',
             'https://www.imagely.com'
@@ -47,11 +47,10 @@ class M_I18N extends C_Base_Module
 
     function register_translation_hooks()
     {
-        $fs = C_Fs::get_instance();
         $dir = str_replace(
-            $fs->get_document_root('plugins'),
-            '',
-            $fs->get_abspath('lang', 'photocrati-i18n')
+        	wp_normalize_path(WP_PLUGIN_DIR),
+        	"",
+        	wp_normalize_path(__DIR__ . DIRECTORY_SEPARATOR . 'lang')
         );
 
         // Load text domain
@@ -118,7 +117,7 @@ class M_I18N extends C_Base_Module
     /**
      * Registers gallery strings with WPML
      *
-     * @param object $gallery
+     * @param int|object $gallery_id Gallery object or ID
      */
     function register_gallery_strings($gallery_id)
     {
@@ -201,10 +200,10 @@ class M_I18N extends C_Base_Module
         {
             foreach($gallery_ids[1] as $index => $gallery_id) {
                 $translated_gallery_id = apply_filters('wpml_object_id', (int)$gallery_id, "displayed_gallery", true, $lang);
-                $search[$index] = "preview/id--" . $gallery_id;
-                $replace[$index] = "preview/id--" . $translated_gallery_id;
             }
 
+            $search[$index] = "preview/id--" . $gallery_id;
+            $replace[$index] = "preview/id--" . $translated_gallery_id;
             $post_array['post_content'] = str_replace($search, $replace, $post_array['post_content']);
 
             $to_save = array(

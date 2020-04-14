@@ -74,9 +74,9 @@ p+ul {
 /* header */
 header {
     top: -80px;
-    padding-top: 10px;
+    padding-top: 0px;
     border-bottom: 1px solid #f0f0f0;
-    height: 87px;
+    height: 120px;
     transition: top 0.5s;
 }
 header .logo a {
@@ -101,6 +101,16 @@ header .logo a span {
     top: 10px;
     left: 10px;
 }
+.top-header{
+	display: flex;
+	justify-content: space-between;
+	font-size: 1em;
+	margin-top: 7px;
+}
+.header-line {
+	padding: 0;
+	margin: 4px 0 10px 0;
+}
 .mm-slideout {
     z-index: 999;
 }
@@ -111,7 +121,7 @@ header .logo a span {
     z-index: 9;
     background: rgba(255, 255, 255, 0.98);
     padding: 0;
-    height: 67px;
+    /*height: 140px;*/
 }
 .sticky.if-wp {
     top: 32px;

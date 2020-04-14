@@ -3,7 +3,7 @@
 Plugin Name: WP Comments Fields Manager
 Plugin URI: http://www.najeebmedia.com
 Description: This plugin allow users to add custom fields in post comments area.
-Version: 1.6
+Version: 1.7
 Author: Najeeb Ahmad
 Author URI: http://www.najeebmedia.com/
 Text Domain: nm-wpcomments

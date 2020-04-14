@@ -13,6 +13,45 @@ Version: 1.0
 ****************************************************************************НАСТРОЙКИ ТЕМЫ*****************************************************************
 ***********************************************************************************************************************************************************
 ***********************************************************************************************************************************************************/
+function mk_scripts(){  
+	wp_register_style( 'bootstrap-css', get_template_directory_uri() . '/css/bootstrap.css');
+	wp_enqueue_style( 'bootstrap-css' );
+	
+	wp_register_style( 'carousel-css', get_template_directory_uri() . '/css/owl.carousel.min.css');
+	wp_enqueue_style( 'carousel-css' );
+	
+	wp_register_style( 'theme-css', get_template_directory_uri() . '/css/owl.theme.default.min.css');
+	wp_enqueue_style( 'theme-css' );
+	
+	wp_register_style( 'stylesheets-css', get_template_directory_uri() . '/css/stylesheets.css');
+	wp_enqueue_style( 'stylesheets-css' );
+	
+	wp_register_style( 'media-css', get_template_directory_uri() . '/css/media.css');
+	wp_enqueue_style( 'media-css' );
+	
+	wp_register_style( 'mmenu-css', get_template_directory_uri() . '/css/jquery.mmenu.all.css');
+	wp_enqueue_style( 'mmenu-css' );
+	
+	wp_register_style( 'mmenu-css', get_template_directory_uri() . '/css/jquery.mmenu.all.css');
+	wp_enqueue_style( 'mmenu-css' );
+	
+	wp_register_style( 'fancybox-css', 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.css"', false, '3.3.5' );
+	wp_enqueue_style( 'fancybox-css' );
+			
+	if (!is_admin()) {
+		wp_enqueue_script( 'jquery-min', 'https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js', '', '', true );
+		wp_enqueue_script( 'dotdotdot-min', 'https://cdnjs.cloudflare.com/ajax/libs/jQuery.dotdotdot/3.2.2/jquery.dotdotdot.js', '', '', true );
+		wp_enqueue_script( 'maps-min', 'http://api-maps.yandex.ru/2.1/?lang=ru_RU', '', '', true );
+		wp_enqueue_script( 'fancybox-min', 'https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.js', '', '', true );
+		wp_enqueue_script( 'carousel-min', get_template_directory_uri() . '/js/owl.carousel.min.js', '', '', true );
+		wp_enqueue_script( 'maskedinput-min', get_template_directory_uri() . '/js/maskedinput.js', '', '', true );
+		wp_enqueue_script( 'mmenu-min', get_template_directory_uri() . '/js/jquery.mmenu.all.js', '', '', true );
+		wp_enqueue_script( 'reviews-min', get_template_directory_uri() . '/js/reviews.js', '', '', true );
+		wp_enqueue_script( 'custom-min', get_template_directory_uri() . '/js/custom.js', '', '', true );
+	}
+}
+add_action( 'wp_enqueue_scripts', 'mk_scripts' );
+
 //Регистрируем название сайта
 function rs_wp_title( $title, $sep ) {
 	global $paged, $page;
@@ -77,6 +116,9 @@ function getRubricByID($id){
 	return $value;
 }
 
+//Отключить редактор
+add_filter('use_block_editor_for_post', '__return_false');
+
 //Удаляем ненужные пункты меню
 /*function remove_menus(){
 	remove_menu_page( 'edit-comments.php' );          //Комментарии
@@ -89,15 +131,6 @@ add_action( 'admin_menu', 'remove_menus' );*/
 *********************************************************************РАБОТА С METAПОЛЯМИ*******************************************************************
 ***********************************************************************************************************************************************************
 ***********************************************************************************************************************************************************/
-//Вывод данных из произвольных полей для всех страниц сайта
-function getMeta($meta_key){
-	global $wpdb;
-	
-	$value = $wpdb->get_var( $wpdb->prepare("SELECT meta_value FROM $wpdb->postmeta WHERE meta_key = %s ORDER BY meta_id DESC LIMIT 1", $meta_key) );
-	
-	return $value;
-}
-
 function getNextGallery($post_id, $meta_key){
 	global $wpdb;
 	
@@ -106,43 +139,6 @@ function getNextGallery($post_id, $meta_key){
 	$unserialize_value = unserialize($value);
 	
 	return $unserialize_value;
-}
-
-function getAttachment($meta_key){
-	global $wpdb;
-	
-	$id = $wpdb->get_var( $wpdb->prepare("SELECT meta_value FROM $wpdb->postmeta WHERE meta_key = %s ORDER BY meta_id DESC LIMIT 1", $meta_key) );
-	
-	$value = $wpdb->get_var( $wpdb->prepare("SELECT guid FROM $wpdb->posts WHERE ID = %s AND post_type = 'attachment'", $id) );
-	
-	return $value;
-}
-
-function getLinks($meta_key){
-	global $wpdb;
-	
-	$value = $wpdb->get_var( $wpdb->prepare("SELECT meta_value FROM $wpdb->postmeta WHERE meta_key = %s ORDER BY meta_id DESC LIMIT 1", $meta_key) );
-	
-	$unserialize_value = unserialize($value);
-	
-	$results = array();
-	
-	$data = array();
-	
-	if($unserialize_value){
-		foreach($unserialize_value as $value){
-			$results[] = $wpdb->get_results( $wpdb->prepare("SELECT ID, post_title FROM $wpdb->posts WHERE ID = %s", $value));
-		}
-
-		foreach($results as $result){
-			$data[] = array(
-				'title' => $result[0]->post_title,
-				'link'  => get_permalink($result[0]->ID)
-			);
-		}
-	}
-	
-	return $data;
 }
 
 /**********************************************************************************************************************************************************
@@ -154,7 +150,7 @@ function getLinks($meta_key){
 class primary_menu extends Walker_Nav_Menu {
 
 	// Добавляем классы к вложенным ul
-	function start_lvl( &$output, $depth ) {
+	function start_lvl(&$output, $depth = 0, $args = Array()) {
 		// Глубина вложенных ul
 		$indent = ( $depth > 0  ? str_repeat( "\t", $depth ) : '' ); // code indent
 		$display_depth = ( $depth + 1); // because it counts the first submenu as 0
@@ -171,7 +167,7 @@ class primary_menu extends Walker_Nav_Menu {
 	}
 
 	// Добавляем классы к вложенным li
-	function start_el( &$output, $item, $depth, $args ) {
+	function start_el(&$output, $item, $depth = 0, $args = Array(), $id = 0) {
 		global $wpdb;
 		global $wp_query;
 		$indent = ( $depth > 0 ? str_repeat( "\t", $depth ) : '' ); // code indent
@@ -236,7 +232,7 @@ class primary_menu extends Walker_Nav_Menu {
 class reviews_menu extends Walker_Nav_Menu {
 
 	// Добавляем классы к вложенным ul
-	function start_lvl( &$output, $depth ) {
+	function start_lvl(&$output, $depth = 0, $args = Array()) {
 		// Глубина вложенных ul
 		$indent = ( $depth > 0  ? str_repeat( "\t", $depth ) : '' ); // code indent
 		$display_depth = ( $depth + 1); // because it counts the first submenu as 0
@@ -253,7 +249,7 @@ class reviews_menu extends Walker_Nav_Menu {
 	}
 
 	// Добавляем классы к вложенным li
-	function start_el( &$output, $item, $depth, $args ) {
+	function start_el(&$output, $item, $depth = 0, $args = Array(), $id = 0) {
 		global $wpdb;
 		global $wp_query;
 		$indent = ( $depth > 0 ? str_repeat( "\t", $depth ) : '' ); // code indent

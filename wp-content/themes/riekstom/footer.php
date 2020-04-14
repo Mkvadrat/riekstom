@@ -14,18 +14,30 @@ Version: 1.0
                 <div class="row">
                     <div class="col-md-7 footer-contacts footer-contacts-mobile">
                         <div class="footer-info">
-                            <?php echo getMeta('mode_operation_footer_main_page'); ?>
+                            <?php echo get_field('mode_operation_footer_main_page', '7'); ?>
                         </div>
-                        <p class="address"><?php echo getMeta('address_footer_main_page'); ?></p>
+                        <p class="address"><?php echo get_field('address_footer_main_page', '7'); ?></p>
                         <div class="socials">
-                            <a href="<?php echo getMeta('link_a_soc_links_footer_main_page'); ?>" class="vk"><img src="<?php echo getAttachment('image_a_soc_links_footer_main_page'); ?>" alt="<?php echo getAltImage('image_a_soc_links_footer_main_page'); ?>"></a>
-                            <a href="<?php echo getMeta('link_b_soc_links_footer_main_page'); ?>" class="fb"><img src="<?php echo getAttachment('image_b_soc_links_footer_main_page'); ?>" alt="<?php echo getAltImage('image_b_soc_links_footer_main_page'); ?>"></a>
-                            <a href="<?php echo getMeta('link_c_soc_links_footer_main_page'); ?>" class="insta"><img src="<?php echo getAttachment('image_c_soc_links_footer_main_page'); ?>" alt="<?php echo getAltImage('image_c_soc_links_footer_main_page'); ?>"></a>
-                            <a href="<?php echo getMeta('link_d_soc_links_footer_main_page'); ?>" class="yutb"><img src="<?php echo getAttachment('image_d_soc_links_footer_main_page'); ?>" alt="<?php echo getAltImage('image_d_soc_links_footer_main_page'); ?>"></a>
+                            <a href="<?php echo get_field('link_a_soc_links_footer_main_page', '7'); ?>" class="vk">
+                                <?php $a_soc = get_field('image_a_soc_links_footer_main_page', '7'); ?>
+                                <img src="<?php echo $a_soc['url']; ?>" alt="<?php echo $a_soc['alt']; ?>">
+                            </a>
+                            <a href="<?php echo get_field('link_b_soc_links_footer_main_page', '7'); ?>" class="fb">
+                                <?php $b_soc = get_field('image_b_soc_links_footer_main_page', '7'); ?>
+                                <img src="<?php echo $b_soc['url']; ?>" alt="<?php echo $b_soc['alt']; ?>">
+                            </a>
+                            <a href="<?php echo get_field('link_c_soc_links_footer_main_page', '7'); ?>" class="insta">
+                                <?php $c_soc = get_field('image_c_soc_links_footer_main_page', '7'); ?>
+                                <img src="<?php echo $c_soc['url']; ?>" alt="<?php echo $c_soc['alt']; ?>">
+                            </a>
+                            <a href="<?php echo get_field('link_d_soc_links_footer_main_page', '7'); ?>" class="yutb">
+                                <?php $c_soc = get_field('image_d_soc_links_footer_main_page', '7'); ?>
+                                <img src="<?php echo $d_soc['url']; ?>" alt="<?php echo $d_soc['alt']; ?>">
+                            </a>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <p class="title"><?php echo getMeta('services_footer_main_page'); ?></p>
+                        <p class="title"><?php echo get_field('services_footer_main_page', '7'); ?></p>
                         <div class="row">
                             <div class="col-md-6">
                                 <?php
@@ -78,7 +90,7 @@ Version: 1.0
                     <div class="col-md-6">
                         <div class="row">
                             <div class="col-md-5">
-                                <p class="title"><?php echo getMeta('company_footer_main_page'); ?></p>
+                                <p class="title"><?php echo get_field('company_footer_main_page', '7'); ?></p>
                                 <?php
                                     if (has_nav_menu('footer_third_menu')){
                                         wp_nav_menu( array(
@@ -103,27 +115,39 @@ Version: 1.0
                             </div>
                             <div class="col-md-7 footer-contacts">
                                 <div class="footer-info">
-                                    <?php echo getMeta('mode_operation_footer_main_page'); ?>
+                                    <?php echo get_field('mode_operation_footer_main_page', '7'); ?>
                                 </div>
-                                <p class="address"><?php echo getMeta('address_footer_main_page'); ?></p>
+                                <p class="address"><?php echo get_field('address_footer_main_page', '7'); ?></p>
                                 <div class="socials">
-                                    <a href="<?php echo getMeta('link_a_soc_links_footer_main_page'); ?>" class="vk"><img src="<?php echo getAttachment('image_a_soc_links_footer_main_page'); ?>" alt="<?php echo getAltImage('image_a_soc_links_footer_main_page'); ?>"></a>
-                                    <a href="<?php echo getMeta('link_b_soc_links_footer_main_page'); ?>" class="fb"><img src="<?php echo getAttachment('image_b_soc_links_footer_main_page'); ?>" alt="<?php echo getAltImage('image_b_soc_links_footer_main_page'); ?>"></a>
-                                    <a href="<?php echo getMeta('link_c_soc_links_footer_main_page'); ?>" class="insta"><img src="<?php echo getAttachment('image_c_soc_links_footer_main_page'); ?>" alt="<?php echo getAltImage('image_c_soc_links_footer_main_page'); ?>"></a>
-                                    <a href="<?php echo getMeta('link_d_soc_links_footer_main_page'); ?>" class="yutb"><img src="<?php echo getAttachment('image_d_soc_links_footer_main_page'); ?>" alt="<?php echo getAltImage('image_d_soc_links_footer_main_page'); ?>"></a>
+                                    <a href="<?php echo get_field('link_a_soc_links_footer_main_page', '7'); ?>" class="vk">
+                                        <?php $a_soc = get_field('image_a_soc_links_footer_main_page', '7'); ?>
+                                        <img src="<?php echo $a_soc['url']; ?>" alt="<?php echo $a_soc['alt']; ?>">
+                                    </a>
+                                    <a href="<?php echo get_field('link_b_soc_links_footer_main_page', '7'); ?>" class="fb">
+                                        <?php $b_soc = get_field('image_b_soc_links_footer_main_page', '7'); ?>
+                                        <img src="<?php echo $b_soc['url']; ?>" alt="<?php echo $b_soc['alt']; ?>">
+                                    </a>
+                                    <a href="<?php echo get_field('link_c_soc_links_footer_main_page', '7'); ?>" class="insta">
+                                        <?php $c_soc = get_field('image_c_soc_links_footer_main_page', '7'); ?>
+                                        <img src="<?php echo $c_soc['url']; ?>" alt="<?php echo $c_soc['alt']; ?>">
+                                    </a>
+                                    <a href="<?php echo get_field('link_d_soc_links_footer_main_page', '7'); ?>" class="yutb">
+                                        <?php $d_soc = get_field('image_d_soc_links_footer_main_page', '7'); ?>
+                                        <img src="<?php echo $d_soc['url']; ?>" alt="<?php echo $d_soc['alt']; ?>">
+                                    </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-12 copyright">
-                    <?php echo getMeta('copyright_footer_main_page'); ?>
+                        <?php echo get_field('copyright_footer_main_page', '7'); ?>
                     </div>
                 </div>
             </div>
         </footer>
     </div>
-    <script src="<?php echo esc_url( get_template_directory_uri() ); ?>/js/custom.js"></script>
-    
+   
+    <?php wp_footer(); ?>   
 </body>
 </html>
 

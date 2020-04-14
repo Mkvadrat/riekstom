@@ -29,7 +29,7 @@ function get_plugin_meta_wpcomment(){
 	return $plugin_meta;
 }
 
-function wpcomment_pa($arr){
+function wpcomment_pa1($arr){
 
 	echo '<pre>';
 	print_r($arr);

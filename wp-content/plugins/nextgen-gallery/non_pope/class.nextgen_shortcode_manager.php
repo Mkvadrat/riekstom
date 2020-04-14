@@ -85,8 +85,9 @@ class C_NextGen_Shortcode_Manager
 
 	/**
 	 * We're parsing our own shortcodes because WP can't yet handle nested shortcodes
-	 * [ngg_images param="[slideshow]"]
-	 * @param $content
+	 * [ngg param="[slideshow]"]
+	 * @param string $content
+	 * @return string
 	 */
 	function fix_nested_shortcodes($content)
 	{
@@ -184,7 +185,15 @@ class C_NextGen_Shortcode_Manager
 			}
 		}
 
-		if ($this->is_rest_request()) ob_end_clean();
+		if ($this->is_rest_request())
+        {
+            // Pre-generating displayed gallery cache by executing shortcodes in the REST API can prevent users
+            // from being able to add and save blocks with lots of images and no pagination (for example a very large
+            // basic slideshow or pro masonry / mosaic / tile display)
+            if (apply_filters('ngg_disable_shortcodes_in_request_api', FALSE))
+                return $content;
+            ob_start();
+        }
 
         return $content;
 	}
@@ -234,7 +243,7 @@ class C_NextGen_Shortcode_Manager
 
 	function is_rest_request()
 	{
-		return strpos($_SERVER['REQUEST_URI'], 'wp-json') !== FALSE;
+		return defined('REST_REQUEST') || strpos($_SERVER['REQUEST_URI'], 'wp-json') !== FALSE;
 	}
 
 	function __call($method, $args)

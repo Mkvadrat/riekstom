@@ -28,23 +28,10 @@ Version: 1.0
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><?php echo rs_wp_title('','', true, 'right'); ?></title>
-    <link rel="stylesheet" href="<?php echo esc_url( get_template_directory_uri() ); ?>/css/bootstrap.css">
-    <link rel="stylesheet" href="<?php echo esc_url( get_template_directory_uri() ); ?>/css/owl.carousel.min.css">
-    <link rel="stylesheet" href="<?php echo esc_url( get_template_directory_uri() ); ?>/css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="<?php echo esc_url( get_template_directory_uri() ); ?>/css/stylesheets.css">
-    <link rel="stylesheet" href="<?php echo esc_url( get_template_directory_uri() ); ?>/css/media.css">
-    <link rel="stylesheet" href="<?php echo esc_url( get_template_directory_uri() ); ?>/css/sweetalert.css">
-    <link rel="stylesheet" href="<?php echo esc_url( get_template_directory_uri() ); ?>/css/jquery.mmenu.all.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery.dotdotdot/3.2.2/jquery.dotdotdot.js"></script>
-    <script src="http://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.js"></script>
-    <script src="<?php echo esc_url( get_template_directory_uri() ); ?>/js/owl.carousel.min.js"></script>
-    <script src="<?php echo esc_url( get_template_directory_uri() ); ?>/js/maskedinput.js"></script>
-    <script src="<?php echo esc_url( get_template_directory_uri() ); ?>/js/jquery.mmenu.all.js"></script>
-    <script src="<?php echo esc_url( get_template_directory_uri() ); ?>/js/sweetalert.min.js"></script>
-    <script src="<?php echo esc_url( get_template_directory_uri() ); ?>/js/reviews.js"></script>
+
+    <meta name="yandex-verification" content="db029f2c99578a89" />
+    
+    <?php wp_head(); ?>
 </head>
 <body>
     <div id="page">
@@ -74,6 +61,17 @@ Version: 1.0
         </nav>
         <header>
             <div class="container">
+                <div class="top-header">
+                    <div class="header-item">
+                        <?php echo get_field('text_header_main_page', '7'); ?>
+                    </div>
+                    <div class="header-item">
+                        <?php echo get_field('address_header_main_page', '7'); ?>
+                    </div>
+                </div>
+            </div>
+            <hr class="header-line" />
+            <div class="container">
                 <div class="row">
                     <div class="col-md-3 col-sm-4 col-xs-6 logo">
                         <a class="header__logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
@@ -83,7 +81,7 @@ Version: 1.0
                             width="<?php echo get_custom_header()->width; ?>"
                             alt="logotype"
                             />
-                            <span><?php echo getMeta('text_logo_main_page'); ?></span>
+                            <span><?php echo get_field('text_logo_main_page', '7'); ?></span>
                         </a>
                     </div>
                     <div class="col-md-6 menu">
@@ -116,8 +114,8 @@ Version: 1.0
                             <span></span>
                             <span></span>
                         </a>
-                        <a href="tel:<?php echo getMeta('phone_header_main_page'); ?>"><?php echo getMeta('phone_header_main_page'); ?></a>
-                        <p><?php echo getMeta('mode_operation_header_main_page'); ?></p>
+                        <a href="tel:<?php echo get_field('phone_header_main_page', '7'); ?>"><?php echo get_field('phone_header_main_page', '7'); ?></a>
+                        <p><?php echo get_field('mode_operation_header_main_page', '7'); ?></p>
                     </div>
                 </div>
             </div>

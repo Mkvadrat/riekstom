@@ -51,7 +51,7 @@ jQuery(function($){
         }
 
         // Check if this is a proxy button for another field
-        if ($button.attr('name').indexOf('_proxy') != -1) {
+        if ($button.attr('name') && $button.attr('name').indexOf('_proxy') != -1) {
 
             // Get the value to set
             var value = $button.attr('data-proxy-value');
@@ -94,4 +94,15 @@ jQuery(function($){
 
     $('input.nextgen_settings_field_colorpicker').wpColorPicker();
     $('#ngg_page_content').css('visibility', 'visible');
+
+    // Handle the "recover" and "delete" links in Manage Gallery > each image row
+    $('#ngg-listimages .row-actions .confirmrecover, #ngg-listimages .row-actions.submitdelete.delete').on(
+        'click',
+        function(event) {
+            var target = event.target;
+            if (!confirm(target.getAttribute('data-question') + ' "' + target.getAttribute('data-text') + '"')) {
+                event.preventDefault();
+            }
+        }
+    );
 });

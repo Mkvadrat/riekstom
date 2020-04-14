@@ -3,8 +3,8 @@ Contributors: nmedia
 Donate link: http://www.najeebmedia.com/donate/
 Tags: Comment fields, comment meta, comments inputs, comment form, extend comments
 Requires at least: 3.5
-Tested up to: 4.7
-Stable tag: 1.6
+Tested up to: 5.2
+Stable tag: 1.7
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -56,6 +56,10 @@ PRO Version is Released
 
 
 == Changelog ==
+= 1.7 Feb 02, 2020 =
+* Bug Fixed: warning, Array to String Conversion fixed
+* Bug Fixed: General Setting are saving now
+
 = 1.6 March 22, 2017 =
 * Bug Fixed: Multiple Checkboxes not saving fixed
 * Bug Fixed: Admin drop fields design issue fixed

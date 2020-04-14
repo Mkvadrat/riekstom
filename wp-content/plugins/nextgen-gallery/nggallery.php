@@ -3,14 +3,15 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) { die('You 
 
 /**
  * Plugin Name: NextGEN Gallery
- * Description: The most popular gallery plugin for WordPress and one of the most popular plugins of all time with over 22 million downloads.
- * Version: 3.0.6
+ * Description: The most popular gallery plugin for WordPress and one of the most popular plugins of all time with over 28 million downloads.
+ * Version: 3.3.5
  * Author: Imagely
  * Plugin URI: https://www.imagely.com/wordpress-gallery-plugin/nextgen-gallery/
  * Author URI: https://www.imagely.com
  * License: GPLv2
  * Text Domain: nggallery
  * Domain Path: /products/photocrati_nextgen/modules/i18n/lang
+ * Requires PHP: 5.4
  */
 
 if (!class_exists('E_Clean_Exit')) { class E_Clean_Exit extends RuntimeException {} }
@@ -81,7 +82,7 @@ class C_NextGEN_Bootstrap
 	var $_pope_loaded = FALSE;
 	static $debug = FALSE;
 	var $minimum_ngg_pro_version = '2.0.5';
-    	var $minimum_ngg_plus_version = '1.0.1';
+    var $minimum_ngg_plus_version = '1.0.1';
 
 	static function shutdown($exception=NULL)
 	{
@@ -101,7 +102,7 @@ class C_NextGEN_Bootstrap
             }
         }
 		elseif (!($exception instanceof E_Clean_Exit)) {
-			ob_end_clean();
+			if (ob_get_level() > 0) ob_end_clean();
 			self::print_exception($exception);
 		}
 	}
@@ -159,7 +160,8 @@ class C_NextGEN_Bootstrap
 
 	function __construct()
 	{
-		set_exception_handler(__CLASS__.'::shutdown');
+	    if (!defined('NGG_DISABLE_SHUTDOWN_EXCEPTION_HANDLER') || !NGG_DISABLE_SHUTDOWN_EXCEPTION_HANDLER)
+		    set_exception_handler(__CLASS__.'::shutdown');
 
 		// We only load the plugin if we're outside of the activation request, loaded in an iframe
 		// by WordPress. Reason being, if WP_DEBUG is enabled, and another Pope-based plugin (such as
@@ -196,18 +198,7 @@ class C_NextGEN_Bootstrap
 	{
 		// Load caching component
 		include_once('non_pope/class.photocrati_transient_manager.php');
-
-		if (isset($_REQUEST['ngg_flush']))
-		{
-			C_Photocrati_Transient_Manager::flush();
-			die("Flushed all caches");
-		}
-
-        if (isset($_REQUEST['ngg_flush_expired']))
-        {
-            C_Photocrati_Transient_Manager::get_instance()->flush_expired();
-            die("Flushed all expired caches");
-        }
+		include_once('non_pope/class.nextgen_serializable.php');
 
 		// Load Settings Manager
 		include_once('non_pope/class.photocrati_settings_manager.php');
@@ -279,9 +270,7 @@ class C_NextGEN_Bootstrap
 		if ($tmp && (int)$tmp <= 300) @ini_set('xdebug.max_nesting_level', 300);
 
 		// Include pope framework
-		require_once(implode(
-			DIRECTORY_SEPARATOR, array(NGG_PLUGIN_DIR, 'pope','lib','autoload.php')
-		));
+		require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'vendor/autoload.php');
 
 		// Enable/disable pope caching. For now, the pope cache will not be used in multisite environments
 		if (class_exists('C_Pope_Cache')) {
@@ -389,15 +378,19 @@ class C_NextGEN_Bootstrap
 	 */
 	function _register_hooks()
 	{
-		// Register the deactivation routines
-		add_action('deactivate_'.NGG_PLUGIN_BASENAME, array(get_class(), 'deactivate'));
+		// Register the (de)activation routines
+		add_action('deactivate_' . NGG_PLUGIN_BASENAME, array(get_class(), 'deactivate'));
+		add_action('activate_'   . NGG_PLUGIN_BASENAME, array(get_class(), 'activate'), -10);
+		
+		// Handle activation redirect to overview page
+		add_action('init', array($this, 'handle_activation_redirect'));
 
 		// Register our test suite
 		add_filter('simpletest_suites', array(&$this, 'add_testsuite'));
 
 		// Ensure that settings manager is saved as an array
-		add_filter('pre_update_option_'.$this->_settings_option_name, array(&$this, 'persist_settings'));
-		add_filter('pre_update_site_option_'.$this->_settings_option_name, array(&$this, 'persist_settings'));
+		add_filter('pre_update_option_' . $this->_settings_option_name, array($this, 'persist_settings'));
+		add_filter('pre_update_site_option_' . $this->_settings_option_name, array($this, 'persist_settings'));
 
 		// This plugin uses jQuery extensively
 		if (NGG_FIX_JQUERY) {
@@ -435,6 +428,7 @@ class C_NextGEN_Bootstrap
 		}
 
 		add_filter('ngg_load_frontend_logic', array($this, 'disable_frontend_logic'), -10, 2);
+
 	}
 
 	function disable_frontend_logic($enabled, $module_id)
@@ -446,6 +440,14 @@ class C_NextGEN_Bootstrap
 				$enabled = FALSE;
 		}
 		return $enabled;
+	}
+
+	function handle_activation_redirect()
+	{
+		if (get_transient('ngg-activated')) {
+			delete_transient('ngg-activated');
+			wp_redirect(admin_url("?page=nextgen-gallery"));
+		}
 	}
 
 	function fix_autoupdate_api_requests($args, $url)
@@ -525,10 +527,10 @@ class C_NextGEN_Bootstrap
 
 	/**
 	 * Ensure that C_Photocrati_Settings_Manager gets persisted as an array
-	 * @param $settings
+	 * @param C_Photocrati_Settings_Manager_Base|array $settings
 	 * @return array
 	 */
-	function persist_settings($settings)
+	function persist_settings($settings = array())
 	{
 		if (is_object($settings) && $settings instanceof C_Photocrati_Settings_Manager_Base) {
 			$settings = $settings->to_array();
@@ -618,13 +620,24 @@ class C_NextGEN_Bootstrap
 		$router = C_Router::get_instance();
 
 		// Set context to path if subdirectory install
-		$parts = parse_url($router->get_base_url(FALSE));
-		if (isset($parts['path'])) {
-			$parts = explode('/index.php', $parts['path']);
-			$router->context = array_shift($parts);
-		}
+		$parts     = parse_url($router->get_base_url(FALSE));
+		$siteparts = parse_url(get_option('home'));
 
-		// Provide a means for modules/third-parties to configure routes
+        if (isset($parts['path']) && isset($siteparts['path']))
+        {
+            if (strpos($parts['path'], '/index.php') === FALSE)
+            {
+                $router->context = $siteparts['path'];
+            }
+            else {
+                $new_parts = explode('/index.php', $parts['path']);
+                if (!empty($new_parts[0]) && $new_parts[0] == $siteparts['path']) {
+                    $router->context = array_shift($new_parts);
+                }
+            }
+        }
+
+        // Provide a means for modules/third-parties to configure routes
 		do_action_ref_array('ngg_routes', array(&$router));
 
 		// Serve the routes
@@ -641,12 +654,49 @@ class C_NextGEN_Bootstrap
 	/**
 	 * Run the uninstaller
 	 */
-	static function deactivate()
+	public static function deactivate()
 	{
         include_once('products/photocrati_nextgen/class.nextgen_product_installer.php');
         C_Photocrati_Installer::add_handler(NGG_PLUGIN_BASENAME, 'C_NextGen_Product_Installer');
 		C_Photocrati_Installer::uninstall(NGG_PLUGIN_BASENAME);
 	}
+
+	public static function set_role_caps()
+	{
+		// Set the capabilities for the administrator
+        $role = get_role('administrator');
+
+        // We need this role, no other chance
+        if (empty($role))
+        {
+            update_option("ngg_init_check", __('Sorry, NextGEN Gallery works only with a role called administrator',"nggallery"));
+            return;
+        }
+
+        $capabilities = array(
+            'NextGEN Attach Interface',
+            'NextGEN Change options',
+            'NextGEN Change style',
+            'NextGEN Edit album',
+            'NextGEN Gallery overview',
+            'NextGEN Manage gallery',
+            'NextGEN Manage others gallery',
+            'NextGEN Manage tags',
+            'NextGEN Upload images',
+            'NextGEN Use TinyMCE'
+        );
+
+        foreach ($capabilities as $capability) {
+            $role->add_cap($capability);
+		}
+	}
+
+	public static function activate()
+    {
+        self::set_role_caps();
+		
+		set_transient('ngg-activated', time(), 30);
+    }
 
 	/**
 	 * Defines necessary plugins for the plugin to load correctly
@@ -655,20 +705,22 @@ class C_NextGEN_Bootstrap
 	{
 		define('NGG_PLUGIN', basename($this->directory_path()));
 		define('NGG_PLUGIN_BASENAME', plugin_basename(__FILE__));
-		define('NGG_PLUGIN_DIR', $this->directory_path());
+		define('NGG_PLUGIN_DIR', plugin_dir_path(__FILE__));
 		define('NGG_PLUGIN_URL', $this->path_uri());
 		define('NGG_TESTS_DIR',   implode(DIRECTORY_SEPARATOR, array(rtrim(NGG_PLUGIN_DIR, "/\\"), 'tests')));
 		define('NGG_PRODUCT_DIR', implode(DIRECTORY_SEPARATOR, array(rtrim(NGG_PLUGIN_DIR, "/\\"), 'products')));
 		define('NGG_MODULE_DIR', implode(DIRECTORY_SEPARATOR, array(rtrim(NGG_PRODUCT_DIR, "/\\"), 'photocrati_nextgen', 'modules')));
-		define('NGG_PRODUCT_URL', path_join(str_replace("\\", '/', NGG_PLUGIN_URL), 'products'));
+		define('NGG_PRODUCT_URL', path_join(str_replace("\\" , '/', NGG_PLUGIN_URL), 'products'));
 		define('NGG_MODULE_URL', path_join(str_replace("\\", '/', NGG_PRODUCT_URL), 'photocrati_nextgen/modules'));
 		define('NGG_PLUGIN_STARTED_AT', microtime());
-		define('NGG_PLUGIN_VERSION', '3.0.7');
+		define('NGG_PLUGIN_VERSION', '3.3.5');
 
-		if (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG)
-			define('NGG_SCRIPT_VERSION', (string)mt_rand(0, mt_getrandmax()));
-		else
-			define('NGG_SCRIPT_VERSION', NGG_PLUGIN_VERSION);
+		define(
+			'NGG_SCRIPT_VERSION',
+			defined('SCRIPT_DEBUG') && SCRIPT_DEBUG
+				? (string)mt_rand(0, mt_getrandmax())
+				: NGG_PLUGIN_VERSION
+		);
 
 		if (!defined('NGG_HIDE_STRICT_ERRORS')) {
 			define('NGG_HIDE_STRICT_ERRORS', TRUE);
@@ -726,6 +778,11 @@ class C_NextGEN_Bootstrap
 		if (!defined('NGG_POPE_CACHE')) {
 			define('NGG_POPE_CACHE', FALSE);
 		}
+
+		// Where are galleries restricted to?
+		if (!defined('NGG_GALLERY_ROOT_TYPE')) {
+			define('NGG_GALLERY_ROOT_TYPE', 'site'); // "content" is the other possible value
+		}
 	}
 
 	/**
@@ -759,24 +816,23 @@ class C_NextGEN_Bootstrap
 
 	/**
 	 * Returns the path to a file within the plugin root folder
-	 * @param type $file_name
-	 * @return type
+     *
+	 * @param string $file_name
+	 * @return string
 	 */
 	function file_path($file_name=NULL)
 	{
 		$path = dirname(__FILE__);
-
 		if ($file_name != null)
-		{
 			$path .= '/' . $file_name;
-		}
 
 		return str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
 	}
 
-
 	/**
 	 * Gets the directory path used by the plugin
+     *
+     * @param string|null $dir (optional)
 	 * @return string
 	 */
 	function directory_path($dir=NULL)
@@ -784,43 +840,12 @@ class C_NextGEN_Bootstrap
 		return $this->file_path($dir);
 	}
 
-
 	/**
 	 * Determines the location of the plugin - within a theme or plugin
 	 * @return string
 	 */
 	function get_plugin_location()
 	{
-		$path = dirname(__FILE__);
-		$gallery_dir = strtolower($path);
-		$gallery_dir = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $gallery_dir);
-
-		$theme_dir = strtolower(get_stylesheet_directory());
-		$theme_dir = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $theme_dir);
-
-		$plugin_dir = strtolower(WP_PLUGIN_DIR);
-		$plugin_dir = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $plugin_dir);
-
-		$common_dir_theme = substr($gallery_dir, 0, strlen($theme_dir));
-		$common_dir_plugin = substr($gallery_dir, 0, strlen($plugin_dir));
-
-		if ($common_dir_theme == $theme_dir)
-		{
-			return 'theme';
-		}
-
-		if ($common_dir_plugin == $plugin_dir)
-		{
-			return 'plugin';
-		}
-
-		$parent_dir = dirname($path);
-
-		if (file_exists($parent_dir . DIRECTORY_SEPARATOR . 'style.css'))
-		{
-			return 'theme';
-		}
-
 		return 'plugin';
 	}
 
@@ -920,8 +945,8 @@ function ngg_fs_custom_connect_message(
 	$freemius_link
 ) {
 	return sprintf(
-		__fs( 'hey-x' ) . '<br>' .
-		__( 'Allow %6$s to collect some usage data with %5$s to make the plugin even more awesome. If you skip this, that\'s okay! %2$s will still work just fine.', 'nggallery' ),
+		__( 'Hey %s, ', 'nggallery' ) . '<br>' .
+		__( 'Please help us improve NextGEN Gallery! If you opt-in, some data about your usage of NextGEN Gallery will be sent to freemius.com. If you skip this, that\'s okay! NextGEN Gallery will still work just fine.', 'nggallery' ),
 		$user_first_name,
 		'<b>' . __('NextGEN Gallery', 'nggallery') . '</b>',
 		'<b>' . $user_login . '</b>',
@@ -929,6 +954,15 @@ function ngg_fs_custom_connect_message(
 		$freemius_link,
 		'<b>' . __('Imagely', 'nggallery') . '</b>'
 	);
+}
+
+/**
+ * Add custom NextGEN Gallery icon for Freemius
+ *
+ * @author Erick Danzer
+ */
+function ngg_fs_custom_icon() {
+	return M_Static_Assets::get_static_abspath('photocrati-nextgen_admin#imagely_icon.png');
 }
 
 /**
@@ -961,7 +995,7 @@ function fs_track_new_gallery() {
  *
  * @param bool $activate_for_all If true, activate Freemius for all users. Was added for testing.
  *
- * @return \Freemius
+ * @return bool|\Freemius
  */
 function ngg_fs( $activate_for_all = false ) {
 	global $ngg_fs;
@@ -972,17 +1006,7 @@ function ngg_fs( $activate_for_all = false ) {
 
 		if ( false === $ngg_options ) {
 			// New plugin installation.
-
-			if ( defined( 'WP_FS__DEV_MODE' ) && WP_FS__DEV_MODE ) {
-				// Always run Freemius in development mode for new plugin installs.
-				$run_freemius = true;
-			} else {
-				// Run Freemius code on 20% of the new installations.
-			// $random = rand( 1, 10 );
-			// $run_freemius = ( 1 <= $random && $random <= 2 );
-            // Update 2016-08: run on all new instances
-            $run_freemius = TRUE;
-			}
+            $run_freemius = true;
 
 			update_option( 'ngg_run_freemius', $run_freemius );
 
@@ -993,13 +1017,13 @@ function ngg_fs( $activate_for_all = false ) {
 		} else {
 			// Don't run Freemius for plugin updates.
 			$run_freemius = false;
-		if (is_null($ngg_run_freemius))
-			update_option('ngg_run_freemius', FALSE);
-		}
+			if (is_null($ngg_run_freemius))
+				update_option('ngg_run_freemius', FALSE);
+			}
 
-		if ( ! $run_freemius ) {
-			return false;
-		}
+			if ( ! $run_freemius ) {
+				return false;
+			}
 	}
 
 	if ( ! isset( $ngg_fs ) ) {
@@ -1036,16 +1060,19 @@ function ngg_fs( $activate_for_all = false ) {
 
 	// Hook to the custom message filter.
 	$ngg_fs->add_action( 'after_uninstall', 'ngg_fs_uninstall' );
+	$ngg_fs->add_filter( 'connect_message', 'ngg_fs_custom_connect_message', 10, 6);
+	$ngg_fs->add_filter( 'plugin_icon' , 'ngg_fs_custom_icon' );
 
 	// Hook to new gallery creation event.
 	add_action( 'ngg_created_new_gallery', 'fs_track_new_gallery' );
-
+	
 	return $ngg_fs;
 }
 
-// Init Freemius.
-ngg_fs();
+// Init Freemius
+if (!defined('NGG_DISABLE_FREEMIUS') || !NGG_DISABLE_FREEMIUS)
+    ngg_fs();
 
-#endregion Freemius
+// #endregion Freemius
 
 new C_NextGEN_Bootstrap();

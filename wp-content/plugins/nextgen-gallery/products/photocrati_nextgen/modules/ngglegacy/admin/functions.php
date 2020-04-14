@@ -16,10 +16,10 @@ class nggAdmin{
      * create a new gallery & folder
      *
      * @class nggAdmin
-     * @param string $name of the gallery
+     * @param string $title Name of the gallery
      * @param string $defaultpath
      * @param bool $output if the function should show an error messsage or not
-     * @return
+     * @return bool|int
      */
     static function create_gallery($title, $defaultpath, $output = true) {
 
@@ -31,7 +31,7 @@ class nggAdmin{
         wp_get_current_user();
 
         //cleanup pathname
-        $name = sanitize_file_name( sanitize_title($title)  );
+        $name = $storage->sanitize_directory_name( sanitize_title($title)  );
         $name = apply_filters('ngg_gallery_name', $name);
         $txt = '';
 
@@ -161,7 +161,7 @@ class nggAdmin{
      * nggAdmin::createThumbnail() - function to create or recreate a thumbnail
      *
      * @class nggAdmin
-     * @param object | int $image contain all information about the image or the id
+     * @param object|int $image Contain all information about the image or the id
      * @return string result code
      * @since v1.0.0
      */
@@ -195,7 +195,7 @@ class nggAdmin{
      * nggAdmin::resize_image() - create a new image, based on the height /width
      *
      * @class nggAdmin
-     * @param object | int $image contain all information about the image or the id
+     * @param object|int $image Contain all information about the image or the id
      * @param integer $width optional
      * @param integer $height optional
      * @return string result code
@@ -248,8 +248,8 @@ class nggAdmin{
      * Rotated/Flip an image based on the orientation flag or a definded angle
      *
      * @param int|object $image
-     * @param string (optional) $dir, CW (clockwise)or CCW (counter clockwise), if set to false, the exif flag will be used
-     * @param string (optional)  $flip, could be either false | V (flip vertical) | H (flip horizontal)
+     * @param string|bool $dir (optional) CW (clockwise)or CCW (counter clockwise), if set to false, the exif flag will be used
+     * @param string|bool $flip (optional) Either false | V (flip vertical) | H (flip horizontal)
      * @return string result code
      */
     static function rotate_image($image, $dir = false, $flip = false)
@@ -330,7 +330,7 @@ class nggAdmin{
      * nggAdmin::set_watermark() - set the watermark for the image
      *
      * @class nggAdmin
-     * @param object | int $image contain all information about the image or the id
+     * @param object|int $image Contain all information about the image or the id
      * @return string result code
      */
     static function set_watermark($image) {
@@ -365,12 +365,11 @@ class nggAdmin{
      *
      * @class nggAdmin
      * @since 1.5.0
-     * @param object | int $image contain all information about the image or the id
+     * @param object|int $image Contain all information about the image or the id
      * @return string result code
      */
-
-    static function recover_image($image) {
-
+    static function recover_image($image)
+    {
         return C_Gallery_Storage::get_instance()->recover_image($image);
     }
 
@@ -380,25 +379,27 @@ class nggAdmin{
      * @class nggAdmin
      * @param int $galleryID
      * @param array $imageslist
-     * @return array $image_ids Id's which are sucessful added
+     * @return array $image_ids IDs which have been successfully added
      */
-    static function add_Images($galleryID, $imageslist) {
-
-        global $wpdb, $ngg;
+    public static function add_Images($galleryID, $imageslist)
+    {
+        global $ngg;
 
         $image_ids = array();
 
-        if ( is_array($imageslist) ) {
+        if (is_array($imageslist))
+        {
             foreach($imageslist as $picture) {
 
                 // filter function to rename/change/modify image before
                 $picture = apply_filters('ngg_pre_add_new_image', $picture, $galleryID);
 
                 // strip off the extension of the filename
-                $path_parts = M_I18n::mb_pathinfo( $picture );
-                $alttext = ( !isset($path_parts['filename']) ) ? substr($path_parts['basename'], 0,strpos($path_parts['basename'], '.')) : $path_parts['filename'];
+                $path_parts = M_I18n::mb_pathinfo($picture);
+                $alttext = (!isset($path_parts['filename'])) ? substr($path_parts['basename'], 0,strpos($path_parts['basename'], '.')) : $path_parts['filename'];
+
                 // save it to the database
-                $pic_id = nggdb::add_image( $galleryID, $picture, '', $alttext );
+                $pic_id = nggdb::add_image($galleryID, $picture, '', $alttext);
 
                 if (C_NextGen_Settings::get_instance()->imgBackup && !empty($pic_id))
                 {
@@ -406,32 +407,35 @@ class nggAdmin{
                     $storage->backup_image($pic_id);
                 }
 
-                if ( !empty($pic_id) )
+                if (!empty($pic_id))
                     $image_ids[] = $pic_id;
 
                 // add the metadata
-                nggAdmin::import_MetaData( $pic_id );
+                nggAdmin::import_MetaData($pic_id);
 
                 // auto rotate
                 nggAdmin::rotate_image( $pic_id );
 
                 // Autoresize image if required
-                if ($ngg->options['imgAutoResize']) {
-                    $imagetmp = nggdb::find_image( $pic_id );
-                    $sizetmp = @getimagesize ( $imagetmp->imagePath );
+                if ($ngg->options['imgAutoResize'])
+                {
+                    $imagetmp  = nggdb::find_image( $pic_id );
+                    $sizetmp   = @getimagesize ( $imagetmp->imagePath );
                     $widthtmp  = $ngg->options['imgWidth'];
                     $heighttmp = $ngg->options['imgHeight'];
-                    if (($sizetmp[0] > $widthtmp && $widthtmp) || ($sizetmp[1] > $heighttmp && $heighttmp)) {
+                    if (($sizetmp[0] > $widthtmp && $widthtmp) || ($sizetmp[1] > $heighttmp && $heighttmp))
                         nggAdmin::resize_image( $pic_id );
-                    }
                 }
 
                 // action hook for post process after the image is added to the database
-                $image = array( 'id' => $pic_id, 'filename' => $picture, 'galleryID' => $galleryID);
+                $image = array(
+                    'id'        => $pic_id,
+                    'filename'  => $picture,
+                    'galleryID' => $galleryID
+                );
                 do_action('ngg_added_new_image', $image);
-
             }
-        } // is_array
+        }
 
         // delete dirsize after adding new images
         delete_transient( 'dirsize_cache' );
@@ -439,7 +443,6 @@ class nggAdmin{
         do_action('ngg_after_new_images_added', $galleryID, $image_ids );
 
         return $image_ids;
-
     }
 
     /**
@@ -516,7 +519,7 @@ class nggAdmin{
      *
      * @class nggAdmin
      * @require NextGEN Meta class
-     * @param int $id image ID
+     * @param int|object $image_or_id
      * @return array metadata
      */
     static function get_MetaData($image_or_id) {
@@ -545,11 +548,11 @@ class nggAdmin{
      * and if based on compat reason (pre V1.4.0) we save then some meta datas to the database
      *
      * @since V1.4.0
-     * @param int $id
-     * @return result
+     * @param int|object $image_or_id
+     * @return bool
      */
-    function maybe_import_meta( $image_or_id ) {
-
+    function maybe_import_meta( $image_or_id )
+    {
         require_once(NGGALLERY_ABSPATH . '/lib/meta.php');
 		$id = is_int($image_or_id) ? $image_or_id : $image_or_id->{$image_or_id->id_field};
         $meta_obj = new nggMeta( $image_or_id );
@@ -563,19 +566,18 @@ class nggAdmin{
             return false;
 
         return $result;
-
     }
 
     /**
      * nggAdmin::import_gallery()
      * TODO: Check permission of existing thumb folder & images
      *
-     * @class nggAdmin
      * @param string $galleryfolder contains relative path to the gallery itself
+     * @param int $gallery_id
      * @return void
      */
-    static function import_gallery($galleryfolder, $gallery_id=NULL) {
-
+    public static function import_gallery($galleryfolder, $gallery_id = NULL)
+    {
         global $wpdb, $user_ID;
 
         // get the current user ID
@@ -587,22 +589,26 @@ class nggAdmin{
         $galleryfolder = untrailingslashit($galleryfolder);
 
         $fs = C_Fs::get_instance();
-        if (is_null($gallery_id)) {
+        if (is_null($gallery_id))
+        {
             $gallerypath = $fs->join_paths($fs->get_document_root('content'), $galleryfolder);
-        } else {
+        }
+        else {
             $storage = C_Gallery_Storage::get_instance();
             $gallerypath = $storage->get_gallery_abspath($gallery_id);
         }
 
-        if (!is_dir($gallerypath)) {
+        if (!is_dir($gallerypath))
+        {
             nggGallery::show_error(sprintf(__("Directory <strong>%s</strong> doesn&#96;t exist!", 'nggallery'), esc_html($gallerypath)));
-            return ;
+            return;
         }
 
         // read list of images
         $new_imageslist = nggAdmin::scandir($gallerypath);
 
-        if (empty($new_imageslist)) {
+        if (empty($new_imageslist))
+        {
             nggGallery::show_message(sprintf(__("Directory <strong>%s</strong> contains no pictures", 'nggallery'), esc_html($gallerypath)));
             return;
         }
@@ -615,16 +621,20 @@ class nggAdmin{
         if (is_null($gallery_id))
             $gallery_id = $wpdb->get_var("SELECT gid FROM $wpdb->nggallery WHERE path = '$galleryfolder' ");
 
-        if (!$gallery_id) {
+        if (!$gallery_id)
+        {
             // now add the gallery to the database
             $gallery_id = nggdb::add_gallery( $galleryname, $galleryfolder, '', 0, 0, $user_ID );
-            if (!$gallery_id) {
+
+            if (!$gallery_id)
+            {
                 nggGallery::show_error(__('Database error. Could not add gallery!','nggallery'));
                 return;
             }
             else {
                 do_action('ngg_created_new_gallery', $gallery_id);
             }
+
             $created_msg = sprintf(
                 _n("Gallery <strong>%s</strong> successfully created!", 'Galleries <strong>%s</strong> successfully created!', 1, 'nggallery'),
                 esc_html($galleryname)
@@ -632,7 +642,7 @@ class nggAdmin{
         }
 
         // Look for existing image list
-        $old_imageslist = $wpdb->get_col("SELECT filename FROM $wpdb->nggpictures WHERE galleryid = '$gallery_id' ");
+        $old_imageslist = $wpdb->get_col("SELECT `filename` FROM {$wpdb->nggpictures} WHERE `galleryid` = '{$gallery_id}'");
 
         // if no images are there, create empty array
         if ($old_imageslist == NULL)
@@ -643,12 +653,12 @@ class nggAdmin{
 
         // all images must be valid files
         foreach($new_images as $key => $picture) {
-
             // filter function to rename/change/modify image before
             $picture = apply_filters('ngg_pre_add_new_image', $picture, $gallery_id);
             $new_images[$key] = $picture;
 
-            if (!@getimagesize($gallerypath . '/' . $picture) ) {
+            if (!@getimagesize($gallerypath . '/' . $picture))
+            {
                 unset($new_images[$key]);
                 @unlink($gallerypath . '/' . $picture);
             }
@@ -766,7 +776,7 @@ class nggAdmin{
      *
      * @class nggAdmin
      * @param int $galleryID
-     * @return arry (JSON)
+     * @return string|int (JSON)
      */
     static function get_image_ids( $galleryID ) {
 

@@ -9,7 +9,7 @@ $nmwpcomment -> load_template('admin/options.php');
 //$nmwpcomment -> pa($nmwpcomment -> the_options);
 //filemanager_pa($nmwpcomment -> plugin_settings);
 
-$sendUpdate = '';
+$sendUpdate = array();
 
 ?>
 
@@ -43,10 +43,14 @@ $sendUpdate = '';
 
 
 		<ul>
-			<?php foreach($options['meat'] as $key => $data){
+			<?php 
+			if(is_array($options['meat'])){
+			
+				
+				foreach($options['meat'] as $key => $data){
 			
 				$sendUpdate[$data['id']] = array('type'	=> $data['type']);
-				
+			
 				//echo 'option key '.$data['id'];
 				$default_value = (isset($data['default']) ? $data['default'] : '');
 				$the_value = ( isset($nmwpcomment -> plugin_settings[ $data['id'] ]) ? $nmwpcomment -> plugin_settings[ $data['id'] ] : $default_value);
@@ -188,6 +192,8 @@ $sendUpdate = '';
 
 			} ?></li>
 			<?php }
+				
+			}
 			
 			?>
 		</ul>

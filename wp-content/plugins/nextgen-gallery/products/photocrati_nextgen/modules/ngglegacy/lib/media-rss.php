@@ -7,7 +7,7 @@
 */
 class nggMediaRss {
 
-	function add_mrss_alternate_link() {
+	public static function add_mrss_alternate_link() {
 		echo "<link id='MediaRSS' rel='alternate' type='application/rss+xml' title='NextGEN Gallery RSS Feed' href='" . nggMediaRss::get_mrss_url() . "' />\n";
 	}
 
@@ -43,8 +43,8 @@ class nggMediaRss {
 	/**
 	 * Get the XML <rss> node corresponding to the last pictures registered
 	 *
-	 * @param page The current page (defaults to 0)
-	 * @param show The number of pictures to include in one field (default 30) 
+	 * @param int $page The current page (defaults to 0)
+	 * @param int $show The number of pictures to include in one field (default 30)
 	 */
 	function get_last_pictures_mrss($page = 0, $show = 30) {
 		$images = nggdb::find_last_images($page, $show);

@@ -6,7 +6,7 @@
 }
 @media (max-width: 1200px) {
     header {
-        height: 77px;
+        height: 140px;
     }
     .sticky + section {
         padding-top: 77px;
@@ -37,7 +37,7 @@
         margin: 0 4px;
     }
     .headling-info a {
-        font-size: 26px;
+        font-size: 24px;
     }
     .headling-info p {
         font-size: 13px;
@@ -83,6 +83,10 @@
     }
 }
 @media (max-width: 991px) {
+    .header-item{
+        font-size: 12px;
+        line-height: 14px;
+    }
     .baner-carousel .baner-title {
         font-size: 36px;
         line-height: normal;
@@ -330,6 +334,14 @@
     }
 }
 @media (max-width: 480px) {
+    .top-header{
+        flex-direction: column;
+    }
+    .header-item{
+        font-size: 12px;
+        line-height: 12px;
+        margin-top: 5px;
+    }
     .baner-carousel .baner-title {
         font-size: 30px;
     }

@@ -204,6 +204,9 @@ class C_Admin_Notification_Manager
      * @var C_Admin_Notification_Manager
      */
     static $_instance = NULL;
+    /**
+     * @return C_Admin_Notification_Manager
+     */
     static function get_instance()
     {
         if (!isset(self::$_instance)) {
@@ -325,7 +328,7 @@ class C_Admin_Notification_Manager
     {
         if ($this->has_displayed_notice()) {
             $router = C_Router::get_instance();
-            wp_enqueue_script('ngg_admin_notices', $router->get_static_url('photocrati-nextgen_admin#admin_notices.js'), FALSE, NGG_SCRIPT_VERSION, TRUE);
+            wp_enqueue_script('ngg_admin_notices', $router->get_static_url('photocrati-nextgen_admin#admin_notices.js'), array(), NGG_SCRIPT_VERSION, TRUE);
             wp_localize_script('ngg_admin_notices', 'ngg_dismiss_url', $this->_dismiss_url);
         }
     }
@@ -347,7 +350,12 @@ class C_Admin_Notification_Manager
             }
             ob_end_clean();
             echo json_encode($retval);
-            throw new E_Clean_Exit();
+            // E_Clean_Exit causes warnings to be appended to XHR responses, potentially breaking the client JS
+            if (!defined('NGG_DISABLE_SHUTDOWN_EXCEPTION_HANDLER') || !NGG_DISABLE_SHUTDOWN_EXCEPTION_HANDLER) {
+                throw new E_Clean_Exit();
+            } else {
+                exit;
+            }
         }
     }
     function render_notice($name)
@@ -358,12 +366,179 @@ class C_Admin_Notification_Manager
             $has_method = method_exists($handler, 'is_renderable');
             if ($has_method && $handler->is_renderable() || !$has_method) {
                 $show_dismiss_button = method_exists($handler, 'show_dismiss_button') ? $handler->show_dismiss_button() : method_exists($handler, 'is_dismissable') ? $handler->is_dismissable() : FALSE;
-                $view = new C_MVC_View('photocrati-nextgen_admin#admin_notice', array('css_class' => method_exists($handler, 'get_css_class') ? $handler->get_css_class() : 'updated', 'is_dismissable' => method_exists($handler, 'is_dismissable') ? $handler->is_dismissable() : FALSE, 'html' => method_exists($handler, 'render') ? $handler->render() : '', 'show_dismiss_button' => $show_dismiss_button, 'notice_name' => $name));
+                $template = method_exists($handler, 'get_mvc_template') ? $handler->get_mvc_template() : 'photocrati-nextgen_admin#admin_notice';
+                // The 'inline' class is necessary to prevent our notices from being moved in the DOM
+                // see https://core.trac.wordpress.org/ticket/34570 for reference
+                $css_class = 'inline ';
+                $css_class .= method_exists($handler, 'get_css_class') ? $handler->get_css_class() : 'updated';
+                $view = new C_MVC_View($template, array('css_class' => $css_class, 'is_dismissable' => method_exists($handler, 'is_dismissable') ? $handler->is_dismissable() : FALSE, 'html' => method_exists($handler, 'render') ? $handler->render() : '', 'show_dismiss_button' => $show_dismiss_button, 'notice_name' => $name));
                 $retval = $view->render(TRUE);
                 $this->_displayed_notice = TRUE;
             }
         }
         return $retval;
+    }
+}
+class C_Admin_Requirements_Manager
+{
+    protected $_requirements = array();
+    protected $_groups = array();
+    public function __construct()
+    {
+        $this->set_initial_groups();
+    }
+    protected function set_initial_groups()
+    {
+        // Requirements can be added with any group key desired but only registered groups will be displayed
+        $this->_groups = apply_filters('ngg_admin_requirements_manager_groups', array('phpext' => __('NextGen Gallery requires the following PHP extensions to function correctly. Please contact your hosting provider or systems admin and ask them for assistance:', 'nggallery'), 'phpver' => __('NextGen Gallery has degraded functionality because of your PHP version. Please contact your hosting provider or systems admin and ask them for assistance:', 'nggallery'), 'dirperms' => __('NextGen Gallery has found an issue trying to access the following files or directories. Please ensure the following locations have the correct permissions:', 'nggallery')));
+    }
+    /**
+     * @return C_Admin_Requirements_Manager
+     */
+    private static $_instance = NULL;
+    public static function get_instance()
+    {
+        if (!isset(self::$_instance)) {
+            self::$_instance = new C_Admin_Requirements_Manager();
+        }
+        return self::$_instance;
+    }
+    /**
+     * @param string $name Unique notification ID
+     * @param string $group Choose one of phpext | phpver | dirperms
+     * @param callable $callback Method that determines whether the notification should display
+     * @param array $data Possible keys: className, message, dismissable
+     */
+    public function add($name, $group, $callback, $data)
+    {
+        $this->_requirements[$group][$name] = new C_Admin_Requirements_Notice($name, $callback, $data);
+    }
+    /**
+     * @param string $name
+     */
+    public function remove($name)
+    {
+        unset($this->_notifications[$name]);
+    }
+    public function create_notification()
+    {
+        foreach ($this->_groups as $groupID => $groupLabel) {
+            if (empty($this->_requirements[$groupID])) {
+                continue;
+            }
+            $dismissable = TRUE;
+            $notices = array();
+            foreach ($this->_requirements[$groupID] as $key => $requirement) {
+                $passOrFail = $requirement->run_callback();
+                if (!$passOrFail) {
+                    // If any of the notices can't be dismissed then all notices in that group can't be dismissed
+                    if (!$requirement->is_dismissable()) {
+                        // Add important notices to the beginning of the list
+                        $dismissable = FALSE;
+                        array_unshift($notices, $requirement);
+                    } else {
+                        // Less important notices go to the end of the list
+                        $notices[] = $requirement;
+                    }
+                }
+            }
+            // Don't display empty group notices
+            if (empty($notices)) {
+                continue;
+            }
+            // Generate the combined message for this group
+            $message = '<p>' . $this->_groups[$groupID] . '</p><ul>';
+            foreach ($notices as $requirement) {
+                // Make non-dismissable notifications bold
+                $string = $requirement->is_dismissable() ? $requirement->get_message() : '<strong>' . $requirement->get_message() . '</strong>';
+                $message .= '<li>' . $string . '</li>';
+            }
+            $message .= '</ul>';
+            // Generate the notice object
+            $name = 'ngg_requirement_notice_' . $groupID . '_' . md5($message);
+            $notice = new C_Admin_Requirements_Notice($name, '__return_true', array('dismissable' => $dismissable, 'message' => $message));
+            C_Admin_Notification_Manager::get_instance()->add($name, $notice);
+        }
+    }
+}
+class C_Admin_Requirements_Notice
+{
+    protected $_name;
+    protected $_data;
+    protected $_callback;
+    /**
+     * C_Admin_Requirements_Notice constructor
+     * @param string $name
+     * @param callable $callback
+     * @param array $data
+     */
+    public function __construct($name, $callback, $data)
+    {
+        $this->_name = $name;
+        $this->_data = $data;
+        $this->_callback = $callback;
+    }
+    /**
+     * @return bool
+     */
+    public function is_renderable()
+    {
+        return true;
+    }
+    /**
+     * @return bool
+     */
+    public function is_dismissable()
+    {
+        return isset($this->_data['dismissable']) ? $this->_data['dismissable'] : TRUE;
+    }
+    /**
+     * @return string
+     */
+    public function render()
+    {
+        return $this->_data["message"];
+    }
+    /**
+     * @return string
+     */
+    public function get_mvc_template()
+    {
+        return 'photocrati-nextgen_admin#requirement_notice';
+    }
+    /**
+     * @return string
+     */
+    public function get_name()
+    {
+        return $this->_name;
+    }
+    /**
+     * @return bool
+     */
+    public function run_callback()
+    {
+        if (is_callable($this->_callback)) {
+            return call_user_func($this->_callback);
+        } else {
+            return false;
+        }
+    }
+    /**
+     * @return string
+     */
+    public function get_css_class()
+    {
+        $prefix = 'notice notice-';
+        if ($this->is_dismissable()) {
+            return $prefix . 'warning';
+        } else {
+            return $prefix . 'error';
+        }
+    }
+    public function get_message()
+    {
+        return empty($this->_data['message']) ? "" : $this->_data['message'];
     }
 }
 /**
@@ -391,7 +566,7 @@ class C_Form extends C_MVC_Controller
     }
     /**
      * Defines the form
-     * @param string $context
+     * @param string|bool $context (optional)
      */
     function define($context = FALSE)
     {
@@ -428,7 +603,7 @@ class Mixin_Form_Instance_Methods extends Mixin
     /**
      * Saves the form/model
      * @param array $attributes
-     * @return type
+     * @return bool
      */
     function save_action($attributes = array())
     {
@@ -443,6 +618,8 @@ class Mixin_Form_Instance_Methods extends Mixin
     }
     /**
      * Returns the rendered form
+     * @param bool $wrap (optional) Default = true
+     * @return string
      */
     function render($wrap = TRUE)
     {
@@ -515,7 +692,8 @@ class C_Form_Manager extends C_Component
     var $_forms = array();
     /**
      * Returns an instance of the form manager
-     * @returns C_Form_Manager
+     * @param string|bool $context (optional)
+     * @return C_Form_Manager
      */
     static function &get_instance($context = FALSE)
     {
@@ -540,9 +718,9 @@ class Mixin_Form_Manager extends Mixin
 {
     /**
      * Adds one or more
-     * @param type $type
-     * @param type $form_names
-     * @return type
+     * @param string $type
+     * @param array|string $form_names
+     * @return int Results of get_form_count($type)
      */
     function add_form($type, $form_names)
     {
@@ -598,7 +776,7 @@ class Mixin_Form_Manager extends Mixin
     }
     /**
      * Gets known form types
-     * @return type
+     * @return array
      */
     function get_known_types()
     {
@@ -607,6 +785,7 @@ class Mixin_Form_Manager extends Mixin
     /**
      * Gets forms of a particular type
      * @param string $type
+     * @param string|bool $instantiate (optional)
      * @return array
      */
     function get_forms($type, $instantiate = FALSE)
@@ -703,6 +882,10 @@ if (!class_exists('C_NextGen_Admin_Installer')) {
 class C_NextGen_Admin_Page_Controller extends C_MVC_Controller
 {
     static $_instances = array();
+    /**
+     * @param bool|string $context
+     * @return C_NextGen_Admin_Page_Controller
+     */
     static function get_instance($context = FALSE)
     {
         if (!isset(self::$_instances[$context])) {
@@ -730,18 +913,16 @@ class Mixin_NextGen_Admin_Page_Instance_Methods extends Mixin
      */
     function is_authorized_request($privilege = NULL)
     {
+        $retval = TRUE;
         if (!$privilege) {
             $privilege = $this->object->get_required_permission();
         }
-        $security = $this->get_registry()->get_utility('I_Security_Manager');
-        $retval = $sec_token = $security->get_request_token(str_replace(array(' ', "\n", "\t"), '_', $privilege));
-        $sec_actor = $security->get_current_actor();
         // Ensure that the user has permission to access this page
-        if (!$sec_actor->is_allowed($privilege)) {
+        if (!M_Security::is_allowed($privilege)) {
             $retval = FALSE;
         }
         // Ensure that nonce is valid
-        if ($this->object->is_post_request() && !$sec_token->check_current_request()) {
+        if ($this->object->is_post_request() && (isset($_REQUEST['nonce']) && !M_Security::verify_nonce($_REQUEST['nonce'], $privilege))) {
             $retval = FALSE;
         }
         return $retval;
@@ -752,7 +933,7 @@ class Mixin_NextGen_Admin_Page_Instance_Methods extends Mixin
      */
     function get_required_permission()
     {
-        return $this->object->name;
+        return str_replace(array(' ', "\n", "\t"), '_', $this->object->name);
     }
     // Sets an appropriate screen for NextGEN Admin Pages
     function set_screen()
@@ -781,8 +962,7 @@ class Mixin_NextGen_Admin_Page_Instance_Methods extends Mixin
         $this->object->enqueue_jquery_ui_theme();
         wp_enqueue_script('photocrati_ajax');
         wp_enqueue_script('jquery-ui-accordion');
-        wp_enqueue_script('nextgen_display_settings_page_placeholder_stub', $this->get_static_url('photocrati-nextgen_admin#jquery.placeholder.min.js'), array('jquery'), NGG_SCRIPT_VERSION, TRUE);
-        wp_enqueue_style('imagely-admin-font', 'https://fonts.googleapis.com/css?family=Lato:300,400,700,900', false, NGG_SCRIPT_VERSION);
+        wp_enqueue_style('imagely-admin-font', 'https://fonts.googleapis.com/css?family=Lato:300,400,700,900', array(), NGG_SCRIPT_VERSION);
         if (method_exists('M_Gallery_Display', 'enqueue_fontawesome')) {
             M_Gallery_Display::enqueue_fontawesome();
         }
@@ -793,7 +973,7 @@ class Mixin_NextGen_Admin_Page_Instance_Methods extends Mixin
     function enqueue_jquery_ui_theme()
     {
         $settings = C_NextGen_Settings::get_instance();
-        wp_enqueue_style($settings->jquery_ui_theme, is_ssl() ? str_replace('http:', 'https:', $settings->jquery_ui_theme_url) : $settings->jquery_ui_theme_url, FALSE, $settings->jquery_ui_theme_version);
+        wp_enqueue_style($settings->jquery_ui_theme, is_ssl() ? str_replace('http:', 'https:', $settings->jquery_ui_theme_url) : $settings->jquery_ui_theme_url, array(), $settings->jquery_ui_theme_version);
     }
     /**
      * Returns the page title
@@ -817,10 +997,19 @@ class Mixin_NextGen_Admin_Page_Instance_Methods extends Mixin
      */
     function get_header_message()
     {
-        if (defined('NGG_PRO_PLUGIN_VERSION')) {
-            $message = __("Good work. Keep making the web beautiful.", 'nggallery');
+        if (defined('NGG_PRO_PLUGIN_VERSION') || defined('NGG_PLUS_PLUGIN_VERSION')) {
+            $message = '<p>' . __("Good work. Keep making the web beautiful.", 'nggallery') . '</p>';
         } else {
-            $message = __('Create more beautiful galleries. Upgrade to ') . '<a href="https://www.imagely.com/wordpress-gallery-plugin/nextgen-pro/?utm_source=ngg&utm_medium=ngguser&utm_campaign=ngpro" target="_blank">' . __('NextGEN Pro') . '</a>';
+            // Experiment
+            $currentDate = date('Y-m-d');
+            $currentDate = date('Y-m-d', strtotime($currentDate));
+            $bf_sale_start = date('Y-m-d', strtotime("12/02/2019"));
+            $bf_sale_end = date('Y-m-d', strtotime("12/05/2019"));
+            if ($currentDate >= $bf_sale_start && $currentDate <= $bf_sale_end) {
+                $message = '<p class="ngg-header-promo black-friday"><span>' . __('Cyber Monday Sale!') . '</span><br>' . __('40% Off NextGEN Pro!') . '<a href="https://www.imagely.com/wordpress-gallery-plugin/nextgen-pro/?utm_source=ngg&utm_medium=ngguser&utm_campaign=ngpro" class="button-primary" target="_blank">' . __('Upgrade to NextGEN Pro') . '</a></p>';
+            } else {
+                $message = '<p class="ngg-header-promo">' . __('Tip: Want more beautiful galleries, a stunning lightbox, image social sharing, ecommerce, PRO support, and more?') . '<a href="https://www.imagely.com/wordpress-gallery-plugin/nextgen-pro/?utm_source=ngg&utm_medium=ngguser&utm_campaign=ngpro" class="button-primary" target="_blank">' . __('Upgrade to NextGEN Pro') . '</a></p>';
+            }
         }
         return $message;
     }
@@ -838,15 +1027,16 @@ class Mixin_NextGen_Admin_Page_Instance_Methods extends Mixin
     }
     /**
      * Returns an accordion tab, encapsulating the form
-     * @param I_Form $form
+     * @param C_Form $form
+     * @return string
      */
     function to_accordion_tab($form)
     {
         return $this->object->render_partial('photocrati-nextgen_admin#accordion_tab', array('id' => $form->get_id(), 'title' => $form->get_title(), 'content' => $form->render(TRUE)), TRUE);
     }
     /**
-     * Returns the
-     * @return type
+     * Returns the forms registered for the current get_form_type()
+     * @return array
      */
     function get_forms()
     {
@@ -909,6 +1099,7 @@ class Mixin_NextGen_Admin_Page_Instance_Methods extends Mixin
             if ($this->object->is_post_request() && $this->has_method($action)) {
                 $this->object->{$action}($this->object->param($this->context));
             }
+            $index_template = $this->object->index_template();
             foreach ($this->object->get_forms() as $form) {
                 $form->page = $this->object;
                 $form->enqueue_static_resources();
@@ -917,7 +1108,14 @@ class Mixin_NextGen_Admin_Page_Instance_Methods extends Mixin
                         $form->{$action}($this->object->param($form->context));
                     }
                 }
-                $tabs[] = $this->object->to_accordion_tab($form);
+                // This is a strange but necessary hack: this seemingly extraneous use of to_accordion_tab() normally
+                // just means that we're rendering the admin content twice but NextGen Pro's pricelist and coupons pages
+                // actually depend on echo'ing the $tabs variable here, unlike the 'nextgen_admin_page' template which
+                // doesn't make use of the $tabs parameter at all.
+                // TLDR: The next two lines are necessary for the pricelist and coupons pages.
+                if ($index_template !== 'photocrati-nextgen_admin#nextgen_admin_page') {
+                    $tabs[] = $this->object->to_accordion_tab($form);
+                }
                 $forms[] = $form;
                 if ($form->has_method('get_model') && $form->get_model()) {
                     if ($form->get_model()->is_invalid()) {
@@ -929,9 +1127,9 @@ class Mixin_NextGen_Admin_Page_Instance_Methods extends Mixin
                 }
             }
             // Render the view
-            $index_params = array('page_heading' => $this->object->get_page_heading(), 'tabs' => $tabs, 'forms' => $forms, 'errors' => $errors, 'success' => $success, 'header_message' => $this->object->get_header_message(), 'form_header' => $token->get_form_html(), 'show_save_button' => $this->object->show_save_button(), 'model' => $this->object->has_method('get_model') ? $this->get_model() : NULL, 'logo' => $this->get_router()->get_static_url('photocrati-nextgen_admin#imagely_icon.png'));
+            $index_params = array('page_heading' => $this->object->get_page_heading(), 'tabs' => $tabs, 'forms' => $forms, 'errors' => $errors, 'success' => $success, 'form_header' => FALSE, 'header_message' => $this->object->get_header_message(), 'nonce' => M_Security::create_nonce($this->object->get_required_permission()), 'show_save_button' => $this->object->show_save_button(), 'model' => $this->object->has_method('get_model') ? $this->get_model() : NULL, 'logo' => $this->get_router()->get_static_url('photocrati-nextgen_admin#imagely_icon.png'));
             $index_params = array_merge($index_params, $this->object->get_index_params());
-            $this->render_partial($this->object->index_template(), $index_params);
+            $this->render_partial($index_template, $index_params);
         } else {
             $this->render_view('photocrati-nextgen_admin#not_authorized', array('name' => $this->object->name, 'title' => $this->object->get_page_title()));
         }
@@ -948,7 +1146,7 @@ class C_NextGen_Admin_Page_Manager extends C_Component
     var $_pages = array();
     /**
      * Gets an instance of the Page Manager
-     * @param string $context
+     * @param string|false $context (optional)
      * @return C_NextGen_Admin_Page_Manager
      */
     static function &get_instance($context = FALSE)
@@ -961,7 +1159,7 @@ class C_NextGen_Admin_Page_Manager extends C_Component
     }
     /**
      * Defines the instance of the Page Manager
-     * @param type $context
+     * @param string $context
      */
     function define($context = FALSE)
     {
@@ -970,16 +1168,30 @@ class C_NextGen_Admin_Page_Manager extends C_Component
         $this->implement('I_Page_Manager');
     }
     /**
-     * Determines if a NextGEN Admin page is being requested
+     * Determines if a NextGEN page or post type is being requested
      * @return bool|string
      */
     static function is_requested()
     {
         $retval = FALSE;
+        if (self::is_requested_page()) {
+            $retval = self::is_requested_page();
+        } elseif (self::is_requested_post_type()) {
+            $retval = self::is_requested_post_type();
+        }
+        return apply_filters('is_ngg_admin_page', $retval);
+    }
+    /**
+     * Determines if a NextGEN Admin page is being requested
+     * @return bool|string
+     */
+    static function is_requested_page()
+    {
+        $retval = FALSE;
         // First, check the screen for the "ngg" property. This is how ngglegacy pages register themselves
         $screen = get_current_screen();
         if (property_exists($screen, 'ngg') && $screen->ngg) {
-            $retval = TRUE;
+            $retval = $screen->id;
         } else {
             foreach (self::get_instance()->get_all() as $slug => $properties) {
                 // Are we rendering a NGG added page?
@@ -989,13 +1201,27 @@ class C_NextGen_Admin_Page_Manager extends C_Component
                         $retval = $slug;
                         break;
                     }
-                } elseif (isset($properties['post_type']) && $screen->post_type == $properties['post_type']) {
-                    $retval = $slug;
-                    break;
                 }
             }
         }
-        return apply_filters('is_ngg_admin_page', $retval);
+        return $retval;
+    }
+    /**
+     * Determines if a NextGEN post type is being requested
+     * @return bool|string
+     */
+    static function is_requested_post_type()
+    {
+        $retval = FALSE;
+        $screen = get_current_screen();
+        foreach (self::get_instance()->get_all() as $slug => $properties) {
+            // Are we rendering a NGG post type?
+            if (isset($properties['post_type']) && $screen->post_type == $properties['post_type']) {
+                $retval = $slug;
+                break;
+            }
+        }
+        return $retval;
     }
 }
 class Mixin_Page_Manager extends Mixin
@@ -1122,6 +1348,9 @@ class Mixin_Page_Manager extends Mixin
 // TODO: Remove some time in 2018
 class C_Page_Manager
 {
+    /**
+     * @return C_NextGen_Admin_Page_Manager
+     */
     static function get_instance()
     {
         return C_NextGen_Admin_Page_Manager::get_instance();
@@ -1129,6 +1358,56 @@ class C_Page_Manager
     static function is_requested()
     {
         return C_NextGen_Admin_Page_Manager::is_requested();
+    }
+}
+class C_NextGen_First_Run_Notification_Wizard
+{
+    protected static $wizard = NULL;
+    protected static $_instance = NULL;
+    /**
+     * @return bool
+     */
+    public function is_renderable()
+    {
+        return is_null(self::$wizard) ? FALSE : TRUE;
+    }
+    /**
+     * @return string
+     */
+    public function render()
+    {
+        if (!self::$wizard) {
+            return '';
+        }
+        $wizard = self::$wizard;
+        return __('Thanks for installing NextGEN Gallery! Want help creating your first gallery?', 'nggallery') . ' <a data-ngg-wizard="' . $wizard->get_id() . '" class="ngg-wizard-invoker" href="' . esc_url(add_query_arg('ngg_wizard', $wizard->get_id())) . '">' . __('Launch the Gallery Wizard', 'nggallery') . '</a>. ' . __('If you close this message, you can also launch the Gallery Wizard at any time from the', 'nggallery') . ' <a href="' . esc_url(admin_url('admin.php?page=nextgen-gallery')) . '">' . __('NextGEN Overview page', 'nggallery') . '</a>.';
+    }
+    public function get_css_class()
+    {
+        return 'updated';
+    }
+    public function is_dismissable()
+    {
+        return TRUE;
+    }
+    public function dismiss($code)
+    {
+        return array('handled' => TRUE);
+    }
+    /**
+     * @return C_NextGen_First_Run_Notification_Wizard
+     */
+    public static function get_instance()
+    {
+        if (!isset(self::$_instance)) {
+            $klass = get_class();
+            self::$_instance = new $klass();
+        }
+        return self::$_instance;
+    }
+    public static function set_wizard($wizard)
+    {
+        self::$wizard = $wizard;
     }
 }
 /**
@@ -1249,6 +1528,14 @@ class C_NextGEN_Wizard
     {
         $this->set_step_property($step_id, 'target_wait', $wait);
     }
+    function get_step_optional($step_id)
+    {
+        return $this->get_step_property($step_id, 'optional');
+    }
+    function set_step_optional($step_id, $optional)
+    {
+        $this->set_step_property($step_id, 'optional', $optional);
+    }
     function get_step_lazy($step_id)
     {
         return $this->get_step_property($step_id, 'lazy');
@@ -1364,7 +1651,8 @@ class C_NextGEN_Wizard_Manager extends C_Component
     var $_handled_query = false;
     /**
      * Returns an instance of the wizard manager
-     * @returns C_NextGEN_Wizard_Manager
+     * @param bool|string $context
+     * @return C_NextGEN_Wizard_Manager
      */
     static function get_instance($context = FALSE)
     {

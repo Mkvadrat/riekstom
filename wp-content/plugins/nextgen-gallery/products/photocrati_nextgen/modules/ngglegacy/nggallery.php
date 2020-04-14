@@ -9,9 +9,11 @@ class nggLoader
 	var $dbversion   = '1.8.1';
 	var $minimum_WP  = '3.6.1';
 	var $options     = '';
+    var $add_PHP5_notice = false;
+    var $plugin_name = '';
+
+	/** @var nggManageGallery|nggManageAlbum $manage_page */
 	var $manage_page;
-	var $add_PHP5_notice = false;
-	var $plugin_name = '';
 
 	function __construct()
 	{
@@ -213,7 +215,6 @@ class nggLoader
 
 		// Load global libraries												// average memory usage (in bytes)
 		require_once (dirname (__FILE__) . '/lib/core.php');					//  94.840
-		require_once (dirname (__FILE__) . '/lib/class.ngg_serializable.php');
 		require_once (dirname (__FILE__) . '/lib/ngg-db.php');					// 132.400
 		require_once (dirname (__FILE__) . '/lib/image.php');					//  59.424
 		require_once (dirname (__FILE__) . '/lib/tags.php');				    // 117.136
