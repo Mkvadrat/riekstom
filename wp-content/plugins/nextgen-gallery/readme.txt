@@ -2,8 +2,8 @@
 Contributors: photocrati, imagely
 Tags: wordpress gallery plugin, gallery, nextgen, nextgen gallery, photo gallery, image gallery, photography, slideshow, images, photo, photo album, watermark
 Requires at least: 4.0.0
-Stable tag: 3.3.5
-Tested up to: 5.4.0
+Stable tag: 3.3.17
+Tested up to: 5.5.0
 License: GPLv2
 Requires PHP: 5.4
 
@@ -179,6 +179,37 @@ For more information, feel free to visit the official website for the NextGEN Ga
 
 
 == Changelog ==
+
+= V3.3.17 - 08.18.2020 =
+* Fixed:   Override Thumbnail Settings not configurable
+* Fixed:   Broken gallery displays in WP 5.5 with Classic Editor
+* Fixed:   HTML in Gallery & Image fields
+* Fixed:   Inability to save Gallery Settings or Other Options
+
+= V3.3.11 - 08.14.2020 =
+* Fixed:   Fancybox lightbox not working with WordPress 5.5
+* Fixed:   Inability to upload images or create galleries in WordPress 5.5
+* Fixed:   Cannot crop images from Manage Galleries page
+* Fixed:   Removed use of jquery.size() and jquery.browser
+* Fixed:   Fixed iterator_to_array() PHP warning
+
+= V3.3.10 - 08.12.2020 =
+* NEW:     Added filter 'ngg_recent_images_sort_by_column' to control how recent images are sorted
+* Fixed:   Assigning a thumbnail to a custom post type page/post caused a fatal javsacript error
+* Fixed:   NextGEN would previously be completely unusable should it even once determine that it doesn't have the necessary roles it needs
+* Fixed:   Several SimpleLightbox issues caused by a recent version upgrade
+* Changed: Admin user interface modifications
+* Changed: Misc code improvements to take advantage of PHP 5.3+ features
+* Changed: Removed NGG_FIX_JQUERY constant
+
+= V3.3.6 - 06.24.2020 =
+* NEW:     Added a mechanism in Other Options > Misc to update page featured images assigned with NextGen version 1 that were broken by a WordPress 5.4 API change
+* NEW:     Added two filters (ngg_default_settings and ngg_default_global_settings) to allow control over default settings for new networks, sites and sub-sites
+* NEW:     Updated SimpleLightbox to the latest version. This fixes all gallery images appearing in the lightbox if more than one gallery was on the page.
+* Fixed:   Album routing was broken if the albums were named using a non-latin alphabet
+* Fixed:   Gallery path validation was broken on some IIS servers
+* Fixed:   NextGen was unable to serve AJAX requests on home.pl hosting
+* Fixed:   Removed the unused simple_html_dom module which was causing errors with PHP 7.3
 
 = V3.3.5 - 04.09.2020 =
 * Fixed:   Broken dynamic images

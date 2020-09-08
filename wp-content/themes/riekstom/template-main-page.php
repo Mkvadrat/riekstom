@@ -166,6 +166,20 @@ get_header();
                     <?php } ?>
 					<?php } ?>
                 </div>
+                <div class="col-md-3">
+                    <div>
+                        <?php $h_image = get_field('image_h_additional_main_page', get_the_ID()); ?>
+                        <img src="<?php echo $h_image['url']; ?>" alt="<?php echo $h_image['alt']; ?>">
+                    </div>
+                    <span><?php echo get_post_meta( get_the_ID(), 'title_h_additional_main_page', $single = true ); ?></span>
+                    
+                    <?php $get_pages_h = get_field_object('links_h_additional_main_page', get_the_ID()); ?>
+                    <?php if($get_pages_h['value']){ ?>
+					<?php foreach($get_pages_h['value'] as $pages){ ?>
+						<a href="<?php echo get_permalink($pages->ID) ?>"><?php echo $pages->post_title; ?></a>
+                    <?php } ?>
+					<?php } ?>
+                </div>
             </div>
         </div>
     </section>

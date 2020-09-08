@@ -23,6 +23,7 @@ Version: 1.0
 <![endif]-->
 <!--[if !(IE 7) & !(IE 8)]><!-->
 <html <?php language_attributes(); ?>>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,35 +31,12 @@ Version: 1.0
     <title><?php echo rs_wp_title('','', true, 'right'); ?></title>
 
     <meta name="yandex-verification" content="db029f2c99578a89" />
-    
+
     <?php wp_head(); ?>
 </head>
+
 <body>
     <div id="page">
-        <nav id="menu">
-            <?php
-                if (has_nav_menu('header_first_menu')){
-                    wp_nav_menu( array(
-                        'theme_location'  => 'header_first_menu',
-                        'menu'            => '',
-                        'container'       => false,
-                        'container_class' => '',
-                        'container_id'    => '',
-                        'menu_class'      => '',
-                        'menu_id'         => '',
-                        'echo'            => true,
-                        'fallback_cb'     => 'wp_page_menu',
-                        'before'          => '',
-                        'after'           => '',
-                        'link_before'     => '',
-                        'link_after'      => '',
-                        'items_wrap'      => '<ul>%3$s</ul>',
-                        'depth'           => 2,
-                        'walker'          => new primary_menu(),
-                    ) );
-                }
-            ?>
-        </nav>
         <header>
             <div class="container">
                 <div class="top-header">
@@ -75,38 +53,38 @@ Version: 1.0
                 <div class="row">
                     <div class="col-md-3 col-sm-4 col-xs-6 logo">
                         <a class="header__logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
-                            <img
-                            src="<?php header_image(); ?>"
-                            height="<?php echo get_custom_header()->height; ?>"
-                            width="<?php echo get_custom_header()->width; ?>"
-                            alt="logotype"
-                            />
+                            <img src="<?php header_image(); ?>" height="<?php echo get_custom_header()->height; ?>"
+                                width="<?php echo get_custom_header()->width; ?>" alt="logotype" />
                             <span><?php echo get_field('text_logo_main_page', '7'); ?></span>
                         </a>
                     </div>
                     <div class="col-md-6 menu">
-                        <?php
-                            if (has_nav_menu('header_first_menu')){
-                                wp_nav_menu( array(
-                                    'theme_location'  => 'header_first_menu',
-                                    'menu'            => '',
-                                    'container'       => false,
-                                    'container_class' => '',
-                                    'container_id'    => '',
-                                    'menu_class'      => '',
-                                    'menu_id'         => '',
-                                    'echo'            => true,
-                                    'fallback_cb'     => 'wp_page_menu',
-                                    'before'          => '',
-                                    'after'           => '',
-                                    'link_before'     => '',
-                                    'link_after'      => '',
-                                    'items_wrap'      => '<ul>%3$s</ul>',
-                                    'depth'           => 2,
-                                    'walker'          => new primary_menu(),
-                                ) );
-                            }
-                        ?>
+                        <p><?php echo get_field('mode_operation_header_main_page', '7'); ?></p>
+
+						<nav class="menu-main">
+                            <?php
+                                if (has_nav_menu('header_first_menu')){
+                                    wp_nav_menu( array(
+                                        'theme_location'  => 'header_first_menu',
+                                        'menu'            => '',
+                                        'container'       => false,
+                                        'container_class' => '',
+                                        'container_id'    => '',
+                                        'menu_class'      => '',
+                                        'menu_id'         => '',
+                                        'echo'            => true,
+                                        'fallback_cb'     => 'wp_page_menu',
+                                        'before'          => '',
+                                        'after'           => '',
+                                        'link_before'     => '',
+                                        'link_after'      => '',
+                                        'items_wrap'      => '<ul>%3$s</ul>',
+                                        'depth'           => 3,
+                                        'walker'          => new primary_menu(),
+                                    ) );
+                                }
+                            ?>
+						</nav>
                     </div>
                     <div class="col-md-3 col-sm-8 col-xs-6 headling-info">
                         <a class="mobile-button greenbutton" href="#menu">
@@ -114,8 +92,11 @@ Version: 1.0
                             <span></span>
                             <span></span>
                         </a>
-                        <a href="tel:<?php echo get_field('phone_header_main_page', '7'); ?>"><?php echo get_field('phone_header_main_page', '7'); ?></a>
-                        <p><?php echo get_field('mode_operation_header_main_page', '7'); ?></p>
+                        <a
+                            href="tel:<?php echo get_field('phone_header_main_page', '7'); ?>"><?php echo get_field('phone_header_main_page', '7'); ?></a>
+                        <div class="btn-header">
+                            <?php echo get_field('callback_header_main_page', '7'); ?>
+                        </div>
                     </div>
                 </div>
             </div>

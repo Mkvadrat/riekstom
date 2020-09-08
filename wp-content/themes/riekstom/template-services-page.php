@@ -133,6 +133,20 @@ get_header();
 					<?php } ?>
                     <?php } ?>
                 </div>
+                <div class="col-md-3">
+					<div>
+                        <?php $j_image = get_field('image_j_additional_services_page', get_the_ID()); ?>
+                        <img src="<?php echo $j_image['url']; ?>" alt="<?php echo $j_image['alt']; ?>">
+                    </div>
+                    <span><?php echo get_post_meta( get_the_ID(), 'title_j_additional_services_page', $single = true ); ?></span>
+                    
+                    <?php $get_pages_j = get_field_object('links_j_additional_services_page', get_the_ID()); ?>
+                    <?php if($get_pages_j['value']){ ?>
+					<?php foreach($get_pages_j['value'] as $pages){ ?>
+						<a href="<?php echo get_permalink($pages->ID) ?>"><?php echo $pages->post_title; ?></a>
+					<?php } ?>
+                    <?php } ?>
+                </div>
             </div>
         </div>
     </section>

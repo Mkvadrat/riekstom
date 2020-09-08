@@ -161,8 +161,8 @@ class nggAdminPanel{
 	function add_menu()  {
 
 		add_menu_page(
-		    __('Gallery', 'nggallery'),
-            _n('Gallery', 'Galleries', 1, 'nggallery'),
+		    __('NextGEN Gallery', 'nggallery'),
+            _n('NextGEN Gallery', 'NextGen Galleries', 1, 'nggallery'),
             'NextGEN Gallery overview',
             NGGFOLDER,
             array ($this, 'show_menu'),

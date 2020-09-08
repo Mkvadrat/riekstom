@@ -366,8 +366,11 @@ hr {
   width: 33.33333333%;
 }
 .col-xs-3 {
-  width: 25%;
+  width: 24.9%;
 }
+/*.col-xs-3 {
+  width: 25%;
+}*/
 .col-xs-2 {
   width: 16.66666667%;
 }
@@ -681,7 +684,7 @@ hr {
     width: 33.33333333%;
   }
   .col-md-3 {
-    width: 25%;
+    width: 24.9%;
   }
   .col-md-2 {
     width: 16.66666667%;

@@ -8,6 +8,31 @@ Description: Тема для сайта http://riekstom.com/
 Version: 1.0
 */
 ?>
+
+        <nav id="menu">
+            <?php
+                if (has_nav_menu('mobile_menu')){
+                    wp_nav_menu( array(
+                        'theme_location'  => 'mobile_menu',
+                        'menu'            => '',
+                        'container'       => false,
+                        'container_class' => '',
+                        'container_id'    => '',
+                        'menu_class'      => '',
+                        'menu_id'         => '',
+                        'echo'            => true,
+                        'fallback_cb'     => 'wp_page_menu',
+                        'before'          => '',
+                        'after'           => '',
+                        'link_before'     => '',
+                        'link_after'      => '',
+                        'items_wrap'      => '<ul>%3$s</ul>',
+                        'depth'           => 3,
+                        'walker'          => new mobile_menu(),
+                    ) );
+                }
+            ?>
+        </nav>
         
         <footer>
             <div class="container">

@@ -1,4 +1,26 @@
 $(document).ready(function(){
+    $(".ancLinks").on('click', function(event) {
+        if (this.hash !== "") {
+          var hash = this.hash;
+    
+          $('html, body').animate({
+            scrollTop: $(hash).offset().top
+          }, 2000, function() {
+            window.location.hash = hash;
+          });
+          return false;
+        }
+    });
+    
+    $('.slider-main-block').owlCarousel({
+        loop: true,
+        nav: true,
+        dots: false,
+        items: 1,
+        autoplay: true,
+        autoHeight:true,
+    })
+
     $(".owl-carousel.baner").owlCarousel({
         items : 1,
         loop : true,
@@ -46,7 +68,7 @@ $(document).ready(function(){
         watch: "word",
     }); */
 
-    $(window).on("scroll", function() {
+    /*$(window).on("scroll", function() {
         if (window.pageYOffset > 200) {
             $("header").addClass("sticky");
         } else {
@@ -54,7 +76,7 @@ $(document).ready(function(){
                 $("header").removeClass("sticky").removeAttr('style');
             });
         }
-    });
+    });*/
 
     $('.services-list span').on('click', function() {
         if($(this).is('.active-rubric')) {
@@ -151,7 +173,9 @@ $(document).ready(function(){
             $(this).addClass('discounts');
         }
     });
-
+    
+    $('.btn-form *[type="submit"]').attr('disabled', 'disabled');
+    
     /* $('.mobile-button').on('click', function() {
     }); */
     $("#menu").mmenu({

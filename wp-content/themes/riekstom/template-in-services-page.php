@@ -106,6 +106,15 @@ get_header();
 					<?php } ?>
                     <?php } ?>      
                     </ul>
+                    <span><?php echo get_field('title_j_additional_services_page', '95'); ?></span>
+                    <ul>
+                    <?php $get_pages_j = get_field_object('links_j_additional_services_page', '95'); ?>
+                    <?php if($get_pages_j['value']){ ?>
+					<?php foreach($get_pages_j['value'] as $pages){ ?>
+                        <li><p><a href="<?php echo get_permalink($pages->ID) ?>"><?php echo $pages->post_title; ?></a></p></li>
+					<?php } ?>
+                    <?php } ?>      
+                    </ul>
                 </aside>
                 <article class="col-md-8 in-services">
                     <h1 class="title"><?php the_title(); ?></h1>
@@ -114,7 +123,7 @@ get_header();
                         <?php the_content(); ?>
                     <?php endwhile; endif; ?>
             
-                    <a href="<?php echo get_permalink( 284 ); ?>" class="greenbutton samebutton"><?php echo get_field('view_examples_in_services_page', '95'); ?></a>
+                    <!--<a href="<?php echo get_permalink( 284 ); ?>" class="greenbutton samebutton"><?php echo get_field('view_examples_in_services_page', '95'); ?></a>-->
                     <a href="<?php echo get_permalink( 69 ); ?>" class="greenbutton samebutton"><?php echo get_field('all_text_reviews_block_main_page', '7'); ?></a>
                 </article>
             </div>

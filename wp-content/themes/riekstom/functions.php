@@ -89,6 +89,7 @@ if(function_exists('register_nav_menus')){
 		  'footer_third_menu'  => 'Меню в футере (3 блок)',
 		  'sidebar_menu'       => 'Меню страница (Правый блок)',
 		  'sidebar_other_menu' => 'Меню страница (Правый блок - Other page)',
+		  'mobile_menu' 	   => 'Мобильное меню',
 		)
 	);
 }
@@ -148,6 +149,107 @@ function getNextGallery($post_id, $meta_key){
 ***********************************************************************************************************************************************************/
 // Добавляем свой класс для пунктов меню:
 class primary_menu extends Walker_Nav_Menu {
+	// Добавляем классы к вложенным ul
+	function start_lvl( &$output, $depth = 0, $args = Array() ) {
+		// Глубина вложенных ul
+		$indent = ( $depth > 0  ? str_repeat( "\t", $depth ) : '' ); // code indent
+		$display_depth = ( $depth + 1); // because it counts the first submenu as 0
+		$classes = array(
+			'',
+			( $display_depth % 2  ? '' : '' ),
+			( $display_depth >=2 ? '' : '' ),
+			''
+			);
+		$class_names = implode( ' ', $classes );
+		// build html
+		if($depth == 0){
+			$output .= "\n" . $indent . '<ul class="menu-block-main">' . "\n";
+		}else if($depth == 1){
+			$output .= "\n" . $indent . '<ul class="no-background-list">' . "\n";
+		}else if($depth >= 2){
+			$output .= "\n" . $indent . '<ul class="subsubsubmenu">' . "\n";
+		}
+	}
+
+	// Добавляем классы к вложенным li
+	function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {
+		global $wpdb;
+		global $wp_query;
+		$indent = ( $depth > 0 ? str_repeat( "\t", $depth ) : '' ); // code indent
+
+		// depth dependent classes
+		$depth_classes = array(
+			( $depth == 0 ? 'has-sub' : '' ),
+			( $depth >=2 ? '' : '' ),
+			( $depth % 2 ? '' : '' ),
+			'menu-item-depth-' . $depth
+		);
+
+		$depth_class_names = esc_attr( implode( ' ', $depth_classes ) );
+
+		// passed classes
+		$classes = empty( $item->classes ) ? array() : (array) $item->classes;
+
+		$mycurrent = ( $item->current == 1 ) ? ' active' : '';
+
+		$class_names = esc_attr( implode( ' ', apply_filters( 'nav_menu_css_class', array_filter( $classes ), $item ) ) );
+		
+		$has_children = $wpdb->get_results( $wpdb->prepare("SELECT post_id FROM $wpdb->postmeta WHERE meta_value = %s AND meta_key = '_menu_item_menu_item_parent'", $item->ID), ARRAY_A);
+		
+		if($depth == 0 && !empty($has_children)){
+			$output .= $indent . '<li class="sub-menu">';
+		}else if($depth == 1){
+			$output .= $indent . '<li class="sub-menu">';
+		}else{
+			$output .= $indent . '<li class="sub-menu">';
+		}
+
+		// Добавляем атрибуты и классы к элементу a (ссылки)
+		$attributes  = ! empty( $item->attr_title ) ? ' title="'  . esc_attr( $item->attr_title ) .'"' : '';
+		$attributes .= ! empty( $item->target )     ? ' target="' . esc_attr( $item->target     ) .'"' : '';
+		$attributes .= ! empty( $item->xfn )        ? ' rel="'    . esc_attr( $item->xfn        ) .'"' : '';
+		$attributes .= ! empty( $item->url )        ? ' href="'   . esc_attr( $item->url        ) .'"' : ''; 
+		$attributes .= ' class="menu-link ' . ( $depth == 0 ? 'parent' : '' ) . ( $depth == 1 ? 'child' : '' ) . ( $depth >= 2 ? 'sub-child' : '' ) . '"';
+
+		if($depth == 0){
+			$link  =  $item->url;
+
+			$title = apply_filters( 'the_title', $item->title, $item->ID );
+
+			if(!empty($has_children)){
+				$item_output = '<a class="drop-link" href="'. $link .'"><span>' . $title .'</span></a>';
+			}else{
+				$item_output = '<a href="'. $link .'"><span>' . $title .'</span></a>';
+			}
+		}else if($depth == 1){
+			$has_children = $wpdb->get_results( $wpdb->prepare("SELECT post_id FROM $wpdb->postmeta WHERE meta_value = %s AND meta_key = '_menu_item_menu_item_parent'", $item->ID), ARRAY_A);
+
+			$link  =  $item->url;
+
+			$title = apply_filters( 'the_title', $item->title, $item->ID );
+
+			if(!empty($has_children)){
+				$item_output = '<p>' . $title .' </p>';
+			}else{
+				$item_output = '<a href="'. $link .'">' . $title .'</a>';
+			}
+		}else if($depth >= 2){
+			$item_output = sprintf( '%1$s<a%2$s>%3$s%4$s%5$s</a>%6$s',
+				$args->before,
+				$attributes,
+				$args->link_before,
+				apply_filters( 'the_title', $item->title, $item->ID ),
+				$args->link_after,
+				$args->after
+			);
+		}
+		// build html
+
+		$output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
+	}
+}
+
+class reviews_menu extends Walker_Nav_Menu {
 
 	// Добавляем классы к вложенным ul
 	function start_lvl(&$output, $depth = 0, $args = Array()) {
@@ -229,7 +331,7 @@ class primary_menu extends Walker_Nav_Menu {
 	}
 }
 
-class reviews_menu extends Walker_Nav_Menu {
+class mobile_menu extends Walker_Nav_Menu {
 
 	// Добавляем классы к вложенным ul
 	function start_lvl(&$output, $depth = 0, $args = Array()) {
@@ -277,7 +379,7 @@ class reviews_menu extends Walker_Nav_Menu {
 		$attributes .= ! empty( $item->target )     ? ' target="' . esc_attr( $item->target     ) .'"' : '';
 		$attributes .= ! empty( $item->xfn )        ? ' rel="'    . esc_attr( $item->xfn        ) .'"' : '';
 		$attributes .= ! empty( $item->url )        ? ' href="'   . esc_attr( $item->url        ) .'"' : ''; 
-		$attributes .= ' class="menu-link ' . ( $depth == 0 ? 'parent' : '' ) . ( $depth == 1 ? 'child' : '' ) . ( $depth >= 2 ? 'sub-child' : '' ) . '"';
+		$attributes .= ' class="menu-link ' . $class_names . ( $depth == 0 ? 'parent' : '' ) . ( $depth == 1 ? 'child' : '' ) . ( $depth >= 2 ? 'sub-child' : '' ) . '"';
 	
 		if($depth == 0){
 			$item_output = sprintf( '%1$s<a%2$s>%3$s%4$s%5$s</a>%6$s',
@@ -293,7 +395,7 @@ class reviews_menu extends Walker_Nav_Menu {
 			$link  =  $item->url;
 			$title = apply_filters( 'the_title', $item->title, $item->ID );
 
-			$item_output = '<a class="ancLinks" href="'. $link .'">' . $title . '</a>';
+			$item_output = '<a href="'. $link .'">' . $title . '</a>';
 
 		}else if($depth >= 2){
 			$item_output = sprintf( '%1$s<a%2$s>%3$s%4$s%5$s</a>%6$s',

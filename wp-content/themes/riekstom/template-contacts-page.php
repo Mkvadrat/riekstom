@@ -30,6 +30,14 @@ get_header();
                         <?php echo wpautop(get_post_meta( get_the_ID(), 'text_contacts_block_contacts_page', $single = true )); ?>
                     </div>
 					<?php echo wpautop(get_post_meta( get_the_ID(), 'text_seo_block_contacts_page', $single = true )); ?>
+					<?php
+						$forms_a = get_field('form_block_contacts_page');
+						
+						if($forms_a){
+						   echo do_shortcode('[contact-form-7 id=" ' . $forms_a . ' "]'); 
+						}    
+					?>   
+					
                     <h2 class="sub-title"><?php echo get_post_meta( get_the_ID(), 'title_maps_block_contacts_page', $single = true ); ?></h2>  
                     <div class="map">
                         <div>
